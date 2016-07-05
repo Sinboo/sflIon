@@ -1,0 +1,20 @@
+<ion-modal-view hide-nav-bar="true"  class="forgot">
+    
+    
+    <ion-content scroll="false">
+        <div ng-form="login_form" class="padding text-center" novalidate>
+            <ion-list>
+                <label class="item item-input">
+                    <i class="icon ion-android-person placeholder-icon"></i>
+                    <input type="email" placeholder="邮箱" ng-model="user.email" required>
+                </label>
+            </ion-list>
+            <button class="button button-balanced button-block waves-effect waves-light" ng-click="resetPasswordTo();">重置密码</button>
+            <p class="">将会为您发送一封用于重置密码的邮件</p>
+        </div>
+        <p class="padding-horizontal">
+            <span class="balanced pull-left" ng-click="vm.openLogin();">登录页面</span>
+            <span class="dark pull-right" ng-click="vm.cancel()">取消</span>
+        </p>
+    </ion-content>
+</ion-modal-view>

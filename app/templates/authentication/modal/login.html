@@ -1,0 +1,30 @@
+<ion-modal-view hide-nav-bar="true"  class="auth">
+  <ion-content scroll="false">
+    <div class="padding text-center" novalidate>
+      <ion-list>
+        <label class="item item-input">
+          <i class="icon ion-android-person placeholder-icon"></i>
+          <input type="email" placeholder="邮箱" ng-model="vm.user.email" required>
+        </label>
+        <label class="item item-input">
+          <i class="icon ion-android-lock placeholder-icon"></i>
+          <input type="password" placeholder="密码" ng-model="vm.user.password" required>
+        </label>
+      </ion-list>
+      <button class="button button-balanced button-block waves-effect waves-light" ng-click="vm.confirm(vm.user);">登入</button>
+
+      <p class="">或用以下方式登录:</p>
+
+      <div class="button-bar">
+        <button class="button button-weixin button-block waves-effect waves-light" ng-click="vm.weixinSignIn()"><i class="fa fa-weixin"></i></button>
+        <button class="button button-qq button-block waves-effect waves-light" ng-click="vm.qqSignIn()"><i class="fa fa-qq"></i></button>
+        <button class="button button-weibo button-block waves-effect waves-light" ng-click="vm.weiboSignIn()"><i class="fa fa-weibo"></i> </button>
+      </div>
+    </div>
+
+    <p class="padding-horizontal">
+      <span class="balanced pull-left" ng-click="vm.openForgot();">忘记密码?</span>
+      <span class="dark pull-right" ng-click="vm.cancel()">取消</span>
+    </p>
+  </ion-content>
+</ion-modal-view>

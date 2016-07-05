@@ -1,0 +1,38 @@
+<ion-modal-view hide-nav-bar="true" class="auth">
+
+  <ion-content scroll="false">
+
+    <div class="padding text-center" novalidate>
+      <ion-list>
+        <div class="item item-avatar">
+          <img ng-src="{{user.photo}}" ng-click="vm.uploadUserPhoto();">
+
+          <label class="item item-input">
+            <i class="icon ion-android-person placeholder-icon"></i>
+            <input type="text" placeholder="昵称" ng-model="vm.user.name" required>
+          </label>
+          <label class="item item-input">
+            <i class="icon ion-android-mail placeholder-icon"></i>
+            <input type="email" placeholder="邮箱" ng-model="vm.user.email" required>
+          </label>
+        </div>
+
+        <label class="item item-input">
+          <i class="icon ion-android-lock placeholder-icon"></i>
+          <input type="password" placeholder="密码" ng-model="vm.user.password" required>
+        </label>
+        <label class="item item-input">
+          <i class="icon ion-android-lock placeholder-icon"></i>
+          <input type="password" placeholder="确认密码" ng-model="vm.user.rpassword" compare-to="vm.user.password">
+        </label>
+      </ion-list>
+
+      <button class="btn waves-effect waves-light button button-positive button-block waves-effect waves-light" ng-click="vm.confirm(vm.user)">注册</button>
+    </div>
+
+    <p class="padding-horizontal">
+      <span class="balanced pull-left" ng-click="vm.openLogin();">登录页面</span>
+      <span class="dark pull-right" ng-click="vm.cancel()">取消</span>
+    </p>
+  </ion-content>
+</ion-modal-view>

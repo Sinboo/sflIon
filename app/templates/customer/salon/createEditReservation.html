@@ -1,0 +1,66 @@
+<ion-view cache-view="false" hide-nav-bar="true">
+
+  <ion-header-bar>
+    <div class="row text-center">
+      <div class="col font-thin text-large dark" ng-click="goTo('customer.salonReservation')">取消</div>
+      <div class="col font-thin text-large balanced bl-grey" ng-click="saveReservation(reservation)">保存</div>
+    </div>
+  </ion-header-bar>
+
+  <form name="reminderForm">
+    <ion-content class="has-header">
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">姓名:</span>
+        <input type="text" placeholder="请输入您的姓名" ng-model="reservation.title" required/>
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">手机:</span>
+        <input type="tel" placeholder="请输入您的手机号" ng-model="reservation.phone" required/>
+      </label>
+
+      <label class="item item-input item-floating-label" ng-if="showNotes">
+        <span class="input-label">具体要求</span>
+        <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
+      </label>
+
+      <div class="row date-time" >
+        <div class="col card" ion-datetime-picker ng-model="reservation.bookingTime.startsAt" required>
+          <div class="item"><span class="balanced">预订起始</span>
+            <p class="small">{{reservation.bookingTime.startsAt| date: "yyyy-MM-dd"}}</p><span class="text-large">{{reservation.bookingTime.startsAt| date: "HH:mm"}}</span></div>
+        </div>
+        <div class="col-10 no-padding caret"><i class="icon ion-ios-arrow-right"></i></div>
+
+        <div class="col card" ion-datetime-picker ng-model="reservation.bookingTime.endsAt" required>
+          <div class="item"><span class="balanced">预订结束</span>
+            <p class="small">{{reservation.bookingTime.endsAt| date: "yyyy-MM-dd"}}</p><span class="text-large">{{reservation.bookingTime.endsAt| date: "HH:mm"}}</span></div>
+        </div>
+      </div>
+      <label class="item item-input" ng-if="reservation.productId">
+        <span class="input-label">预订的服务</span>
+        <div class="item-text-wrap">
+          <span class="tags">{{productName}}</span>
+        </div>
+      </label>
+      <label class="item item-input" ng-if="reservation.productServerId">
+        <span class="input-label">服务提供者:</span>
+        <div class="item-text-wrap">
+          <span class="tags">{{productServerName}}</span>
+        </div>
+      </label>
+
+
+      <div class="row text-center date-time-buttons">
+        <div class="col stable-bg margin" ng-click="openProductListModal()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
+          <p>选择服务产品</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="showNotes = !showNotes"><button class="button button-icon icon ion-ios-compose-outline"></button>
+          <p>具体要求</p>
+        </div>
+      </div>
+
+    </ion-content>
+  </form>
+
+</ion-view>

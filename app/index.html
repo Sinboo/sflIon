@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/ionic/release/css/ionic.css" />
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+    <link rel="stylesheet" href="bower_components/Materialize/bin/materialize.css" />
+    <link rel="stylesheet" href="bower_components/ion-datetime-picker/release/ion-datetime-picker.min.css" />
+    <link rel="stylesheet" href="bower_components/ionic-nifty-modal/nifty.modal.css" />
+    <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link href="styles/googleFonts.css" rel="stylesheet" type="text/css">
+    <link href="styles/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
+    <link href="styles/animate.css" rel="stylesheet">
+    <link href="styles/materialize.css" rel="stylesheet">
+    <link href="styles/ionic.app.css" rel="stylesheet">
+    <!-- endbuild -->
+
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="styles/ionic.app.css" rel="stylesheet">
+    -->
+    <!-- ionic/angularjs js -->
+    <!-- build:js scripts/angular.js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <!-- endbuild -->
+
+    <!-- ionic/angularjs js -->
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/ionic/release/js/ionic.js"></script>
+    <script src="bower_components/ionic/release/js/ionic-angular.js"></script>
+    <script src="bower_components/ngCordova/dist/ng-cordova.js"></script>
+    <script src="bower_components/wilddog/wilddog.js"></script>
+    <script src="bower_components/wild-angular/dist/wild-angular.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/Chart.js/Chart.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/ion-affix/ion-affix.js"></script>
+    <script src="bower_components/moment-range/dist/moment-range.js"></script>
+    <script src="bower_components/Autolinker.js/dist/Autolinker.js"></script>
+    <script src="bower_components/angular-elastic/elastic.js"></script>
+    <script src="bower_components/Materialize/bin/materialize.js"></script>
+    <script src="bower_components/ng-lodash/build/ng-lodash.js"></script>
+    <script src="bower_components/ion-datetime-picker/release/ion-datetime-picker.min.js"></script>
+    <script src="bower_components/ion-google-place/ion-google-place.js"></script>
+    <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <!--<script src="cordova.js"></script>-->
+
+    <!-- your app's js -->
+    <!-- build:js scripts/scripts.js -->
+    <!-- customer added -->
+    <script src="scripts/lib/ionic.ui.modalService.js" ></script>
+    <!-- end customer added -->
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/appController.js"></script>
+
+    <script src="scripts/controllers/authentication/authentication.js"></script>
+    <script src="scripts/controllers/authentication/modal/loginModal.js"></script>
+    <script src="scripts/controllers/authentication/modal/signUpModal.js"></script>
+    <script src="scripts/controllers/authentication/modal/forgotModal.js"></script>
+
+    <script src="scripts/controllers/customer/salon/reservation.js"></script>
+    <script src="scripts/controllers/customer/salon/contact.js"></script>
+    <script src="scripts/controllers/customer/salon/busyStatus.js"></script>
+    <script src="scripts/controllers/customer/salon/createEditReservation.js"></script>
+    <script src="scripts/controllers/customer/salon/modal/productListModal.js"></script>
+    <script src="scripts/controllers/customer/salon/modal/hairstylistsModal.js"></script>
+
+    <script src="scripts/controllers/product/productList.js"></script>
+    <script src="scripts/controllers/product/modal/productPreview.js"></script>
+
+
+
+
+
+
+    <script src="scripts/directives/directives.js"></script>
+
+    <script src="scripts/services/services.js"></script>
+    <script src="scripts/services/common.js"></script>
+    <script src="scripts/services/login.js"></script>
+    <script src="scripts/services/config.js"></script>
+    <script src="scripts/services/listService.js"></script>
+
+    <script src="scripts/configuration.js"></script>
+    <!-- endbuild -->
+
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBM-W2tYWSDinJsljgjk3gsYSv6ZXy62JM&amp;"></script>-->
+
+
+  </head>
+
+  <body ng-app="sflIon">
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>

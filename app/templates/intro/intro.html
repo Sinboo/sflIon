@@ -1,0 +1,28 @@
+<ion-view hide-nav-bar="true" class="intro" style="background-size: cover;background: #28b99a url('../../img/sfl/bg.jpg') center;background-blend-mode: luminosity;">
+
+    <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" active-slide="activeIndex"
+        ng-init="activeIndex = 0" class="slide-intro">
+        <ion-slide class="container">
+            <div class="text-center"><img src="../../img/sfl/4.pic.jpg" class="text-center" /></div>
+            <!--<h2 class="light">Ionic</h2>-->
+            <h2 class="light">尚凡朗造型</h2>
+        </ion-slide>
+        <ion-slide class="container">
+            <!--<div class="text-center"><img src="../../img/sfl/1.pic.jpg" class="text-center" /></div>-->
+            <h2 class="light">一段尚凡朗时光</h2>
+        </ion-slide>
+        <ion-slide class="container">
+            <!--<div class="text-center"><img src="../../img/sfl/2.pic.jpg" class="text-center" /></div>-->
+            <h2 class="light">一段品味时尚旅程</h2>
+        </ion-slide>
+        <ion-slide class="container">
+            <!--<div class="text-center"><img src="../../img/sfl/5.pic.jpg" class="text-center" /></div>-->
+            <h2 class="light">让发型感动生活</h2>
+        </ion-slide>
+    </ion-slide-box>
+
+    <div class="intro_button">
+        <button class="btn waves-effect waves-teal button button-light button-outline button-block" ui-sref="authentication">继续...</button>
+    </div>
+
+</ion-view>

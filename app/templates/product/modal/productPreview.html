@@ -1,0 +1,46 @@
+<ion-modal-view>
+  <ion-nav-button side="left">
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel();"></button>
+  </ion-nav-button>
+
+  <ion-content class="has-header">
+    <div class="card tile no-box">
+      <div class="item item-image">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" active-slide="activeIndex"
+                       ng-init="activeIndex = 0" class="slide-intro">
+          <ion-slide ng-repeat="(key, value) in vm.product.carouselImgs track by $index">
+            <img ng-src="{{value}}" alt="{{vm.product.name}}">
+          </ion-slide>
+      </div>
+      <div class="item item-text-wrap no-b">
+
+        <h2 class="text-large lead text-left">{{vm.product.name}}</h2>
+        <span class="tags pull-right"  >{{vm.product.discount ? vm.product.discount * 100 + '% 折扣' : '新品上市'}} </span>
+        <p class="text-medium">${{vm.product.price | number:2}}</p>
+        <p class="text-medium">
+          {{vm.product.shortDesc}}
+        </p>
+        <br/>
+        <p>
+          <span><img ng-src="{{value}}" style="width: 40px;border-radius: 50%;margin: 0 2px" ng-repeat="(key, value) in vm.product.carouselImgs | limitTo: 5">
+            <span class="pull-right text-sm" style="margin-top: 20px">能完成此项服务</span>
+          </span>
+        </p>
+        <p class=" text-larger mt">
+          <i class="icon mr" ng-class="{'calm ion-ios-heart': favourite, 'ion-ios-heart-outline': !favourite}" ng-click="favourite = !favourite"></i>
+          <i class="icon ion-ios-redo-outline mr"></i>
+          <i class="icon ion-ios-cart-outline" ng-click="selectProductDetails(product)"></i>
+        </p>
+      </div>
+    </div>
+
+    <div class="card no-box">
+      <p class="text-medium">产品详细介绍:</p>
+      <div class="item item-body">
+        <img class="full-image" ng-src="{{vm.product.carouselImgs.one}}">
+        <p>{{vm.product.detailDesc}}</p>
+      </div>
+    </div>
+  </ion-content>
+
+</ion-modal-view>
