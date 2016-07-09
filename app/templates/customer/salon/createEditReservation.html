@@ -12,16 +12,16 @@
 
       <label class="item item-input item-floating-label">
         <span class="input-label">姓名:</span>
-        <input type="text" placeholder="请输入您的姓名" ng-model="reservation.title" required/>
+        <input type="text" placeholder="请输入您的姓名" ng-model="reservation.customerName" required/>
       </label>
 
       <label class="item item-input item-floating-label">
         <span class="input-label">手机:</span>
-        <input type="tel" placeholder="请输入您的手机号" ng-model="reservation.phone" required/>
+        <input type="tel" placeholder="请输入您的手机号" ng-model="reservation.customerMobile" required/>
       </label>
 
       <label class="item item-input item-floating-label" ng-if="showNotes">
-        <span class="input-label">具体要求</span>
+        <span class="input-label">具体要求:</span>
         <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
       </label>
 
@@ -40,13 +40,13 @@
       <label class="item item-input" ng-if="reservation.productId">
         <span class="input-label">预订的服务</span>
         <div class="item-text-wrap">
-          <span class="tags">{{productName}}</span>
+          <span class="tags">{{reservation.productName}}</span>
         </div>
       </label>
       <label class="item item-input" ng-if="reservation.productServerId">
         <span class="input-label">服务提供者:</span>
         <div class="item-text-wrap">
-          <span class="tags">{{productServerName}}</span>
+          <span class="tags">{{reservation.productServerName}}</span>
         </div>
       </label>
 

@@ -30,6 +30,34 @@ angular.module('sflIon')
 
     $scope.loadMore();
 
+
+    // // create a connection to Firebase
+    // var baseRef = new Wilddog(WD_URL).child('products').child('hairCut');
+    // // create a scrollable reference
+    // var scrollRef = new Wilddog.util.Scroll(baseRef, 'updateAtR');
+    //
+    // // create a synchronized array on scope
+    // vm.products  = $wilddogArray(scrollRef);
+    // // load the first three contacts
+    // scrollRef.scroll.next(10);
+    // console.log(vm.products)
+    //
+    // // This function is called whenever the user reaches the bottom
+    // $scope.loadMore = function() {
+    //   var last = vm.products.length;
+    //   console.log('yes')
+    //   // load the next contact
+    //   scrollRef.scroll.next(3);
+    //   $scope.$broadcast('scroll.infiniteScrollComplete');
+    //   if (last = vm.products.length) {
+    //     Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
+    //   }
+    // };
+
+
+
+
+
     // listService.list('products:hairCut').$loaded().then(function (data) {
     //   console.log(data)
     //   $scope.data = data;

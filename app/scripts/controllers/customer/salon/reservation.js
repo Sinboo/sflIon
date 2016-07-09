@@ -4,46 +4,58 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($scope, noBackGoTo, appService, $ionicPopover, $location, listService, ORDER_GROUP) {
+  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray) {
     $scope.viewDate = new Date();
+    var startOfDay = moment($scope.viewDate).startOf('day')._d;
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
+    // var ref = new Wilddog(WD_URL).child('orders').child('booked');
+    // var query = ref.orderByChild("customerId").equalTo(localStorageService.cookie.get('user').uid.split(':')[1]);
+    // listService.list('orders:booked', query).$loaded().then(function (data) {
+    //   $scope.reservations = data;
+    //   console.log(data)
+    //   getReservations(moment($scope.viewDate._d).startOf('day')._d);
+    // });
 
+    // var fb = new Wilddog(WD_URL);
+    // var norm = new Wilddog.util.NormalizedCollection(
+    //   fb.child('users').child('hairstylist'),
+    //   fb.child('productServer')
+    // )
+    //   .select('product.$id', 'product.name', 'productServer.uid')
+    //   .ref();
+    //
+    // console.log(norm.key())
+    //
+    // var productsRef = $wilddogArray(norm);
+    // productsRef.$loaded().then(function (data) {
+    //   console.log(data)
+    // })
 
-    $.each(ORDER_GROUP, function (k, v) {
-      listService.list('orders:'+k).$loaded().then(function (data) {
-        angular.forEach(data, function (item) {
-          item.status = k;
-          listService.list('products')
+    
 
-        });
-        $scope.reservations = $scope.reservations.concat(data);
-        console.log($scope.reservations)
-      });
-    });
-
-
-    getDateEvents(moment($scope.viewDate._d).startOf('day')._d);
-    $scope.decrementDate = function (item) {
+    $scope.decrementDate = function () {
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').subtract(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').subtract(1, 'days');
-      getDateEvents($scope.viewDate._d)
+      getReservations($scope.viewDate._d)
     };
 
-    $scope.incrementDate = function (item) {
+    $scope.incrementDate = function () {
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').add(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').add(1, 'day');
-      getDateEvents($scope.viewDate._d)
+      getReservations($scope.viewDate._d)
     };
-    function getDateEvents(date) {
+    function getReservations(date) {
       var range = moment().range(date, moment(date).endOf('day'));
-      $scope.seletedDateEvents = [];
-      angular.forEach($scope.notifications, function (value, key) {
-        if (moment(value.startsAt).within(range)) {
-          $scope.seletedDateEvents.push(value);
+      console.log(range)
+      $scope.seletedReservations = [];
+      angular.forEach($scope.reservations, function (value) {
+        if (value.bookingTime && moment(value.bookingTime.startsAt).within(range)) {
+          $scope.seletedReservations.push(value);
         }
       });
+      console.log($scope.seletedReservations)
     }
 
     $ionicPopover.fromTemplateUrl('templates/customer/salon/pop/addReservationPop.html', {

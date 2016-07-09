@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="card no-margin no-br" ng-if="reservations.length == 0">
+    <div class="card no-margin no-br" ng-if="seletedReservations.length == 0">
       <div class="item item-text-wrap item-icon-left teal lighten-1">
         <i class="icon ion-ionic light"></i>
         <span class="light">No incomplete reminders</span>
@@ -32,9 +32,9 @@
 
     <ion-scroll class="bg-lightgrey" direction="y" style="height:100%">
 
-      <div class="card no-margin bb-grey no-br no-box" ng-if="reservations.length > 0" ng-repeat="reservation in reservations | filter: searchFilter | orderBy: 'startsAt':true track by $index">
-        <div class="item item-text-wrap item-icon-left teal lighten-1" ng-click="open[$index] = !open[$index]" on-hold="onCardHold($index, reservation);"
-             ng-if="reservation.status == 'booked'">
+      <div class="card no-margin bb-grey no-br no-box" ng-if="reservations.length > 0" ng-repeat="reservation in seletedReservations | filter: searchFilter | orderBy: 'startsAt':true track by $index">
+        <div class="item item-text-wrap item-icon-left indigo lighten-1" ng-click="open[$index] = !open[$index]" on-hold="onCardHold($index, reservation);">
+             <!--ng-if="reservation.status == 'booked'">-->
           <i class="icon light ion-ios-checkmark-outline"></i>
           <span class="light text-medium">{{reservation.title}}</span><br/>
           <span class="light text-smaller justified" ng-if="open[$index] && reservation.notes">{{reservation.notes}}<br/></span>

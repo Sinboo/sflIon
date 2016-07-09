@@ -23,9 +23,9 @@ angular.module('sflIon')
             console.log(value)
             $scope.reservation.productId = value.product.$id;
             $scope.reservation.productGroup = $scope.group;
-            $scope.productName = value.product.name;
-            $scope.reservation.hairstylistId = value.productServer.uid;
-            $scope.hairstylistName = value.productServer.name;
+            $scope.reservation.productName = value.product.name;
+            $scope.reservation.productServerId = value.productServer.uid;
+            $scope.reservation.productServerName = value.productServer.name;
           }
         },
         function(err) {
@@ -36,12 +36,14 @@ angular.module('sflIon')
 
     $scope.saveReservation = function (reservation) {
       console.log(reservation);
+      reservation.bookingTime.startsAt = Date.parse(reservation.bookingTime.startsAt);
+      reservation.bookingTime.endsAt = Date.parse(reservation.bookingTime.endsAt);
       reservation.customerId = localStorageService.cookie.get('user').uid.split(':')[1];
-      listService.list('orders:booked').add(reservation).then(function (data) {
-        console.log(data)
+      listService.list('orders:booked').add(reservation).then(function () {
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '预订成功!', 2000);
         $state.go('customer.salonReservation');
       })
+
     };
 
 

@@ -29,24 +29,24 @@ angular.module('sflIon')
       });
     }
   })
-  .factory("createWidget", function(localStorageService) {
+  .factory("createWidget", function(UID) {
     return function (data) {
       return angular.extend(data, {
         createAt: new Date().getTime(),
-        createById: localStorageService.cookie.get('user').uid.split(':')[1],
+        createById: UID,
         updateAt: new Date().getTime(),
         updateAtR: new Date().getTime() * -1,
-        updateById: localStorageService.cookie.get('user').uid.split(':')[1]
+        updateById: UID
       })
     }
   })
-  .factory("updateWidget", function(localStorageService) {
+  .factory("updateWidget", function(UID) {
     return function (data) {
       console.log('before', data)
       data.updateAt = new Date().getTime();
       data.updateAtR = new Date().getTime() * -1;
-      data.updateById = localStorageService.cookie.get('user').uid.split(':')[1];
-      console.log('after', data)
+      data.updateById = UID;
+      console.log('after', data);
       return data
     }
   })
@@ -60,6 +60,9 @@ angular.module('sflIon')
       };
       return list;
     };
+  })
+  .factory('UID', function (localStorageService) {
+    return localStorageService.cookie.get('user').uid.split(':')[1];
   })
   .service('commonService', function (regionCache, httpService, $http, EXPRESS, localStorageService, publicFunc, $q, $timeout, $state, $stateParams) {
     this.convertDate = function (d) {

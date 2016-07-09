@@ -15,7 +15,6 @@ angular.module('sflIon', [
   'ngCordova',
   'monospaced.elastic',
   'ionic.ui.modalService',
-  'ngLodash',
   'LocalStorageModule',
   'ion-datetime-picker',
   'ion-google-place',
