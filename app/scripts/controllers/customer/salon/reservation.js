@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray) {
+  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, objectService) {
     $scope.viewDate = new Date();
     var startOfDay = moment($scope.viewDate).startOf('day')._d;
     $scope.goTo = noBackGoTo;
@@ -20,10 +20,11 @@ angular.module('sflIon')
 
     // var fb = new Wilddog(WD_URL);
     // var norm = new Wilddog.util.NormalizedCollection(
-    //   fb.child('users').child('hairstylist'),
-    //   fb.child('productServer')
+    //   [fb.child('products').child('hairCut'), 'products'],
+    //   [fb.child('productServer'), 'productServer'],
+    //   [fb.child('users').child('hairstylist'), 'userProfile', 'productServer.uid']
     // )
-    //   .select('product.$id', 'product.name', 'productServer.uid')
+    //   .select({key: 'products.$value', alias: 'product'}, {key: 'productServer.$value.uid', alias: 'productServerUid'}, {key: 'userProfile.$value', alias: 'userInfo'})
     //   .ref();
     //
     // console.log(norm.key())
@@ -32,6 +33,27 @@ angular.module('sflIon')
     // productsRef.$loaded().then(function (data) {
     //   console.log(data)
     // })
+
+
+    // listService.list('productServer').$loaded().then(function (data) {  //得到节点下的所有数据
+    //   console.log(data)
+    //   $scope.all = [];
+    //   angular.forEach(data, function (item) {
+    //     $.each(item, function (k,v) {
+    //       if (k.indexOf('KL') > -1) {
+    //         $scope.all.push(v)
+    //       }
+    //     })
+    //   })
+    //   console.log($scope.all)
+    //
+    // })
+
+    // objectService.object('productServer').$loaded().then(function (data) {
+    //   console.log(data)
+    // })
+    
+    
 
     
 
@@ -90,26 +112,51 @@ angular.module('sflIon')
 
 
 
+    // var hairstylistUnderPrice = {};
+    // hairstylistUnderPrice.hairstylistUid = 1468141414065442;
+    // hairstylistUnderPrice = JSON.parse(JSON.stringify(hairstylistUnderPrice));
+    // listService.list('hairstylistUnderPrice:-KMJ6iKMC3dlXew_C3bQ').add(hairstylistUnderPrice);
 
-    // for (var i=0; i<5; i++) {
-    //   var product = {};
-    //   product.name = '最新韩式空气刘海';
-    //   product.price = 188;
-    //   product.discount = 0.8;
-    //   product.coverImg = 'http://imtailor.b0.upaiyun.com/AAAB/AAAZ/2016/07/08a6f91f-f860-4de8-808a-baa1a3a0d53e.jpg';
-    //   product.carouselImgs = {};
-    //   product.carouselImgs.one = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.carouselImgs.two = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.carouselImgs.three = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.carouselImgs.four = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.shortDesc = '美丽的故事美丽的故事美丽的故事美丽的故事';
-    //   product.detailDesc = '正道是阿斯顿发送美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事到弗兰克就爱看的激发了肯德基福利卡极度分裂卡士大夫科技科技科圣诞节疯狂';
-    //   product.hairstylistIds = null;
-    //   product.group = 'hairCut';
-    //   product = JSON.parse(JSON.stringify(product));
-    //   listService.products().add(product);
-    //
-    // }
+
+    // listService.list('hairstylist').$loaded().then(function (data) {
+    //   console.log(data)
+    //   angular.forEach(data, function (item) {
+    //     var hairstylistUnderPrice = {};
+    //     hairstylistUnderPrice.hairstylistUid = item.$id;
+    //     hairstylistUnderPrice = JSON.parse(JSON.stringify(hairstylistUnderPrice));
+    //     listService.list('price:nursing').$loaded().then(function (prices) {
+    //       angular.forEach(prices, function (priceItem) {
+    //         console.log('hairstylistUid:', item.$id)
+    //         console.log('priceId:', priceItem.$id)
+    //         // listService.list('hairstylistUnderPrice:'+priceItem.$id).add(hairstylistUnderPrice);
+    //       })
+    //     })
+    //     // listService.list('hairstylistUnderPrice:-KMJBqeFuUKz02o88Iy1').add(hairstylistUnderPrice);
+    //   })
+    // })
+
+
+
+
+
+    for (var i=0; i<5; i++) {
+      var work = {};
+      work.name = '最具魅力中长发';
+      work.price = 118;
+      work.discount = 0.9;
+      work.coverImg = 'http://imtailor.b0.upaiyun.com/AAAB/AAAZ/2016/07/08a6f91f-f860-4de8-808a-baa1a3a0d53e.jpg';
+      work.carouselImgs = {};
+      work.carouselImgs.one = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+      work.carouselImgs.two = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+      work.carouselImgs.three = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+      work.carouselImgs.four = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+      work.shortDesc = '中长发也会有夏天的';
+      work.description = '正道是阿斯顿发送美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事到弗兰克就爱看的激发了肯德基福利卡极度分裂卡士大夫科技科技科圣诞节疯狂';
+      work.hairstylistUid = null;
+      work = JSON.parse(JSON.stringify(work));
+      // listService.list('work:F_MID').add(work);
+
+    }
     
     
 

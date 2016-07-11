@@ -387,7 +387,7 @@ angular.module('sflIon', [
     })
     .state('createEditReservation', {
       url: '/createEditReservation',
-      params: { reservation: null, type: null },
+      params: { reservation: null },
       templateUrl: 'templates/customer/salon/createEditReservation.html',
       controller: 'CreateEditReservationCtrl'
     })
@@ -410,12 +410,12 @@ angular.module('sflIon', [
       }
     })
 
-    .state('customer.productList', {
-      url: '/productList',
+    .state('customer.workList', {
+      url: '/workList',
       views: {
         'menuContent': {
-          templateUrl: 'templates/product/productList.html',
-          controller: 'ProductListCtrl'
+          templateUrl: 'templates/showcase/workList.html',
+          controller: 'WorkListCtrl'
         }
       }
     })

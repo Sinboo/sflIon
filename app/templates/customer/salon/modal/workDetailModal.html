@@ -1,0 +1,55 @@
+<ion-modal-view>
+  <ion-nav-button side="left">
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel();"></button>
+  </ion-nav-button>
+
+  <ion-content class="has-header" scroll-event-interval="5" padding="false">
+
+    <div class="card post-detail">
+      <div class="item item-body">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" active-slide="activeIndex"
+                       ng-init="activeIndex = 0" class="slide-intro">
+          <ion-slide ng-repeat="(key, value) in vm.work.carouselImgs track by $index">
+            <img class="full-image" ng-src="{{value}}" alt="{{vm.work.name}}">
+          </ion-slide>
+        </ion-slide-box>
+        <div class="item item-text-wrap no-b">
+          <h2 class="text-large lead text-left">{{vm.work.name}}</h2>
+          <span class="tags pull-right"  >{{vm.work.discount ? vm.work.discount * 100 + '% 折扣' : '新品上市'}} </span>
+          <p class="text-medium">${{vm.work.price | number:2}}</p>
+          <p class="text-small font-thin">
+            {{vm.work.description}}
+          </p>
+        </div>
+
+        <div class="item comments">
+          <p>
+            <span ng-click="vm.like()"><img ng-src="{{liker.userProfile.avatar}}" class="likers" ng-repeat="liker in vm.work.likes | limitTo:-5">
+              <span class="pull-left interact"> +{{vm.work.likes.length || 0}} 个喜欢</span>
+              <span class="pull-right">{{vm.work.comments.length || 0}} 条评论</span>
+            </span>
+          </p>
+        </div>
+        <div class="item comments no-b" ng-click="vm.openCommentModal(vm.work.$id)">
+          <div class="item item-avatar" ng-if="vm.work.comments" ng-repeat="comment in vm.work.comments" >
+            <img ng-src="{{comment.userProfile.avatar}}"/>
+            <h2 class="text-small">{{comment.userProfile.name}}</h2>
+            <p class="text-smaller">{{comment.content}}</p>
+
+          </div>
+          <p class="font-thin" ng-if="vm.work.comments.length == 0" ng-click="vm.openCommentModal(vm.work.$id)">暂时还没有人评论哦~ 快去留下第一条评论吧!</p>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="no-bg bt-grey ">
+    <div class="row">
+      <div class="col text-left no-padding" ng-click="vm.openCommentModal(vm.work.$id, true)"><i class="icon text-small" ng-class="vm.liked == true ? 'ion-ios-heart': 'ion-ios-heart-outline'"> {{vm.liked == true ? '已喜欢' : '未喜欢'}}</i></div>
+      <div class="col text-center no-padding"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="vm.confirm('yes')"> 预订该作品发型师</i></div>
+      <div class="col text-right no-padding" ng-click="vm.openCommentModal(vm.work.$id)"><i class="icon ion-ios-chatboxes-outline text-small"> {{vm.work.comments.length}} 评论</i></div>
+    </div>
+  </ion-footer-bar>
+
+</ion-modal-view>

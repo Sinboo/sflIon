@@ -1,0 +1,17 @@
+<ion-modal-view class="ion-modal">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-75 text-center">
+      <h1 class=" balanced font-thin text-larger">请选择价格</h1></div>
+    <div class="col text-right ">
+      <span class="icon ion-android-close" ng-click="vm.cancel()"></span>
+    </div>
+  </div>
+
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-checkbox ng-repeat="item in vm.priceList track by $index" ng-click="vm.confirm(item)"><span class="energized">{{item.name}}</span><br/><span class="balanced text-small" style="margin-left: 10px;">{{item.subName}}</span><span class="pull-right positive">{{item.number}}</span></ion-checkbox>
+    </ion-list>
+  </ion-content>
+
+</ion-modal-view>

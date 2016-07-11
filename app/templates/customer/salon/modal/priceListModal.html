@@ -1,0 +1,69 @@
+<style>
+  .row {
+    margin: -1px;
+  }
+</style>
+
+<ion-modal-view>
+  <ion-nav-button side="left">
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel();"></button>
+  </ion-nav-button>
+
+
+  <ion-content class="has-header">
+    <div class="row  no-padding text-center stable-bg" >
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="vm.choosePrice('wash')">
+          <div class="item item-text-wrap energized-bg light">
+            <i class="icon ion-aperture"></i>
+            <span class="text-large font-thin">洗吹造型</span>
+          </div>
+        </div>
+      </div>
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="vm.choosePrice('cut')">
+          <div class="item item-text-wrap calm-bg light">
+            <i class="icon ion-scissors"></i>
+            <span class="text-large font-thin">洗剪造型</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row no-padding text-center stable-bg" >
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="vm.choosePrice('perm')">
+          <div class="item item-text-wrap royal-bg light">
+            <i class="icon ion-flame"></i>
+            <span class="text-large font-thin">时尚烫发</span>
+          </div>
+        </div>
+      </div>
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="vm.choosePrice('color')">
+          <div class="item item-text-wrap positive-bg light">
+            <i class="icon ion-bonfire"></i>
+            <span class="text-large font-thin">时尚染发</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row no-padding text-center stable-bg" >
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="vm.choosePrice('nursing')">
+          <div class="item item-text-wrap balanced-bg light">
+            <i class="icon ion-ios-pulse-strong"></i>
+            <span class="text-large font-thin">营养护理</span>
+          </div>
+        </div>
+      </div>
+      <div class="col no-padding">
+        <div class="card tile tile-large" >
+          <div class="item item-text-wrap light" style="background-color: inherit">
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -14,6 +14,10 @@ angular.module('sflIon')
       $scope.closeModal(null);
     };
 
+    $scope.setUserGroup = function (group) {
+      vm.user.userGroup = group;
+    };
+
     vm.openLogin = function () {
       $scope.closeModal(null);
       appModalService.show(

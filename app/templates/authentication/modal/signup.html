@@ -1,8 +1,51 @@
-<ion-modal-view hide-nav-bar="true" class="auth">
+<style>
+  .list.list-inline {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    -ms-flex-wrap: none;
+    flex-wrap: nowrap;
+    width: 100%;
+    /* Radio item */
+    /* Checkbox */
+    /* /!\ not fully working with long-text on */ }
+  .list.list-inline .item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit; }
+  .list.list-inline .item-radio .item-content {
+    /* give some room to the right for the checkmark icon */
+    padding: 12px;
+    padding-right: 16px; }
+  .list.list-inline .item-radio .radio-icon {
+    /* checkmark icon will be hidden by default */
+    padding: 5px; }
+  .list.list-inline .item-checkbox {
+    padding-left: 44px; }
+  .list.list-inline .item-checkbox .checkbox {
+    padding-left: 0; }
+</style>
 
-  <ion-content scroll="false">
+<ion-modal-view hide-nav-bar="true" class="auth" style="height: 350px!important;">
 
-    <div class="padding text-center" novalidate>
+  <ion-content scroll="false" >
+
+    <div class="padding text-center" novalidate >
       <ion-list>
         <div class="item item-avatar">
           <img ng-src="{{user.photo}}" ng-click="vm.uploadUserPhoto();">
@@ -25,14 +68,17 @@
           <i class="icon ion-android-lock placeholder-icon"></i>
           <input type="password" placeholder="确认密码" ng-model="vm.user.rpassword" compare-to="vm.user.password">
         </label>
+        <div class="list list-inline">
+          <ion-radio ng-click="setUserGroup('customer')">用户</ion-radio>
+          <ion-radio ng-click="setUserGroup('hairstylist')">发型师</ion-radio>
+          <ion-radio ng-click="setUserGroup('frontdesk')">前台</ion-radio>
+        </div>
       </ion-list>
-
       <button class="btn waves-effect waves-light button button-positive button-block waves-effect waves-light" ng-click="vm.confirm(vm.user)">注册</button>
+      <p class="padding-horizontal">
+        <span class="balanced pull-left" ng-click="vm.openLogin();">登录页面</span>
+        <span class="dark pull-right" ng-click="vm.cancel()">取消</span>
+      </p>
     </div>
-
-    <p class="padding-horizontal">
-      <span class="balanced pull-left" ng-click="vm.openLogin();">登录页面</span>
-      <span class="dark pull-right" ng-click="vm.cancel()">取消</span>
-    </p>
   </ion-content>
 </ion-modal-view>

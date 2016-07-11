@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('ProductListCtrl', function ($scope, noBackGoTo, $location, $ionicPopover, listService, appModalService) {
+  .controller('WorkListCtrl', function ($scope, noBackGoTo, $location, $ionicPopover, listService, appModalService) {
     $scope.goTo = noBackGoTo;
 
     listService.list('products:hairCut').$loaded().then(function (data) {

@@ -33,10 +33,10 @@ angular.module('sflIon')
     return function (data) {
       return angular.extend(data, {
         createAt: new Date().getTime(),
-        createById: UID,
+        createById: UID(),
         updateAt: new Date().getTime(),
         updateAtR: new Date().getTime() * -1,
-        updateById: UID
+        updateById: UID()
       })
     }
   })
@@ -45,7 +45,7 @@ angular.module('sflIon')
       console.log('before', data)
       data.updateAt = new Date().getTime();
       data.updateAtR = new Date().getTime() * -1;
-      data.updateById = UID;
+      data.updateById = UID();
       console.log('after', data);
       return data
     }
@@ -62,7 +62,14 @@ angular.module('sflIon')
     };
   })
   .factory('UID', function (localStorageService) {
-    return localStorageService.cookie.get('user').uid.split(':')[1];
+    return function () {
+      return localStorageService.cookie.get('user').uid.split(':')[1];
+    }
+  })
+  .factory('userGroup', function (localStorageService) {
+    return function () {
+      return localStorageService.cookie.get('user').userGroup;
+    }
   })
   .service('commonService', function (regionCache, httpService, $http, EXPRESS, localStorageService, publicFunc, $q, $timeout, $state, $stateParams) {
     this.convertDate = function (d) {

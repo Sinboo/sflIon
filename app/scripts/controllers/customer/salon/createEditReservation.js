@@ -6,26 +6,27 @@
 angular.module('sflIon')
   .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, localStorageService) {
     $scope.goTo = noBackGoTo;
-    $scope.group = $state.params.type;
     console.log($state.params)
 
     $scope.reservation = {};
     $scope.reservation.bookingTime = {};
 
-    $scope.openProductListModal = function () {
+    $scope.openWorkGroupModal = function () {
       appModalService.show(
-        'templates/customer/salon/modal/productListModal.html',
-        'ProductListModalCtrl as vm',
-        $scope.group
+        'templates/customer/salon/modal/workGroupModal.html',
+        'WorkGroupModalCtrl as vm'
       ).then(
         function (value) {
           if (value) {
             console.log(value)
-            $scope.reservation.productId = value.product.$id;
-            $scope.reservation.productGroup = $scope.group;
-            $scope.reservation.productName = value.product.name;
-            $scope.reservation.productServerId = value.productServer.uid;
-            $scope.reservation.productServerName = value.productServer.name;
+            $scope.reservation.work = null;
+            $scope.reservation.price = null;
+            $scope.reservation.hairstylist = null;
+            $scope.reservation.work = value;
+            listService.list('hairstylist:'+value.hairstylistUid).$loaded().then(function (data) {
+              $scope.reservation.hairstylist = data[0];
+              $scope.reservation.hairstylist.rating = 4;
+            })
           }
         },
         function(err) {
@@ -45,6 +46,32 @@ angular.module('sflIon')
       })
 
     };
+
+    $scope.openPriceListModal = function () {
+      appModalService.show(
+        'templates/customer/salon/modal/priceListModal.html',
+        'PriceListModalCtrl as vm'
+      ).then(
+        function (value) {
+          if (value) {
+            console.log(value);
+            $scope.reservation.work = null;
+            $scope.reservation.price = null;
+            $scope.reservation.hairstylist = null;
+            $scope.reservation.price = value.choosedPrice;
+            $scope.reservation.hairstylist = value.hairstylist[0];
+            $scope.reservation.hairstylist.rating = 4;
+          }
+        },
+        function(err) {
+          Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
+        }
+      );
+    };
+
+
+
+
 
 
 

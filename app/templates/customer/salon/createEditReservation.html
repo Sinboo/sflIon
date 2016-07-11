@@ -20,43 +20,58 @@
         <input type="tel" placeholder="请输入您的手机号" ng-model="reservation.customerMobile" required/>
       </label>
 
-      <label class="item item-input item-floating-label" ng-if="showNotes">
+      <label class="item item-input item-floating-label">
         <span class="input-label">具体要求:</span>
         <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
       </label>
 
-      <div class="row date-time" >
-        <div class="col card" ion-datetime-picker ng-model="reservation.bookingTime.startsAt" required>
-          <div class="item"><span class="balanced">预订起始</span>
-            <p class="small">{{reservation.bookingTime.startsAt| date: "yyyy-MM-dd"}}</p><span class="text-large">{{reservation.bookingTime.startsAt| date: "HH:mm"}}</span></div>
+      <label class="item item-input" ng-if="reservation.price || reservation.work">
+        <span class="input-label">选择的服务:</span>
+        <div class="item-text-wrap" ng-if="reservation.price">
+          <span class="tags"><span class="calm">{{reservation.price.name}}</span></span>
+          <span class="tags"><span class="positive">{{reservation.price.number}}元</span></span>
+          <br/>
+          <span class="tags">
+            <span class="balanced text-small">{{reservation.price.subName}}</span>
+          </span>
         </div>
-        <div class="col-10 no-padding caret"><i class="icon ion-ios-arrow-right"></i></div>
+        <div class="item-text-wrap" ng-if="reservation.work">
+          <span class="tags"><span class="calm">{{reservation.work.name}}</span></span>
+          <span class="tags"><span class="positive">{{reservation.work.price}}元</span></span>
+          <br/>
+          <span class="tags">
+            <span class="balanced text-small">{{reservation.work.shortDesc}}</span>
+          </span>
+        </div>
+      </label>
+      <label class="item item-input" ng-if="reservation.hairstylist">
+        <span class="input-label">选择的发型师:</span>
+        <div class="item-text-wrap">
+          <span class="tags ">{{reservation.hairstylist.name}}</span>
+          <br/>
+          <span class="text-smaller pull-right">
+            <div star-rating ng-model="reservation.hairstylist.rating" max="5" readonly="true" on-rating-select="rating.rateFunction(rating)"></div>
+          </span>
+        </div>
+      </label>
 
-        <div class="col card" ion-datetime-picker ng-model="reservation.bookingTime.endsAt" required>
-          <div class="item"><span class="balanced">预订结束</span>
-            <p class="small">{{reservation.bookingTime.endsAt| date: "yyyy-MM-dd"}}</p><span class="text-large">{{reservation.bookingTime.endsAt| date: "HH:mm"}}</span></div>
+
+      <div class="row text-center date-time-buttons" style="margin-top: 30px">
+        <div class="col stable-bg margin" ng-click="openWorkGroupModal()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
+          <p>优先选发型</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="openPriceListModal()"><button class="button button-icon icon ion-cash"></button>
+          <p>优先选价格</p>
         </div>
       </div>
-      <label class="item item-input" ng-if="reservation.productId">
-        <span class="input-label">预订的服务</span>
-        <div class="item-text-wrap">
-          <span class="tags">{{reservation.productName}}</span>
-        </div>
-      </label>
-      <label class="item item-input" ng-if="reservation.productServerId">
-        <span class="input-label">服务提供者:</span>
-        <div class="item-text-wrap">
-          <span class="tags">{{reservation.productServerName}}</span>
-        </div>
-      </label>
 
-
-      <div class="row text-center date-time-buttons">
-        <div class="col stable-bg margin" ng-click="openProductListModal()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
-          <p>选择服务产品</p>
-        </div>
-        <div class="col stable-bg margin" ng-click="showNotes = !showNotes"><button class="button button-icon icon ion-ios-compose-outline"></button>
-          <p>具体要求</p>
+      <div class="row date-time" >
+        <div class="col card" ion-datetime-picker ng-model="reservation.bookingTime.startsAt" required>
+          <div class="item">
+            <span class="balanced">点击选取预订时间:</span>
+            <p class="small">{{reservation.bookingTime.startsAt| date: "yyyy年-MM月-dd日"}}</p>
+            <span class="text-large">{{reservation.bookingTime.startsAt| date: "HH点:mm分"}}</span>
+          </div>
         </div>
       </div>
 

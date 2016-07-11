@@ -1,0 +1,44 @@
+<ion-modal-view>
+  <ion-nav-button side="left">
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel();"></button>
+    <button class="button button-icon dark icon ion-ios-search pull-right" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-button>
+
+  <ion-content class="has-header">
+
+    <div class="row text-center">
+      <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : vm.choosedLike}"   ng-click="vm.choosedLike = true;">喜欢的人</div>
+      <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : !vm.choosedLike}"  ng-click="vm.choosedLike = false">所有评论</div>
+    </div>
+
+    <div class="list" ng-if="!vm.choosedLike">
+      <div class="item item-avatar item-text-wrap" ng-repeat="comment in vm.work.comments | filter: searchFilter ">
+        <img ng-src="{{comment.userProfile.avatar}}">
+        <h2 class="lead">{{comment.userProfile.name}}</h2>
+        <p>{{comment.content}}</p>
+        <p class="text-smaller" am-time-ago="comment.createAt"></p>
+      </div>
+    </div>
+
+    <div class="list" ng-if="vm.choosedLike">
+      <div class="item item-avatar" ng-repeat="liker in vm.work.likes | filter: searchFilter ">
+        <img ng-src="{{liker.userProfile.avatar}}">
+        <h2 class="lead">{{liker.userProfile.name}}</h2>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="teal lighten-4 item-input-inset" ng-if="!vm.choosedLike">
+    <label class="item-input-wrapper light-bg" ng-form="commentForm">
+      <textarea id="textChat" ng-model="commentMessage" required minlength="1" maxlength="1500" msd-elastic style="width:100%; resize:none"></textarea>
+    </label>
+    <div class="footer-btn-wrap">
+      <button ng-class="commentForm.$invalid == false ? 'button-dark' : 'button-stable'" class="button button-clear button-icon icon ion-android-checkmark-circle"
+              type="button" ng-click="vm.submitComment(commentMessage)" ng-disabled="commentForm.$invalid"></button>
+    </div>
+  </ion-footer-bar>
+
+  <a ng-if="vm.choosedLike" class="btn-floating btn-large waves-effect waves-light" ng-class="{'red':vm.liked, 'stable': !vm.liked}" style="position:fixed; bottom:5%;right:5%;" ng-click="vm.like();"><i class="icons ion-ios-heart"></i></a>
+
+</ion-modal-view>
