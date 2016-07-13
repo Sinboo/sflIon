@@ -389,7 +389,12 @@ angular.module('sflIon', [
       url: '/createEditReservation',
       params: { reservation: null },
       templateUrl: 'templates/customer/salon/createEditReservation.html',
-      controller: 'CreateEditReservationCtrl'
+      controller: 'CreateEditReservationCtrl',
+      resolve: {
+        userProfile: function(UserProfile){
+          return UserProfile;
+        }
+      }
     })
     .state('customer.salonContact', {
       url: '/salonContact',
@@ -414,8 +419,18 @@ angular.module('sflIon', [
       url: '/workList',
       views: {
         'menuContent': {
-          templateUrl: 'templates/showcase/workList.html',
+          templateUrl: 'templates/customer/hairstylistAndWork/workList.html',
           controller: 'WorkListCtrl'
+        }
+      }
+    })
+
+    .state('customer.hairstylistList', {
+      url: '/hairstylistList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/hairstylistAndWork/hairstylistList.html',
+          controller: 'HairstylistListCtrl'
         }
       }
     })

@@ -23,9 +23,9 @@ angular.module('sflIon')
     }
     ListLoadMore.prototype.loadMore = function (callback) {
       var _this = this;
-      this.query = this.ref.orderByChild(this.field).startAt(this.endPoint).limitToFirst(this.limit);
+      this.query = this.field == 'key' ? this.ref.orderByKey().startAt(this.endPoint).limitToFirst(this.limit) : this.ref.orderByChild(this.field).startAt(this.endPoint).limitToFirst(this.limit);
       listService.list(this.childName, this.query).$loaded().then(function (data) {
-        _this.endPoint = data[data.length-1][_this.field];
+        _this.endPoint = _this.field == 'key' ? data[data.length-1].$id : data[data.length-1][_this.field];
         if (_this.first === true) {
           _this.limit += 1;
         } else {
@@ -36,6 +36,41 @@ angular.module('sflIon')
       })
     };
     return ListLoadMore;
+  })
+  .factory('JoinListLoadMore', function (listService, WD_URL) {
+    function JoinListLoadMore (childName, childName2, masterKey, field, limit) {
+      this.ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      this.ref2 = new Wilddog(WD_URL).child(childName2);
+      this.norm = new Wilddog.util.NormalizedCollection(
+        [this.ref1, 'master'],
+        [this.ref2, 'slave', 'master.'+masterKey]
+      )
+        .select('master.'+masterKey, 'master.'+field,
+          {key: 'slave.$value', alias: 'slave'}
+        )
+        .ref();
+      this.first = true;
+      this.childName = childName;
+      this.field = field;
+      this.limit = limit;
+      this.endPoint = null;
+      this.query = null;
+    }
+    JoinListLoadMore.prototype.loadMore = function (callback) {
+      var _this = this;
+      this.query = this.norm.orderByChild(this.field).startAt(this.endPoint).limitToFirst(this.limit);
+      listService.list('', this.query).$loaded().then(function (data) {
+        _this.endPoint = data[data.length-1][_this.field];
+        if (_this.first === true) {
+          _this.limit += 1;
+        } else {
+          data.shift()
+        }
+        callback(data);
+        _this.first = false;
+      })
+    };
+    return JoinListLoadMore;
   })
   .factory('Paginator', function (WD_URL) {
     function Paginator(childName, limit) {

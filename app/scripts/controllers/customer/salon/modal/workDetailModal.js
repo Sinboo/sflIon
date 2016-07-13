@@ -32,7 +32,7 @@ angular.module('sflIon')
     //   })
     // });
     
-    var commentList = listService.list('comment:'+vm.work.$id);
+    var commentList = listService.list('comment:'+vm.work.workId);
     var initComment = function () {
       commentList.$loaded(function (data) {
         console.log(data)
@@ -46,7 +46,7 @@ angular.module('sflIon')
     };
     initComment();
 
-    var likeList = listService.list('like:'+vm.work.$id);
+    var likeList = listService.list('like:'+vm.work.workId);
     var initLike = function () {
       likeList.$loaded(function (data) {
         console.log(data)

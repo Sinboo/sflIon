@@ -40,7 +40,9 @@ angular.module('sflIon')
         'HairstylistDetailModalCtrl as vm',
         hairstylist
       ).then(function (val) {
-        console.log(val)
+        if (val == 'yes') {
+          $scope.closeModal(hairstylist);
+        }
       })
     };
 

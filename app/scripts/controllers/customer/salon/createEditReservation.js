@@ -4,12 +4,14 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, localStorageService) {
+  .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, UID, userProfile) {
     $scope.goTo = noBackGoTo;
-    console.log($state.params)
+    console.log($state.params);
+    console.log(userProfile);
 
     $scope.reservation = {};
-    $scope.reservation.bookingTime = {};
+    $scope.reservation.customerName = userProfile.name;
+    $scope.reservation.customerMobile = userProfile.mobile;
 
     $scope.openWorkGroupModal = function () {
       appModalService.show(
@@ -23,7 +25,7 @@ angular.module('sflIon')
             $scope.reservation.price = null;
             $scope.reservation.hairstylist = null;
             $scope.reservation.work = value;
-            listService.list('hairstylist:'+value.hairstylistUid).$loaded().then(function (data) {
+            listService.list('hairstylist:'+value.slave.hairstylistUid).$loaded().then(function (data) {
               $scope.reservation.hairstylist = data[0];
               $scope.reservation.hairstylist.rating = 4;
             })
@@ -37,13 +39,29 @@ angular.module('sflIon')
 
     $scope.saveReservation = function (reservation) {
       console.log(reservation);
-      reservation.bookingTime.startsAt = Date.parse(reservation.bookingTime.startsAt);
-      reservation.bookingTime.endsAt = Date.parse(reservation.bookingTime.endsAt);
-      reservation.customerId = localStorageService.cookie.get('user').uid.split(':')[1];
-      listService.list('orders:booked').add(reservation).then(function () {
+      var postData = {}
+      postData.bookedStartAt = Date.parse(reservation.bookedStartAt);
+      postData.hairstylistUid = reservation.hairstylist ? reservation.hairstylist.uid : null;
+      postData.hairstylistName = reservation.hairstylist ? reservation.hairstylist.name : null;
+      postData.customerUid = UID();
+      postData.customerName = reservation.customerName;
+      postData.customerMobile = reservation.customerMobile;
+      postData.workId = reservation.work ? reservation.work.workId : null;
+      postData.workName = reservation.work ? reservation.work.slave.name : null;
+      postData.workGroup = reservation.work ? reservation.work.slave.workGroup : null;
+      postData.priceId = reservation.price ? reservation.price.id : null;
+      postData.priceName = reservation.price ? reservation.price.name : null;
+      postData.orderPrice = reservation.work ? reservation.work.price : reservation.price.number;
+      postData.notes = reservation.notes;
+      postData.type = 'booked';
+      postData = JSON.parse(JSON.stringify(postData));
+      console.log(postData);
+      listService.list('order').add(postData).then(function (ref) {
+        listService.list('orderOfCustomer:'+UID()).$add({orderId: ref.key()});
+        listService.list('orderOfHairstylist:'+postData.hairstylistUid).$add({orderId: ref.key()});
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '预订成功!', 2000);
         $state.go('customer.salonReservation');
-      })
+      });
 
     };
 
@@ -94,6 +112,19 @@ angular.module('sflIon')
     // //   listService.list('products').add(product);
     // //
     // }
+
+    // var workList = listService.list('customer');
+    // workList.$loaded().then(function (data) {
+    //   console.log(data)
+    //   angular.forEach(data, function (work) {
+    //     $.each(work, function (k, v) {
+    //       if (k.indexOf('-K') > -1) {
+    //         v.uid = work.$id;
+    //       }
+    //     });
+    //     workList.$save(work);
+    //   })
+    // })
 
     
 

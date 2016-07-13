@@ -36,11 +36,11 @@
           </span>
         </div>
         <div class="item-text-wrap" ng-if="reservation.work">
-          <span class="tags"><span class="calm">{{reservation.work.name}}</span></span>
-          <span class="tags"><span class="positive">{{reservation.work.price}}元</span></span>
+          <span class="tags"><span class="calm">{{reservation.work.slave.name}}</span></span>
+          <span class="tags"><span class="positive">{{reservation.work.slave.price}}元</span></span>
           <br/>
           <span class="tags">
-            <span class="balanced text-small">{{reservation.work.shortDesc}}</span>
+            <span class="balanced text-small">{{reservation.work.slave.shortDesc}}</span>
           </span>
         </div>
       </label>
@@ -66,11 +66,11 @@
       </div>
 
       <div class="row date-time" >
-        <div class="col card" ion-datetime-picker ng-model="reservation.bookingTime.startsAt" required>
+        <div class="col card" ion-datetime-picker ng-model="reservation.bookedStartAt" required>
           <div class="item">
             <span class="balanced">点击选取预订时间:</span>
-            <p class="small">{{reservation.bookingTime.startsAt| date: "yyyy年-MM月-dd日"}}</p>
-            <span class="text-large">{{reservation.bookingTime.startsAt| date: "HH点:mm分"}}</span>
+            <p class="small">{{reservation.bookedStartAt| date: "yyyy年-MM月-dd日"}}</p>
+            <span class="text-large">{{reservation.bookedStartAt| date: "HH点mm分"}}</span>
           </div>
         </div>
       </div>

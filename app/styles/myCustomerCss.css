@@ -1,0 +1,15 @@
+.my-custom-header{
+    height: 141px;
+}
+
+.has-custom-header{
+    top:141px;
+}
+
+.my-workList-header{
+    height: 80px;
+}
+
+.has-workList-header{
+    top:80px;
+}

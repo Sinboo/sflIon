@@ -4,76 +4,97 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, objectService) {
+  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+    $scope.$on("$ionicView.enter", function(event, data){
+      initData();
+    });
+
     $scope.viewDate = new Date();
+    $scope.now = new Date().getTime();
     var startOfDay = moment($scope.viewDate).startOf('day')._d;
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
-    // var ref = new Wilddog(WD_URL).child('orders').child('booked');
-    // var query = ref.orderByChild("customerId").equalTo(localStorageService.cookie.get('user').uid.split(':')[1]);
-    // listService.list('orders:booked', query).$loaded().then(function (data) {
-    //   $scope.reservations = data;
-    //   console.log(data)
-    //   getReservations(moment($scope.viewDate._d).startOf('day')._d);
-    // });
+    // var ref = new Wilddog(WD_URL).child('order').child('booked');
+    // var query = ref.orderByChild("customerUid").equalTo(UID());
+    // var reservationList = listService.list('', query);
+    // var initData = function () {
+    //   reservationList.$loaded().then(function (data) {
+    //     $scope.reservations = data;
+    //     console.log(data);
+    //     getReservations(moment($scope.viewDate._d).startOf('day')._d);
+    //   });
+    // };
+    // initData();
 
-    // var fb = new Wilddog(WD_URL);
-    // var norm = new Wilddog.util.NormalizedCollection(
-    //   [fb.child('products').child('hairCut'), 'products'],
-    //   [fb.child('productServer'), 'productServer'],
-    //   [fb.child('users').child('hairstylist'), 'userProfile', 'productServer.uid']
-    // )
-    //   .select({key: 'products.$value', alias: 'product'}, {key: 'productServer.$value.uid', alias: 'productServerUid'}, {key: 'userProfile.$value', alias: 'userInfo'})
-    //   .ref();
-    //
-    // console.log(norm.key())
-    //
-    // var productsRef = $wilddogArray(norm);
-    // productsRef.$loaded().then(function (data) {
-    //   console.log(data)
-    // })
+    var fb = new Wilddog(WD_URL);
+    var norm = new Wilddog.util.NormalizedCollection(
+      [fb.child('orderOfCustomer').child(UID()), 'orderOfCustomer'],
+      [fb.child('order'), 'order', 'orderOfCustomer.orderId']
+    )
+      .select('orderOfCustomer.orderId',
+        {key: 'order.$value', alias: 'order'}
+      )
+      .ref();
+
+    var reservationList = $wilddogArray(norm);
+    var initData = function () {
+      reservationList.$loaded().then(function (data) {
+        $scope.reservations = data;
+        console.log(data);
+        getReservations(moment($scope.viewDate._d).startOf('day')._d);
+      })
+    };
 
 
-    // listService.list('productServer').$loaded().then(function (data) {  //得到节点下的所有数据
-    //   console.log(data)
-    //   $scope.all = [];
-    //   angular.forEach(data, function (item) {
-    //     $.each(item, function (k,v) {
-    //       if (k.indexOf('KL') > -1) {
-    //         $scope.all.push(v)
-    //       }
-    //     })
-    //   })
-    //   console.log($scope.all)
-    //
-    // })
 
-    // objectService.object('productServer').$loaded().then(function (data) {
-    //   console.log(data)
-    // })
-    
-    
+    $scope.showDetail = function (reservation) {
+      console.log(reservation)
+      if (reservation.workId) {
+        listService.list('work').$loaded().then(function (works) {
+          var work = works.$getRecord(reservation.workId);
+          appModalService.show(
+            'templates/customer/salon/modal/workDetailModal.html',
+            'WorkDetailModalCtrl as vm',
+            {workId: reservation.workId, slave: work}
+          )
+        });
+      }
+      else if (reservation.hairstylistUid) {
+        listService.list('hairstylist:'+reservation.hairstylistUid).$loaded().then(function (hairstylist) {
+          appModalService.show(
+            'templates/customer/salon/modal/hairstylistDetailModal.html',
+            'HairstylistDetailModalCtrl as vm',
+            {hairstylist: hairstylist}
+          )
+        })
+      }
+    };
 
-    
+
+
+
 
     $scope.decrementDate = function () {
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').subtract(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').subtract(1, 'days');
-      getReservations($scope.viewDate._d)
+      getReservations($scope.viewDate._d);
+      console.log($scope.now, Date.parse(moment($scope.viewDate._d).endOf('day')._d))
+      $scope.outOfDate = $scope.now > Date.parse(moment($scope.viewDate._d).endOf('day')._d);
     };
 
     $scope.incrementDate = function () {
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').add(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').add(1, 'day');
-      getReservations($scope.viewDate._d)
+      getReservations($scope.viewDate._d);
+      console.log($scope.now, Date.parse(moment($scope.viewDate._d).endOf('day')._d))
+      $scope.outOfDate = $scope.now > Date.parse(moment($scope.viewDate._d).endOf('day')._d);
     };
     function getReservations(date) {
       var range = moment().range(date, moment(date).endOf('day'));
-      console.log(range)
       $scope.seletedReservations = [];
       angular.forEach($scope.reservations, function (value) {
-        if (value.bookingTime && moment(value.bookingTime.startsAt).within(range)) {
+        if (moment(value.order.bookedStartAt).within(range)) {
           $scope.seletedReservations.push(value);
         }
       });
@@ -110,6 +131,21 @@ angular.module('sflIon')
       }
     });
 
+    $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.searchPopover = popover;
+    });
+
+    $scope.getSearch = function (search) {
+      $scope.searchFilter = search;
+    };
+    $scope.closeSearch = function () {
+      $scope.searchPopover.hide();
+      $scope.getSearch();
+      $scope.searchItem = '';
+    }
+
 
 
     // var hairstylistUnderPrice = {};
@@ -139,24 +175,32 @@ angular.module('sflIon')
 
 
 
-    for (var i=0; i<5; i++) {
-      var work = {};
-      work.name = '最具魅力中长发';
-      work.price = 118;
-      work.discount = 0.9;
-      work.coverImg = 'http://imtailor.b0.upaiyun.com/AAAB/AAAZ/2016/07/08a6f91f-f860-4de8-808a-baa1a3a0d53e.jpg';
-      work.carouselImgs = {};
-      work.carouselImgs.one = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-      work.carouselImgs.two = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-      work.carouselImgs.three = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-      work.carouselImgs.four = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-      work.shortDesc = '中长发也会有夏天的';
-      work.description = '正道是阿斯顿发送美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事到弗兰克就爱看的激发了肯德基福利卡极度分裂卡士大夫科技科技科圣诞节疯狂';
-      work.hairstylistUid = null;
-      work = JSON.parse(JSON.stringify(work));
-      // listService.list('work:F_MID').add(work);
-
-    }
+    // for (var i=0; i<5; i++) {
+    //   var work = {};
+    //   work.name = '最具魅力短发';
+    //   work.price = 118;
+    //   work.discount = 0.9;
+    //   work.coverImg = 'http://imtailor.b0.upaiyun.com/AAAB/AAAZ/2016/07/08a6f91f-f860-4de8-808a-baa1a3a0d53e.jpg';
+    //   work.carouselImgs = {};
+    //   work.carouselImgs.one = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+    //   work.carouselImgs.two = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+    //   work.carouselImgs.three = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+    //   work.carouselImgs.four = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
+    //   work.shortDesc = '短发也会有冬天的';
+    //   work.description = '正道是阿斯顿发送美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事到弗兰克就爱看的激发了肯德基福利卡极度分裂卡士大夫科技科技科圣诞节疯狂';
+    //   work.hairstylistUid = null;
+    //   work.type = 'F_SHORT';
+    //   work = JSON.parse(JSON.stringify(work));
+    //   // listService.list('work').add(work);
+    // }
+    
+    // var workList = listService.list('hairstylist');
+    // workList.$loaded().then(function (data) {
+    //   angular.forEach(data, function (work) {
+    //     listService.list('allHairstylist').add({hairstylistUid: work.$id})
+    //   })
+    // })
+    
     
     
 

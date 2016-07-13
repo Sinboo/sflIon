@@ -71,6 +71,12 @@ angular.module('sflIon')
       return localStorageService.cookie.get('user').userGroup;
     }
   })
+  .factory('UserProfile', function (listService, UID, userGroup) {
+    return listService.list(userGroup()+':'+UID()).$loaded().then(function (data) {
+      return data[0];
+    })
+  })
+
   .service('commonService', function (regionCache, httpService, $http, EXPRESS, localStorageService, publicFunc, $q, $timeout, $state, $stateParams) {
     this.convertDate = function (d) {
       var date = new Date(d);

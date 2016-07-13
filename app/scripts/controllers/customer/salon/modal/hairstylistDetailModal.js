@@ -10,8 +10,6 @@ angular.module('sflIon')
     console.log(vm.hairstylist)
     
 
-
-
     vm.confirm = function(formData) {
       $scope.closeModal(formData);
     };

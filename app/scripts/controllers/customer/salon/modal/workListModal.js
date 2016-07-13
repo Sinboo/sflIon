@@ -3,22 +3,34 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkListModalCtrl', function ($scope, WD_URL, $wilddogArray, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
+  .controller('WorkListModalCtrl', function ($scope, WD_URL, $wilddogArray, JoinListLoadMore, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
     var vm = this;
     vm.group = parameters;
     vm.works = [];
     console.log(vm.group)
 
-    var loadUtil = new ListLoadMore('work:'+vm.group, 'updateAt', 3);
+    // var loadUtil = new ListLoadMore('work:'+vm.group, 'updateAt', 3);
+    // $scope.loadMore = function () {
+    //   loadUtil.loadMore(function (data) {
+    //     console.log(data)
+    //     vm.works = vm.works.concat(data);
+    //     if (data.length == 0) {
+    //       $scope.noMoreItemsAvailable = true;
+    //       $scope.$broadcast('scroll.infiniteScrollComplete');
+    //       Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
+    //     }
+    //     $scope.$broadcast('scroll.infiniteScrollComplete');
+    //   })
+    // };
+    //
+    // $scope.loadMore();
+
+    var loadUtil = new JoinListLoadMore('workOfGroup:'+vm.group, 'work', 'workId', 'updateAt', 2);
+    console.log(loadUtil)
     $scope.loadMore = function () {
       loadUtil.loadMore(function (data) {
         console.log(data)
         vm.works = vm.works.concat(data);
-        angular.forEach(vm.products, function (item) {
-          listService.list('productServer:' + item.$id).$loaded().then(function (data) {
-            item.productServer = data;
-          })
-        });
         if (data.length == 0) {
           $scope.noMoreItemsAvailable = true;
           $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -29,6 +41,7 @@ angular.module('sflIon')
     };
 
     $scope.loadMore();
+
     
     vm.showDetail = function (work) {
       appModalService.show(
@@ -36,12 +49,11 @@ angular.module('sflIon')
         'WorkDetailModalCtrl as vm',
         work
       ).then(function (val) {
-        console.log(val);
-        if (val) {
+        if (val == 'yes') {
           $scope.closeModal(work);
         }
       })
-    }
+    };
 
 
 
