@@ -1,15 +1,15 @@
-.my-custom-header{
+.my-2sub-header{
     height: 141px;
 }
 
-.has-custom-header{
+.has-2sub-header{
     top:141px;
 }
 
-.my-workList-header{
+.my-1sub-header{
     height: 80px;
 }
 
-.has-workList-header{
+.has-1sub-header{
     top:80px;
 }

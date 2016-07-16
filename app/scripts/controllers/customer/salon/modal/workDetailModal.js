@@ -6,31 +6,8 @@ angular.module('sflIon')
   .controller('WorkDetailModalCtrl', function ($scope, parameters, UID, userGroup, createWidget, $wilddogArray, listService, N_VIP_PRICE, appModalService, $wilddogAuth, WD_URL) {
     var vm = this;
     vm.work = parameters;
-
     var uid = UID();
-    console.log(uid)
-
     console.log(vm.work);
-
-    // var ref = new Wilddog(WD_URL);
-    // var norm = new Wilddog.util.NormalizedCollection(
-    //   [ref.child('like').child(vm.work.$id), 'liker'],
-    //   [ref.child(userGroup()), 'userProfile', 'liker.likerUid']
-    // )
-    //   .select('liker.likerUid', 'liker.updateAtR', {key: 'userProfile.$value', alias: 'userProfile'})
-    //   .ref();
-    // var list = $wilddogArray(norm);
-    // list.$loaded().then(function (data) {
-    //   console.log(data)
-    //   vm.work.likes = data;
-    //   angular.forEach(data, function (item) {
-    //     if (item.likerUid == uid) {
-    //       vm.myLike = item;
-    //       vm.liked = true;
-    //       console.log(vm.myLike, vm.liked)
-    //     }
-    //   })
-    // });
     
     var commentList = listService.list('comment:'+vm.work.workId);
     var initComment = function () {
@@ -91,7 +68,8 @@ angular.module('sflIon')
         'CommentModalCtrl as vm',
         {workId: workId, choosedLike: choosedLike}
       ).then(function () {
-        
+        initLike();
+        initComment();
       })
 
     };

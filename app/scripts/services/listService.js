@@ -20,6 +20,7 @@ angular.module('sflIon')
       this.limit = limit;
       this.endPoint = null;
       this.query = null;
+      this.hasNext = true;
     }
     ListLoadMore.prototype.loadMore = function (callback) {
       var _this = this;
@@ -31,6 +32,7 @@ angular.module('sflIon')
         } else {
           data.shift()
         }
+        _this.hasNext = data.length > 0;
         callback(data);
         _this.first = false;
       })
@@ -55,6 +57,7 @@ angular.module('sflIon')
       this.limit = limit;
       this.endPoint = null;
       this.query = null;
+      this.hasNext = true;
     }
     JoinListLoadMore.prototype.loadMore = function (callback) {
       var _this = this;
@@ -66,11 +69,36 @@ angular.module('sflIon')
         } else {
           data.shift()
         }
+        _this.hasNext = data.length > 0;
         callback(data);
         _this.first = false;
-      })
+      }).catch(function(error) {
+        console.log("Error:", error);
+        callback('error');
+      });
     };
     return JoinListLoadMore;
+  })
+  .factory('JoinList', function (listService, WD_URL) {
+    function buildNorm(childName, childName2, masterKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave', 'master.'+masterKey]
+      )
+        .select('master.'+masterKey, 'master.'+field,
+          {key: 'slave.$value', alias: 'slave'}
+        )
+        .ref();
+      return norm;
+    }
+
+    return function (childName, childName2, masterKey, field) {
+      var norm = buildNorm(childName, childName2, masterKey, field);
+      var query = norm.orderByChild(field);
+      return listService.list('', query)
+    };
   })
   .factory('Paginator', function (WD_URL) {
     function Paginator(childName, limit) {

@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkListCtrl', function ($scope, WD_URL, noBackGoTo, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover) {
+  .controller('WorkListCtrl', function ($scope, WD_URL, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover) {
     $scope.noBackGoTo = noBackGoTo;
     $scope.works = [];
     var loadUtil = new ListLoadMore('work', 'updateAt', 3);
@@ -12,30 +12,46 @@ angular.module('sflIon')
       loadUtil.loadMore(function (data) {
         console.log(data)
         $scope.works = $scope.works.concat(data);
-        if (data.length == 0) {
-          $scope.noMoreItemsAvailable = true;
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-          Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
-        }
+        $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
-      })
+      });
+      if (!loadUtil.hasNext) {
+        $scope.noMoreItemsAvailable = true;
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
+      }
     };
 
-    $scope.loadMore();
-    
+    $scope.doRefresh = function () {
+      $scope.noMoreItemsAvailable = false;
+      $scope.loadMore();
+    };
+    $scope.doRefresh();
+
     $scope.showDetail = function (work) {
       appModalService.show(
         'templates/customer/salon/modal/workDetailModal.html',
         'WorkDetailModalCtrl as vm',
         {workId: work.$id, slave: work}
-      )
+      ).then(function (val) {
+        console.log(val);
+        if (val) {
+          $state.go('createEditReservation', {reservation: val})
+        }
+      })
     };
 
     $scope.openWorkGroupModal = function () {
       appModalService.show(
         'templates/customer/salon/modal/workGroupModal.html',
         'WorkGroupModalCtrl as vm'
-      )
+      ).then(function (value) {
+        console.log(value);
+        if (value) {
+          $state.go('createEditReservation', {reservation: {work: value}})
+        }
+      })
     };
     
 

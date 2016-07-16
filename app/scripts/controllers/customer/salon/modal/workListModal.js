@@ -3,53 +3,45 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkListModalCtrl', function ($scope, WD_URL, $wilddogArray, JoinListLoadMore, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
+  .controller('WorkListModalCtrl', function ($scope, WD_URL, $wilddogArray, JoinListLoadMore, dataSetterGetter, workOfGroup, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
     var vm = this;
     vm.group = parameters;
-    vm.works = [];
-    console.log(vm.group)
+    console.log(vm.group);
+    vm.works = dataSetterGetter.get('WorkListModal'+vm.group) ? dataSetterGetter.get('WorkListModal'+vm.group) : [];
 
-    // var loadUtil = new ListLoadMore('work:'+vm.group, 'updateAt', 3);
-    // $scope.loadMore = function () {
-    //   loadUtil.loadMore(function (data) {
-    //     console.log(data)
-    //     vm.works = vm.works.concat(data);
-    //     if (data.length == 0) {
-    //       $scope.noMoreItemsAvailable = true;
-    //       $scope.$broadcast('scroll.infiniteScrollComplete');
-    //       Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
-    //     }
-    //     $scope.$broadcast('scroll.infiniteScrollComplete');
-    //   })
-    // };
-    //
-    // $scope.loadMore();
-
-    var loadUtil = new JoinListLoadMore('workOfGroup:'+vm.group, 'work', 'workId', 'updateAt', 2);
-    console.log(loadUtil)
+    var loadUtil = workOfGroup.loadUtil(vm.group);
+    console.log(loadUtil);
     $scope.loadMore = function () {
+      console.log('yes', $scope.noMoreItemsAvailable);
       loadUtil.loadMore(function (data) {
-        console.log(data)
+        console.log(data);
         vm.works = vm.works.concat(data);
-        if (data.length == 0) {
-          $scope.noMoreItemsAvailable = true;
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-          Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
-        }
+        dataSetterGetter.set('WorkListModal'+vm.group, vm.works);
+        $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
-      })
+      });
+      if (!loadUtil.hasNext) {
+        $scope.noMoreItemsAvailable = true;
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
+      }
     };
 
-    $scope.loadMore();
+    $scope.doRefresh = function () {
+      $scope.noMoreItemsAvailable = false;
+      $scope.loadMore();
+    };
 
-    
+    $scope.doRefresh();
+
     vm.showDetail = function (work) {
       appModalService.show(
         'templates/customer/salon/modal/workDetailModal.html',
         'WorkDetailModalCtrl as vm',
         work
       ).then(function (val) {
-        if (val == 'yes') {
+        if (val) {
           $scope.closeModal(work);
         }
       })

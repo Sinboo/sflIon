@@ -13,6 +13,19 @@ angular.module('sflIon')
     $scope.reservation.customerName = userProfile.name;
     $scope.reservation.customerMobile = userProfile.mobile;
 
+    if ($state.params && $state.params.reservation && $state.params.reservation.work) {
+      $scope.reservation.work = $state.params.reservation.work;
+      listService.list('hairstylist:'+$state.params.reservation.work.slave.hairstylistUid).$loaded().then(function (data) {
+        $scope.reservation.hairstylist = data[0];
+        $scope.reservation.hairstylist.rating = 4;
+      })
+    }
+    if ($state.params && $state.params.reservation && $state.params.reservation.hairstylist && $state.params.reservation.price) {
+      $scope.reservation.price = $state.params.reservation.price;
+      $scope.reservation.hairstylist = $state.params.reservation.hairstylist || $state.params.reservation.hairstylist.hairstylist;
+      $scope.reservation.hairstylist.rating = 4;
+    }
+
     $scope.openWorkGroupModal = function () {
       appModalService.show(
         'templates/customer/salon/modal/workGroupModal.html',

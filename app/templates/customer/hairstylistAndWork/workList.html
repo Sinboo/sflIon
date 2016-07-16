@@ -1,5 +1,5 @@
 <ion-view title="作品">
-  <div class="my-workList-header">
+  <div class="my-1sub-header">
     <ion-nav-buttons side="right">
       <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
       <button class="button button-icon dark icon ion-ios-search pull-right" ng-click="searchPopover.show($event)"></button>
@@ -11,7 +11,12 @@
     </div>
   </div>
 
-    <ion-content class="has-workList-header bg-lightgrey">
+    <ion-content class="has-1sub-header bg-lightgrey">
+      <ion-refresher
+        pulling-text="下拉更新..."
+        on-refresh="doRefresh()">
+      </ion-refresher>
+
       <div class="row" ng-repeat="item in works | filter: searchFilter track by $index" ng-if="$index % 2 == 0">
         <div class="col">
           <div class="card tile" ng-if="works[$index]">

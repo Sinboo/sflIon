@@ -11,7 +11,7 @@
       <h2 class="lead text-medium">{{vm.hairstylist.name}}</h2>
       <p>{{'创意总监'}}</p>
       <button class="button button-small icon "  ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"
-              ng-click="vm.confirm('yes')">
+              ng-click="vm.confirm(vm.hairstylist)">
         <span class="positive"> 预订该发型师</span>
       </button>
     </div>

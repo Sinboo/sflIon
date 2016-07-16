@@ -3,14 +3,14 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistsModalCtrl', function ($scope, WD_URL, $wilddogArray, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
+  .controller('HairstylistsModalCtrl', function ($scope, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
     var vm = this;
-    vm.price = parameters.price;
-    vm.hairstylists = [];
+    vm.price = parameters ? parameters.price : null;
     $scope.rating = 4;
     var loadUtil;
 
-    if (vm.price) {
+    if (vm.price !== null) {
+      vm.hairstylists = [];
       loadUtil = new ListLoadMore('hairstylistUnderPrice:'+vm.price.id, 'updateAt', 3);
       $scope.loadMore = function () {
         loadUtil.loadMore(function (data) {
@@ -31,6 +31,58 @@ angular.module('sflIon')
         })
       };
 
+      $scope.loadMore();
+    }
+    else {
+      vm.hairstylists = dataSetterGetter.get('HairstylistList') ? dataSetterGetter.get('HairstylistList') : [];
+      var hList = listService.list('hairstylistOfCustomer:'+UID());
+      angular.forEach(vm.hairstylists, function (item) {
+        var flag = false;
+        hList.$loaded().then(function (data) {
+          angular.forEach(data, function (h) {
+            if (h.hairstylistUid == item.hairstylistUid) {
+              item.isContact = true;
+              flag = true
+            }
+          });
+          if (!flag) {
+            if (item.isContact = true) {
+              item.isContact = undefined;
+            }
+          }
+          });
+      });
+
+      console.log(dataSetterGetter.get('HairstylistList'), vm.hairstylists)
+      loadUtil = allHairstylist.loadUtil();
+      console.log(loadUtil);
+      $scope.loadMore = function () {
+        loadUtil.loadMore(function (data) {
+          console.log(data, loadUtil.hasNext)
+          angular.forEach(data, function (item) {
+            $.each(item.slave, function (k, v) {
+              if (k.indexOf('-') > -1) {
+                item.hairstylist = v
+              }
+            });
+            listService.list('hairstylistOfCustomer:'+UID()).$loaded().then(function (data) {
+              angular.forEach(data, function (h) {
+                if (h.hairstylistUid == item.hairstylistUid) {
+                  item.isContact = true;
+                }
+              })
+            })
+          });
+          vm.hairstylists = vm.hairstylists.concat(data);
+          dataSetterGetter.set('HairstylistList', vm.hairstylists);
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
+        if (!loadUtil.hasNext) {
+          $scope.noMoreItemsAvailable = true;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
+        }
+      };
       $scope.loadMore();
     }
     

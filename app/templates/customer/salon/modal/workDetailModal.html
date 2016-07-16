@@ -47,7 +47,7 @@
   <ion-footer-bar class="no-bg bt-grey ">
     <div class="row">
       <div class="col text-left no-padding" ng-click="vm.openCommentModal(vm.work.workId, true)"><i class="icon text-small" ng-class="vm.liked == true ? 'ion-ios-heart': 'ion-ios-heart-outline'"> {{vm.liked == true ? '已喜欢' : '未喜欢'}}</i></div>
-      <div class="col text-center no-padding"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="vm.confirm('yes')"> 立即预订</i></div>
+      <div class="col text-center no-padding"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="vm.confirm(vm.work)"> 立即预订</i></div>
       <div class="col text-right no-padding" ng-click="vm.openCommentModal(vm.work.workId)"><i class="icon ion-ios-chatboxes-outline text-small"> {{vm.work.comments.length}} 评论</i></div>
     </div>
   </ion-footer-bar>

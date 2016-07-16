@@ -5,6 +5,7 @@ void function () {
 
   var config = {
     WD_URL: 'https://wxb.wilddogio.com/',
+    PAGE_SIZE: 2,
     PRICE_GROUP: {
       wash: '洗吹造型',
       cut: '洗剪造型',

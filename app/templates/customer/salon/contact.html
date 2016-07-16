@@ -4,57 +4,53 @@
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content class="has-header">
+  <div class="my-1sub-header">
+    <div class="row padding bb-grey text-center" style="margin-top: 40px">
+      <div class="col font-thin " ng-click="goTo('customer.salonReservation')">预订</div>
+      <div class="col font-thin text-large balanced bb" ng-click="goTo('customer.salonContact')">常用联系人</div>
+      <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
+    </div>
+  </div>
 
-    <ion-scroll direction="x" style="width:auto">
-      <div class="row no-padding bb-grey text-center" style="width:500px">
-        <div class="col font-thin" ng-click="goTo('customer.salonReservation')">我的预订情况</div>
-        <div class="col font-thin text-large balanced bb" ng-click="goTo('customer.salonContact')">常用联系人</div>
-        <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">发型师忙闲情况</div>
-      </div>
-    </ion-scroll>
-
-    <ion-scroll class="bg-lightgrey" direction="y" style="height:100%">
-
+  <ion-content class="has-1sub-header">
       <div class="row" ng-repeat="contact in contacts | filter: searchFilter track by $index" ng-if="$index % 2==0">
 
         <div class="col">
-          <div class="card contact animated bounceIn item-remove-animate" on-hold="deletecontact(contacts[$index]);" ng-if="contacts[$index] !== undefined">
-            <div class="item item-image item-text-wrap">
-              <div><img ng-src="{{contacts[$index].photo}}"></div>
-              <h2 class="lead text-small mt">{{contacts[$index].name}}</h2>
-              <p class="">{{contacts[$index].desc}}</p>
+          <div class="card contact animated bounceIn item-remove-animate" ng-if="contacts[$index] !== undefined">
+            <div class="item item-image item-text-wrap" ng-click="showDetail(contacts[$index])">
+              <div><img ng-src="{{contacts[$index].hairstylist.avatar}}"></div>
+              <h2 class="lead text-small mt">{{contacts[$index].hairstylist.name}}</h2>
+              <p class="">{{contacts[$index].hairstylist.desc || '艺术总监'}}</p>
             </div>
             <div class="item item-footer">
               <div class="row no-padding">
                 <div class="col no-padding"><i class="icon ion-ios-chatboxes-outline balanced"></i></div>
-                <a href="tel:{{contacts[$index].phone}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
-                <div class="col no-padding bl-grey"><i class="icon ion-ios-gear-outline royal"></i></div>
+                <a href="tel:{{contacts[$index].hairstylist.mobile}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
+                <div class="col no-padding bl-grey" ng-click="deleteContact(contacts[$index])"><i class="icon ion-ios-trash-outline royal"></i></div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="col">
-          <div class="card contact animated bounceIn item-remove-animate" on-hold="deleteContact(contacts[$index]);" ng-if="contacts[$index + 1] !== undefined">
-            <div class="item item-image item-text-wrap" ui-sref="customer.contact-profile({contact: contacts[$index + 1]})">
-              <div><img ng-src="{{contacts[$index + 1].photo}}"></div>
-              <h2 class="lead text-small mt">{{contacts[$index + 1].name}}</h2>
-              <p class="">{{contacts[$index + 1].desc}}</p>
+          <div class="card contact animated bounceIn item-remove-animate" ng-if="contacts[$index + 1] !== undefined">
+            <div class="item item-image item-text-wrap" ng-click="showDetail(contacts[$index + 1])">
+              <div><img ng-src="{{contacts[$index + 1].hairstylist.avatar}}"></div>
+              <h2 class="lead text-small mt">{{contacts[$index + 1].hairstylist.name}}</h2>
+              <p class="">{{contacts[$index + 1].hairstylist.desc || '艺术总监'}}</p>
             </div>
             <div class="item item-footer">
               <div class="row no-padding">
                 <div class="col no-padding"><i class="icon ion-ios-chatboxes-outline balanced"></i></div>
-                <a href="tel:{{contacts[$index + 1].phone}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
-                <div class="col no-padding bl-grey"><i class="icon ion-ios-gear-outline royal"></i></div>
+                <a href="tel:{{contacts[$index + 1].hairstylist.mobile}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
+                <div class="col no-padding bl-grey" ng-click="deleteContact(contacts[$index + 1])"><i class="icon ion-ios-trash-outline royal"></i></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-    </ion-scroll>
-
   </ion-content>
+
+  <a class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="openHairstylistModal()"><i class="icons ion-person-add"></i></a>
 
 </ion-view>

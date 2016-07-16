@@ -7,8 +7,8 @@
   <ion-content class="has-header bg-lightgrey">
     <div class="card hybrid shop" ng-click="vm.showDetail(item)"  ng-repeat="item in vm.hairstylists | filter: searchFilter track by $index">
       <div class="item item-thumbnail-left item-text-wrap shop">
-        <img ng-src="{{item.hairstylist[0].avatar}}" >
-        <h2 class="text-small lead no-padding no-margin">{{item.hairstylist[0].name}}</h2>
+        <img ng-src="{{item.hairstylist[0].avatar || item.hairstylist.avatar}}" >
+        <h2 class="text-small lead no-padding no-margin">{{item.hairstylist[0].name || item.hairstylist.name}}</h2>
         <p class="text-small">擅长中长发,各种烫染</p>
         <span class="text-smaller pull-left " >
           <span star-rating ng-model="rating" max="5" readonly="false" on-rating-select="rating.rateFunction(rating)"></span>
@@ -19,7 +19,8 @@
           <i class="icon mr" ng-class="{'calm ion-ios-heart': favourite[$index], 'ion-ios-heart-outline': !favourite[$index]}" ng-click="favourite[$index] = !favourite[$index]"></i>
         </span>
         <span class="text-smaller font-thin pull-right" style="margin-top: 10px">
-          <a class="waves-effect waves-light btn button-small red"  style="border-radius: 50px" ng-click="vm.confirm(item)">&nbsp&nbspOK&nbsp&nbsp</a>
+          <button class="waves-effect waves-light btn button-small red" ng-if="!item.isContact"  style="border-radius: 50px" ng-click="vm.confirm(item)">&nbsp&nbspOK&nbsp&nbsp</button>
+          <button class="waves-effect waves-light btn button-small grey" ng-if="item.isContact"  style="border-radius: 50px" >已添加</button>
         </span>
       </div>
 

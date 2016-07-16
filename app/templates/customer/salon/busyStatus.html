@@ -3,19 +3,16 @@
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content class="has-header">
+  <div class="my-1sub-header">
+    <div class="row padding bb-grey text-center" style="margin-top: 40px">
+      <div class="col font-thin " ng-click="goTo('customer.salonReservation')">预订</div>
+      <div class="col font-thin " ng-click="goTo('customer.salonContact')">常用联系人</div>
+      <div class="col font-thin text-large balanced bb" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
+    </div>
+  </div>
 
-    <ion-scroll direction="x" style="width:auto">
-      <div class="row no-padding bb-grey text-center" style="width:500px">
-        <div class="col font-thin" ng-click="goTo('customer.salonReservation')">我的预订情况</div>
-        <div class="col font-thin" ng-click="goTo('customer.salonContact')">常用联系人</div>
-        <div class="col font-thin text-large balanced bb" ng-click="goTo('customer.salonBusyStatus')">发型师忙闲情况</div>
-      </div>
-    </ion-scroll>
-
-    <ion-scroll class="bg-lightgrey padding" direction="y" style="height:100%">
+  <ion-content class="has-1sub-header">
       <div class="list history" ng-repeat="history in news.items  | filter: searchFilter | orderBy:'publishedDate':true track by $index">
-
         <div class="item item-avatar">
           <img ng-src="{{history.sourceLogo}}">
           <div class="inner-content">
@@ -30,8 +27,5 @@
           </div>
         </div>
       </div>
-
-      </div>
-    </ion-scroll>
   </ion-content>
 </ion-view>

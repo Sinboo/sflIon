@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
     $scope.$on("$ionicView.enter", function(event, data){
       initData();
     });
@@ -15,29 +15,7 @@ angular.module('sflIon')
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
-    // var ref = new Wilddog(WD_URL).child('order').child('booked');
-    // var query = ref.orderByChild("customerUid").equalTo(UID());
-    // var reservationList = listService.list('', query);
-    // var initData = function () {
-    //   reservationList.$loaded().then(function (data) {
-    //     $scope.reservations = data;
-    //     console.log(data);
-    //     getReservations(moment($scope.viewDate._d).startOf('day')._d);
-    //   });
-    // };
-    // initData();
-
-    var fb = new Wilddog(WD_URL);
-    var norm = new Wilddog.util.NormalizedCollection(
-      [fb.child('orderOfCustomer').child(UID()), 'orderOfCustomer'],
-      [fb.child('order'), 'order', 'orderOfCustomer.orderId']
-    )
-      .select('orderOfCustomer.orderId',
-        {key: 'order.$value', alias: 'order'}
-      )
-      .ref();
-
-    var reservationList = $wilddogArray(norm);
+    var reservationList = JoinList('orderOfCustomer:'+UID(), 'order', 'orderId', 'updateAt');
     var initData = function () {
       reservationList.$loaded().then(function (data) {
         $scope.reservations = data;
@@ -45,8 +23,6 @@ angular.module('sflIon')
         getReservations(moment($scope.viewDate._d).startOf('day')._d);
       })
     };
-
-
 
     $scope.showDetail = function (reservation) {
       console.log(reservation)
@@ -94,7 +70,7 @@ angular.module('sflIon')
       var range = moment().range(date, moment(date).endOf('day'));
       $scope.seletedReservations = [];
       angular.forEach($scope.reservations, function (value) {
-        if (moment(value.order.bookedStartAt).within(range)) {
+        if (value.slave && moment(value.slave.bookedStartAt).within(range)) {
           $scope.seletedReservations.push(value);
         }
       });

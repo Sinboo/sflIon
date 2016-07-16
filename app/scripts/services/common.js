@@ -8,7 +8,7 @@ angular.module('sflIon')
     return $cacheFactory('sflIonCache');
   })
   .factory('dataSetterGetter', function () {
-    var savedData = {}
+    var savedData = {};
     function set(key, value) {
       savedData[key] = value;
     }
