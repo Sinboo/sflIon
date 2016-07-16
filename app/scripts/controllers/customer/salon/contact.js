@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonContactCtrl', function ($scope, noBackGoTo, appModalService, listService, JoinList, UID, $ionicPopup) {
+  .controller('SalonContactCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, JoinList, UID, $ionicPopup) {
     $scope.goTo = noBackGoTo;
 
     var list = JoinList('hairstylistOfCustomer:'+UID(), 'hairstylist', 'hairstylistUid', 'updateAt');
@@ -43,7 +43,19 @@ angular.module('sflIon')
         'templates/customer/salon/modal/hairstylistDetailModal.html',
         'HairstylistDetailModalCtrl as vm',
         {hairstylist: [hairstylist.hairstylist]}
-      )
+      ).then(function (val) {
+        console.log(val)
+        if (val) {
+          appModalService.show(
+            'templates/customer/salon/modal/priceListModal.html',
+            'PriceListModalCtrl as vm',
+            hairstylist
+          ).then(function (val) {
+            console.log(val);
+            $state.go('createEditReservation', {reservation: {hairstylist: hairstylist.hairstylist, price: val}})
+          })
+        }
+      })
     };
     
     $scope.deleteContact = function (contact) {
