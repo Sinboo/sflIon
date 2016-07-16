@@ -11,7 +11,7 @@ angular.module('sflIon', [
   'wilddog',
   'mwl.calendar',
   'angularMoment',
-  'ion-affix',
+  'ion-sticky',
   'ngCordova',
   'monospaced.elastic',
   'ionic.ui.modalService',

@@ -8,9 +8,9 @@ angular.module('sflIon')
     vm.group = parameters.group;
     vm.hairstylist = parameters.hairstylist;
     console.log(vm.hairstylist);
-    var uid = vm.hairstylist.hairstylistUid || vm.hairstylist.uid;
 
     if (vm.hairstylist) {
+      var uid = vm.hairstylist.hairstylistUid || vm.hairstylist.uid;
       listService.list('price:'+parameters.group).$loaded().then(function (data) {
         var priceList = [];
         angular.forEach(data, function (item) {

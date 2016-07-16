@@ -3,10 +3,31 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistListCtrl', function ($scope, $state, WD_URL, dataSetterGetter, $wilddogArray, allHairstylist, noBackGoTo, appModalService, listService, $ionicPopover) {
+  .controller('HairstylistListCtrl', function ($scope, $state, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, noBackGoTo, appModalService, listService, $ionicPopover) {
     $scope.noBackGoTo = noBackGoTo;
     $scope.rating = 4;
+
     $scope.hairstylists = dataSetterGetter.get('HairstylistList') ? dataSetterGetter.get('HairstylistList') : [];
+    angular.forEach($scope.hairstylists, function (item) {
+      var likeFlag = false;
+      listService.list('like:' + item.hairstylistUid).$loaded().then(function (likes) {
+        console.log(likes);
+        item.likes = likes;
+        angular.forEach(likes, function (like) {
+          if (like.likerUid == UID()) {
+            item.myLike = like;
+            item.liked = true;
+            likeFlag = true;
+          }
+        });
+        if (!likeFlag) {
+          if (item.liked = true) {
+            item.myLike = undefined;
+            item.liked = undefined;
+          }
+        }
+      });
+    });
 
     var loadUtil = allHairstylist.loadUtil();
     console.log(loadUtil);
@@ -22,6 +43,17 @@ angular.module('sflIon')
         });
         $scope.hairstylists = $scope.hairstylists.concat(data);
         dataSetterGetter.set('HairstylistList', $scope.hairstylists);
+        angular.forEach($scope.hairstylists, function (item) {
+          listService.list('like:'+item.hairstylistUid).$loaded().then(function (likes) {
+            item.likes = likes;
+            angular.forEach(likes, function (like) {
+              if (like.likerUid == UID()) {
+                item.myLike = like;
+                item.liked = true;
+              }
+            })
+          })
+        });
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
       });
@@ -32,6 +64,45 @@ angular.module('sflIon')
         Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
       }
     };
+
+    $scope.like = function (hairstylist) {
+      var likeList = listService.list('like:'+hairstylist.hairstylistUid);
+      likeList.$loaded().then(function () {
+        if (hairstylist.liked == true) {
+          hairstylist.liked = false;
+          var index = likeList.$indexFor(hairstylist.myLike.$id);
+          likeList.$remove(index).then(function (ref) {
+            initLike();
+          })
+        }
+        else {
+          hairstylist.liked = true;
+          hairstylist.myLike = {};
+          hairstylist.myLike.likerUid = UID();
+          console.log(hairstylist.myLike, 'like');
+          likeList.add(hairstylist.myLike).then(function (data) {
+            initLike();
+          });
+        }
+      })
+    };
+
+    var initLike = function () {
+      angular.forEach($scope.hairstylists, function (item) {
+        listService.list('like:'+item.hairstylistUid).$loaded().then(function (likes) {
+          console.log(likes);
+          item.likes = likes;
+          angular.forEach(likes, function (like) {
+            if (like.likerUid == UID()) {
+              item.myLike = like;
+              item.liked = true;
+            }
+          })
+        })
+      })
+    };
+
+
 
     $scope.doRefresh = function () {
       $scope.noMoreItemsAvailable = false;
