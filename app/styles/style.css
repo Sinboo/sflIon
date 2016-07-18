@@ -464,7 +464,7 @@ font-weight: 300;
          top: 23px;
 }
 .history .item-avatar .inner-content::before{
-       content: '\f361';
+       content: '';
     position: absolute;
     top: 30%;
     left: 19%;

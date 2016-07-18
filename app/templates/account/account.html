@@ -1,63 +1,64 @@
-<ion-view title="Account" class="bg-lightgrey">
+<ion-view title="我" class="bg-lightgrey">
+  <ion-nav-button side="left">
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel();"></button>
+  </ion-nav-button>
 
-    <ion-nav-buttons side="right">
-        <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
-        <button class="button button-dark button-clear icon ion-ios-compose-outline" ui-sref="tabs.edit-profile"></button>
-    </ion-nav-buttons>
+  <ion-content class="has-header bt-grey profile" ion-sticky>
+    <div class="header" style="background-image: url('../../img/hairstylist-bg1.jpg')">
+      <img ng-src="{{userProfile.avatar}}">
+      <!--<span class="badge badge-royal" ng-if="userProfile.likes.length > 0">{{userProfile.likes.length + '个赞'}}</span>-->
+      <h2 class="lead text-medium">{{userProfile.name}}</h2>
+      <p >{{'创意总监'}}</p>
+      <button class="button button-small icon "  ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"
+              ng-click="editProfile(userProfile)">
+        <span class="positive"> 查看/修改详细资料</span>
+      </button>
+    </div>
 
-    <ion-content class="has-header bt-grey profile" scroll="false">
-        <div class="header">
-            <img ng-src="{{user.photo}}">
-            <!--<span class="badge badge-balanced">3</span>-->
-            <h2 class="lead text-medium">{{user.name}}</h2>
-            <p>{{user.city}}</p>
-            <button class="button button-small icon " ng-class="{'button-balanced button-outline ion-ios-personadd-outline': !follow, 'button-balanced ion-ios-undo-outline':follow }"
-                ng-click="follow = !follow"> 
-                <span ng-if="!follow"> Follow</span>
-                <span ng-if="follow"> Unfollow</span>
-            </button>
+    <div class="row item-divider no-padding text-center " style="text-transform: capitalize;background-color: inherit!important;"  >
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 1}" ng-click="type = 1">5<br/>已完成订单</div>
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 2}" ng-click="type = 2">2<br/>待评价</div>
+      <!--<div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 3}" ng-click="type = 3">300<br/></div>-->
+    </div>
 
+    <div ng-if="type === 1">
+      <div class="list history" ng-repeat="order in orders  | filter: searchFilter track by $index">
+        <div class="item item-avatar">
+          <img ng-src="{{order.hairstylistAvatar}}">
+          <div class="inner-content">
+            <h2 class="lead text-small" am-time-ago="order.createAt"></h2>
+            <p class="text-smaller">发型师:{{order.hairstylistName}}</p>
+            <p class="text-smaller">服务:{{order.workName || order.priceName}}</p>
+            <p class="text-smaller">{{order.orderPrice ? '订单价格' + order.orderPrice + '元' : ''}}</p>
+            <p class="text-medium text-right">
+              <i class="icon ion-ios-bookmarks-outline padding"></i>
+              <i class="icon ion-ios-star-outline padding bl-grey"></i>
+              <i class="icon ion-ios-trash-outline padding bl-grey"></i>
+            </p>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="row no-padding bb-grey text-center" style="text-transform: capitalize;">
-            <div class="col font-thin" ng-class="{'text-medium balanced bb' : profile.type === 1}" ng-click="profile.type = 1">27<br/>Posts</div>
-            <div class="col font-thin" ng-class="{'text-medium balanced bb' : profile.type === 2}" ng-click="profile.type = 2">20K<br/>Followers</div>
-            <div class="col font-thin" ng-class="{'text-medium balanced bb' : profile.type === 3}" ng-click="profile.type = 3">1500<br/>Following</div>
-        </div>
+    <div ng-if="type === 2">
+      <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter">
+        <img ng-src="{{contact.photo}}">
+        <h2 class="font-thin">{{contact.name}}</h2>
+        <p>{{contact.city}}</p>
+        <button class="button button-small button-balanced icon ion-ios-checkmark-empty" ng-if="$index % 3 == 1"> Following</button>
+        <button class="button button-small button-balanced button-outline icon ion-ios-personadd-outline" ng-if="$index % 3 !== 1"> Follow</button>
+      </div>
+    </div>
 
-        <div ng-if="profile.type === 1">
-            <ion-scroll direction="y" style="height: 300px">
-                <div class="row post" ng-repeat="post in news.items" ng-if="$index % 3 == 0">
-                    <div class="col"><img ng-src="{{news.items[$index].image}}" /></div>
-                    <div class="col"><img ng-src="{{news.items[$index + 1].image}}" /></div>
-                    <div class="col"><img ng-src="{{news.items[$index + 2].image}}" /></div>
-                </div>
-            </ion-scroll>
-        </div>
-
-        <div ng-if="profile.type === 2">
-            <ion-scroll direction="y" style="height: 285px">
-                <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter">
-                    <img ng-src="{{contact.photo}}">
-                    <h2 class="font-thin">{{contact.name}}</h2>
-                    <p>{{contact.city}}</p>
-                    <button class="button button-small button-balanced icon ion-ios-checkmark-empty" ng-if="$index % 3 == 1"> Following</button>
-                    <button class="button button-small button-balanced button-outline icon ion-ios-personadd-outline" ng-if="$index % 3 !== 1"> Follow</button>
-                </div>
-            </ion-scroll>
-        </div>
-
-        <div ng-if="profile.type === 3">
-            <ion-scroll direction="y" style="height: 300px">
-                <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter" ng-if="$index % 3 === 1">
-                    <img ng-src="{{contact.photo}}">
-                    <h2 class="font-thin">{{contact.name}}</h2>
-                    <p>{{contact.city}}</p>
-                    <button class="button button-small button-balanced icon ion-ios-checkmark-empty" ng-if="$index % 3 === 1"> Unfollow</button>
-                </div>
-            </ion-scroll>
-        </div>
+    <div ng-if="type === 3">
+      <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter" ng-if="$index % 3 === 1">
+        <img ng-src="{{contact.photo}}">
+        <h2 class="font-thin">{{contact.name}}</h2>
+        <p>{{contact.city}}</p>
+        <button class="button button-small button-balanced icon ion-ios-checkmark-empty" ng-if="$index % 3 === 1"> Unfollow</button>
+      </div>
+    </div>
 
 
-    </ion-content>
+  </ion-content>
 </ion-view>

@@ -5,7 +5,7 @@
 
   <div class="my-2sub-header">
       <div class="row padding bb-grey text-center" style="margin-top: 40px">
-        <div class="col font-thin  text-large balanced bb" ng-click="goTo('customer.salonReservation')">预订</div>
+        <div class="col font-thin balanced bb" ng-click="goTo('customer.salonReservation')">预订</div>
         <div class="col font-thin" ng-click="goTo('customer.salonContact')">常用联系人</div>
         <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
       </div>
@@ -37,7 +37,7 @@
             <span class="light text-smaller justified">具体要求:{{reservation.slave.notes}}<br/></span>
             <span class="text-smaller light">预订时间: {{reservation.slave.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
             <span class="text-smaller light" ng-if="now < reservation.slave.bookedStartAt"><span class="text-smaller light">倒计时:</span><span class="text-smaller light" countdown='' date="{{reservation.slave.bookedStartAt | date: 'yyyy-MM-dd HH:mm'}}">&nbsp;</span></span>
-            <span class="text-smaller light" ng-if="now > reservation.slave.bookedStartAt"><span class="text-smaller light">已过期</span></span>
+            <span class="text-smaller light" ng-if="now > reservation.slave.bookedStartAt"><span class="text-smaller light">已过期:<span class="text-smaller" am-time-ago="reservation.slave.bookedStartAt"></span></span></span>
             <span class="light text-smaller justified pull-right">长按查看详情 </span>
         </div>
 

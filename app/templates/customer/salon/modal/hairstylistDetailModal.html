@@ -5,7 +5,7 @@
   </ion-nav-button>
 
   <ion-content class="has-header bt-grey profile" ion-sticky>
-    <div class="header">
+    <div class="header"> <!-- style="background-image: url('../../../../img/hairstylist-bg1.jpg')"> -->
       <img ng-src="{{vm.hairstylist.avatar}}">
       <span class="badge badge-royal" ng-if="vm.hairstylist.likes.length > 0">{{vm.hairstylist.likes.length + '个赞'}}</span>
       <h2 class="lead text-medium">{{vm.hairstylist.name}}</h2>

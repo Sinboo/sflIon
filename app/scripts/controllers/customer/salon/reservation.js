@@ -84,29 +84,6 @@ angular.module('sflIon')
     });
     
 
-    moment.locale('zh-cn', {
-      months : ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-      monthsShort : ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-      weekdays : ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-      weekdaysShort : ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-      weekdaysMin : ['日', '一', '二', '三', '四', '五', '六'],
-      calendar: {
-        lastDay: '[昨天]',
-        sameDay: '[今天]',
-        nextDay: '[明天, ] dddd MMM Do',
-        lastWeek: '[上个] dddd MMM Do',
-        nextWeek: 'dddd MMM Do',
-        sameElse: 'L'
-      },
-      longDateFormat : {
-        L: "YYYY/MM/DD/"
-      },
-      ordinal : function (number) {
-        var output = "日";
-        return number + output;
-      }
-    });
-
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope
     }).then(function(popover) {

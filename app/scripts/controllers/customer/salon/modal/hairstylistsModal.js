@@ -174,7 +174,7 @@ angular.module('sflIon')
         'HairstylistDetailModalCtrl as vm',
         hairstylist
       ).then(function (val) {
-        if (val == 'yes') {
+        if (val) {
           $scope.closeModal(hairstylist);
         }
       })

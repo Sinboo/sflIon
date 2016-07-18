@@ -12,6 +12,7 @@ angular.module('sflIon')
     $scope.reservation = {};
     $scope.reservation.customerName = userProfile.name;
     $scope.reservation.customerMobile = userProfile.mobile;
+    $scope.reservation.customerAvatar = userProfile.avatar;
 
     if ($state.params && $state.params.reservation && $state.params.reservation.work) {
       $scope.reservation.work = $state.params.reservation.work;
@@ -56,9 +57,11 @@ angular.module('sflIon')
       postData.bookedStartAt = Date.parse(reservation.bookedStartAt);
       postData.hairstylistUid = reservation.hairstylist ? reservation.hairstylist.uid : null;
       postData.hairstylistName = reservation.hairstylist ? reservation.hairstylist.name : null;
+      postData.hairstylistAvatar = reservation.hairstylist ? reservation.hairstylist.avatar : null;
       postData.customerUid = UID();
       postData.customerName = reservation.customerName;
       postData.customerMobile = reservation.customerMobile;
+      postData.customerAvatar = reservation.customerAvatar;
       postData.workId = reservation.work ? reservation.work.workId : null;
       postData.workName = reservation.work ? reservation.work.slave.name : null;
       postData.workGroup = reservation.work ? reservation.work.slave.workGroup : null;
