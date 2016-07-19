@@ -12,7 +12,7 @@
   </div>
 
   <ion-content class="has-1sub-header bg-lightgrey padding">
-    <div class="item no-padding" ng-repeat="item in hairstylists">
+    <div class="item no-padding" ng-repeat="item in hairstylists | filter: searchFilter">
       <div class="row">
         <div class="col s12 m7">
           <div class="card">
@@ -24,7 +24,7 @@
               <p ><a href="">有3人排队中...</a></p>
             </div>
             <div class="card-reveal">
-              <span class="card-title grey-text text-darken-4" style="font-size: 16px!important;"><span style="margin-right: 10px" class="balanced">{{item.hairstylist.name}}</span>预订详情:<i class="icon ion-close pull-right"></i></span>
+              <span class="card-title grey-text text-darken-4" style="font-size: 16px!important;"><span style="margin-right: 10px" class="balanced" ng-click="showDetail(item.hairstylist)">{{item.hairstylist.name}}</span>预订详情:<i class="icon ion-close pull-right"></i></span>
               <div>
                 <section id="cd-timeline" class="cd-container">
                   <div ng-repeat="order in item.orderList">
@@ -35,8 +35,8 @@
                       <!-- cd-timeline-img -->
                       <div class="cd-timeline-content dark">
                         <h5 class="marginBottom0 marginTop0">客户:{{order.slave.customerName}}</h5>
-                        <p class="marginTop5 cd-author">预订时间: {{order.slave.createAt | date: "yyyy年MM月dd日 HH:mm"}}</p>
-                        <p class="marginTop5 cd-author">预订服务: {{order.slave.workName || order.slave.priceName}} </p>
+                        <p class="marginTop5 cd-author">时间: {{order.slave.createAt | date: "MM月dd日 HH:mm"}}</p>
+                        <p class="marginTop5 cd-author">服务: {{order.slave.workName || order.slave.priceName}} </p>
                         <p class="timelineText">订单价格:{{order.slave.orderPrice}}</p>
                         <p class="timelineText">预约备注:{{order.slave.notes}}</p>
                       </div>

@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonBusyStatusCtrl', function ($scope, noBackGoTo, listService, JoinList, WD_URL) {
+  .controller('SalonBusyStatusCtrl', function ($scope, $state, noBackGoTo, listService, JoinList, appModalService, $ionicPopover) {
     $scope.goTo = noBackGoTo;
 
     var list = listService.list('hairstylist');
@@ -23,6 +23,44 @@ angular.module('sflIon')
       });
     };
     initData();
+
+    $scope.showDetail = function (hairstylist) {
+      appModalService.show(
+        'templates/customer/salon/modal/hairstylistDetailModal.html',
+        'HairstylistDetailModalCtrl as vm',
+        {hairstylist: [hairstylist]}
+      ).then(function (val) {
+        console.log(val)
+        if (val) {
+          appModalService.show(
+            'templates/customer/salon/modal/priceListModal.html',
+            'PriceListModalCtrl as vm',
+            hairstylist
+          ).then(function (val) {
+            console.log(val);
+            $state.go('createEditReservation', {reservation: {hairstylist: hairstylist, price: val}})
+          })
+        }
+      })
+    };
+
+
+    $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.searchPopover = popover;
+    });
+
+    $scope.getSearch = function (search) {
+      $scope.searchFilter = search;
+    };
+    $scope.closeSearch = function () {
+      $scope.searchPopover.hide();
+      $scope.getSearch();
+      $scope.searchItem = '';
+    };
+
+
 
     // var customer = {};
     // customer.name = 'sinboo';

@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonContactCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, JoinList, UID, $ionicPopup) {
+  .controller('SalonContactCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, JoinList, UID, $ionicPopup, $ionicPopover) {
     $scope.goTo = noBackGoTo;
     $scope._ = _;
 
@@ -16,7 +16,6 @@ angular.module('sflIon')
         'templates/customer/salon/modal/hairstylistsModal.html',
         'HairstylistsModalCtrl as vm'
       ).then(function (val) {
-        console.log(val, val.hairstylist.uid);
         if (val) {
           listService.list('hairstylistOfCustomer:'+UID()).$add({hairstylistUid: val.hairstylist.uid});
           listService.list('customerOfHairstylist:'+val.hairstylist.uid).$add({customerUid: UID()});
@@ -73,5 +72,19 @@ angular.module('sflIon')
       });
     }
 
+    $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.searchPopover = popover;
+    });
+
+    $scope.getSearch = function (search) {
+      $scope.searchFilter = search;
+    };
+    $scope.closeSearch = function () {
+      $scope.searchPopover.hide();
+      $scope.getSearch();
+      $scope.searchItem = '';
+    }
 
   });
