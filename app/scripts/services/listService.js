@@ -4,12 +4,138 @@
 'use strict';
 
 angular.module('sflIon')
-  .service("listService", function(WD_URL, $wilddogArray, customerList) {
+  .service("listService", function(WD_URL, $wilddogArray, customerList, PAGE_SIZE) {
     this.list = function (childName, query) {
       var ref = childName.indexOf(':') !== -1 ? query || new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]) : query || new Wilddog(WD_URL).child(childName);
       var list = $wilddogArray(ref);
       return customerList(list);
     };
+    this.scrollList = function (childName, field) {
+      var ref = childName.indexOf(':') !== -1 ? new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]) : new Wilddog(WD_URL).child(childName);
+      var scrollRef = new Wilddog.util.Scroll(ref, field);
+      // create a synchronized array on scope
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: ref
+      }
+    };
+    this.joinScrollList = function (childName, childName2, masterKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave', 'master.'+masterKey]
+      )
+        .select('master.'+masterKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave.$value', alias: 'slave'}
+        )
+        .ref();
+      var scrollRef = new Wilddog.util.Scroll(norm, field);
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: norm
+      }
+    };
+    this.join3ScrollList = function (childName, childName2, childName3, masterKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1', 'master.'+masterKey],
+        [ref3, 'slave2', 'master.'+masterKey]
+      )
+        .select('master.'+masterKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'}
+        )
+        .ref();
+      var scrollRef = new Wilddog.util.Scroll(norm, field);
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: norm
+      }
+    };
+    this.join4ScrollList = function (childName, childName2, childName3, childName4, masterKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var ref4 = new Wilddog(WD_URL).child(childName4);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1', 'master.'+masterKey],
+        [ref3, 'slave2', 'master.'+masterKey],
+        [ref4, 'slave3', 'master.'+masterKey]
+      )
+        .select('master.'+masterKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'},
+          {key: 'slave3.$value', alias: 'slave3'}
+        )
+        .ref();
+      var scrollRef = new Wilddog.util.Scroll(norm, field);
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: norm
+      }
+    };
+    this.join4by2keyScrollList = function (childName, childName2, childName3, childName4, secondaryKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var ref4 = new Wilddog(WD_URL).child(childName4);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1', 'master.'+secondaryKey],
+        [ref3, 'slave2'],
+        [ref4, 'slave3']
+      )
+        .select('master.'+secondaryKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'},
+          {key: 'slave3.$value', alias: 'slave3'}
+        )
+        .ref();
+      var scrollRef = new Wilddog.util.Scroll(norm, field);
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: norm
+      }
+    };
+    this.pageList = function (childName, field) {
+      var ref = childName.indexOf(':') !== -1 ? new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]) : new Wilddog(WD_URL).child(childName);
+      var pageRef = new Wilddog.util.Paginate(ref, field, {maxCacheSize: 250, pageSize: PAGE_SIZE});
+      // generate a synchronized array using the special page ref
+      var list = $wilddogArray(pageRef);
+      // store the "page" scope on the synchronized array for easy access
+      list.page = pageRef.page;
+      // when the page count loads, update local scope vars
+      pageRef.page.onPageCount(function(currentPageCount, couldHaveMore) {
+        list.pageCount = currentPageCount;
+        list.couldHaveMore = couldHaveMore;
+      });
+      // when the current page is changed, update local scope vars
+      pageRef.page.onPageChange(function(currentPageNumber) {
+        list.currentPageNumber = currentPageNumber;
+      });
+      // load the first page
+      pageRef.page.next();
+      return customerList(list);
+    }
   })
   .factory('ListLoadMore', function (listService, WD_URL) {
     function ListLoadMore (childName, field, limit) {
@@ -100,151 +226,5 @@ angular.module('sflIon')
       return listService.list('', query)
     };
   })
-  .factory('Paginator', function (WD_URL) {
-    function Paginator(childName, limit) {
-      this.ref = new Wilddog(WD_URL + childName);
-      this.pageNumber = 0;
-      this.limit = limit;
-      this.lastPageNumber = null;
-      this.currentSet = {};
-    }
 
-    Paginator.prototype = {
-      nextPage: function (callback) {
-        if (this.isLastPage()) {
-          callback(this.currentSet);
-        }
-        else {
-          var lastKey = getLastKey(this.currentSet);
-          // if there is no last key, we need to use undefined as priority
-          var pri = lastKey ? null : undefined;
-          this.ref.startAt(pri, lastKey)
-            .limit(this.limit + (lastKey ? 1 : 0))
-            .once('value', this._process.bind(this, {
-              cb: callback,
-              dir: 'next',
-              key: lastKey
-            }));
-        }
-      },
-
-      prevPage: function (callback) {
-        console.log('prevPage', this.isFirstPage(), this.pageNumber);
-        if (this.isFirstPage()) {
-          callback(this.currentSet);
-        }
-        else {
-          var firstKey = getFirstKey(this.currentSet);
-          // if there is no last key, we need to use undefined as priority
-          this.ref.endAt(null, firstKey)
-            .limit(this.limit + 1)
-            .once('value', this._process.bind(this, {
-              cb: callback,
-              dir: 'prev',
-              key: firstKey
-            }));
-        }
-      },
-
-      isFirstPage: function () {
-        return this.pageNumber === 1;
-      },
-
-      isLastPage: function () {
-        return this.pageNumber === this.lastPageNumber;
-      },
-
-      _process: function (opts, snap) {
-        var vals = snap.val(), len = size(vals);
-        console.log('_process', opts, len, this.pageNumber, vals);
-        if (len < this.limit) {
-          // if the next page returned some results, it becomes the last page
-          // otherwise this one is
-          this.lastPageNumber = this.pageNumber + (len > 0 ? 1 : 0);
-        }
-        if (len === 0) {
-          // we don't know if this is the last page until
-          // we try to fetch the next, so if the next is empty
-          // then do not advance
-          opts.cb(this.currentSet);
-        }
-        else {
-          if (opts.dir === 'next') {
-            this.pageNumber++;
-            if (opts.key) {
-              dropFirst(vals);
-            }
-          } else {
-            this.pageNumber--;
-            if (opts.key) {
-              dropLast(vals);
-            }
-          }
-          this.currentSet = vals;
-          opts.cb(vals);
-        }
-
-      }
-    }
-
-
-
-
-      function getLastKey(obj) {
-      var key;
-      if (obj) {
-        each(obj, function (v, k) {
-          key = k;
-        });
-      }
-      return key;
-    }
-
-    function getFirstKey(obj) {
-      var key;
-      if (obj) {
-        each(obj, function (v, k) {
-          key = k;
-          return true;
-        });
-      }
-      return key;
-    }
-
-    function dropFirst(obj) {
-      if (obj) {
-        delete obj[getFirstKey(obj)];
-      }
-      return obj;
-    }
-
-    function dropLast(obj) {
-      if (obj) {
-        delete obj[getLastKey(obj)];
-      }
-      return obj;
-    }
-
-    function each(obj, cb) {
-      if (obj) {
-        for (var k in obj) {
-          if (obj.hasOwnProperty(k)) {
-            var res = cb(obj[k], k);
-            if (res === true) {
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    function size(obj) {
-      var i = 0;
-      each(obj, function () {
-        i++;
-      });
-      return i;
-    }
-
-    return Paginator;
-  })
+;

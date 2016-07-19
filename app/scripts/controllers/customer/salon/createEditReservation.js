@@ -93,7 +93,7 @@ angular.module('sflIon')
             $scope.reservation.price = null;
             $scope.reservation.hairstylist = null;
             $scope.reservation.price = value.choosedPrice;
-            $scope.reservation.hairstylist = value.hairstylist[0];
+            $scope.reservation.hairstylist = value.hairstylist;
             $scope.reservation.hairstylist.rating = 4;
           }
         },

@@ -6,34 +6,20 @@
 angular.module('sflIon')
   .controller('SalonContactCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, JoinList, UID, $ionicPopup) {
     $scope.goTo = noBackGoTo;
+    $scope._ = _;
 
-    var list = JoinList('hairstylistOfCustomer:'+UID(), 'hairstylist', 'hairstylistUid', 'updateAt');
-
-    var initData = function () {
-      list.$loaded().then(function (data) {
-        $scope.contacts = data;
-        angular.forEach($scope.contacts, function (item) {
-          $.each(item.slave, function (k, v) {
-            if (k.indexOf('-') > -1) {
-              item.hairstylist = v
-            }
-          })
-        });
-        console.log($scope.contacts);
-      });
-    };
-    initData();
+    $scope.contacts = JoinList('hairstylistOfCustomer:'+UID(), 'hairstylist', 'hairstylistUid', 'updateAt');
+    console.log($scope.contacts);
 
     $scope.openHairstylistModal = function () {
       appModalService.show(
         'templates/customer/salon/modal/hairstylistsModal.html',
         'HairstylistsModalCtrl as vm'
       ).then(function (val) {
-        console.log(val)
+        console.log(val, val.hairstylist.uid);
         if (val) {
-          listService.list('hairstylistOfCustomer:'+UID()).$add({hairstylistUid: val.hairstylistUid}).then(function (data) {
-            initData();
-          });
+          listService.list('hairstylistOfCustomer:'+UID()).$add({hairstylistUid: val.hairstylist.uid});
+          listService.list('customerOfHairstylist:'+val.hairstylist.uid).$add({customerUid: UID()});
         }
       })
     };
@@ -42,7 +28,7 @@ angular.module('sflIon')
       appModalService.show(
         'templates/customer/salon/modal/hairstylistDetailModal.html',
         'HairstylistDetailModalCtrl as vm',
-        {hairstylist: [hairstylist.hairstylist]}
+        {hairstylist: [hairstylist]}
       ).then(function (val) {
         console.log(val)
         if (val) {
@@ -52,7 +38,7 @@ angular.module('sflIon')
             hairstylist
           ).then(function (val) {
             console.log(val);
-            $state.go('createEditReservation', {reservation: {hairstylist: hairstylist.hairstylist, price: val}})
+            $state.go('createEditReservation', {reservation: {hairstylist: hairstylist, price: val}})
           })
         }
       })
@@ -70,12 +56,18 @@ angular.module('sflIon')
       confirmPopup.then(function(res) {
         if(res) {
           console.log(contact)
-          var list = listService.list('hairstylistOfCustomer:'+UID());
-          list.$loaded().then(function () {
-            var deleteingContact = list.$indexFor(contact.$id);
-            list.$remove(deleteingContact).then(function (data) {
-              initData();
-            });
+          var list1 = listService.list('hairstylistOfCustomer:'+UID());
+          list1.$loaded().then(function () {
+            var deletingContact = list1.$indexFor(contact.$id);
+            list1.$remove(deletingContact);
+          });
+          var list2 = listService.list('customerOfHairstylist:'+contact.hairstylistUid);
+          list2.$loaded().then(function (data) {
+            var customerOfHairstylist = _.findWhere(data, {customerUid: UID()});
+            var key = customerOfHairstylist.$id;
+            console.log(customerOfHairstylist, key)
+            var deletingContact = list2.$indexFor(key);
+            list2.$remove(deletingContact);
           });
         }
       });

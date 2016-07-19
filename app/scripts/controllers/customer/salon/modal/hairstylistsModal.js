@@ -3,187 +3,64 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistsModalCtrl', function ($scope, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
+  .controller('HairstylistsModalCtrl', function ($scope, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, ListLoadMore, appModalService, parameters, listService, $ionicPopover, PAGE_SIZE) {
     var vm = this;
+    $scope._ = _;
+    $scope.UID = UID();
     vm.price = parameters ? parameters.price : null;
     $scope.rating = 4;
-    var loadUtil;
-
+    var scrollList;
 
     if (vm.price !== null) {
-      vm.hairstylists = [];
-      loadUtil = new ListLoadMore('hairstylistUnderPrice:'+vm.price.id, 'updateAt', 3);
-      $scope.loadMore = function () {
-        loadUtil.loadMore(function (data) {
-          console.log(data);
-          vm.hairstylists = vm.hairstylists.concat(data);
-          angular.forEach(vm.hairstylists, function (item) {
-            listService.list('hairstylist:'+item.hairstylistUid).$loaded().then(function (hairstylist) {
-              item.hairstylist = hairstylist;
-              item.choosedPrice = vm.price;
-            });
-            listService.list('like:'+item.hairstylistUid).$loaded().then(function (likes) {
-              console.log(likes);
-              item.likes = likes;
-              angular.forEach(likes, function (like) {
-                if (like.likerUid == UID()) {
-                  item.myLike = like;
-                  item.liked = true;
-                }
-              })
-            })
-          });
-          if (data.length == 0) {
-            $scope.noMoreItemsAvailable = true;
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
-          }
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        })
-      };
-
-      $scope.loadMore();
+      scrollList = listService.join3ScrollList('hairstylistUnderPrice:'+vm.price.id, 'hairstylist', 'like', 'hairstylistUid', 'updateAt');
     }
     else {
-      vm.hairstylists = dataSetterGetter.get('HairstylistList') ? dataSetterGetter.get('HairstylistList') : [];
-      var hList = listService.list('hairstylistOfCustomer:'+UID());
-      angular.forEach(vm.hairstylists, function (item) {
-        var likeFlag = false;
-        listService.list('like:'+item.hairstylistUid).$loaded().then(function (likes) {
-          console.log(likes);
-          item.likes = likes;
-          angular.forEach(likes, function (like) {
-            if (like.likerUid == UID()) {
-              item.myLike = like;
-              item.liked = true;
-              likeFlag = true;
-            }
-          });
-          if (!likeFlag) {
-            if (item.liked = true) {
-              item.myLike = undefined;
-              item.liked = undefined;
-            }
-          }
-        });
-
-        var flag = false;
-        hList.$loaded().then(function (data) {
-          angular.forEach(data, function (h) {
-            if (h.hairstylistUid == item.hairstylistUid) {
-              item.isContact = true;
-              flag = true
-            }
-          });
-          if (!flag) {
-            if (item.isContact = true) {
-              item.isContact = undefined;
-            }
-          }
-        });
-      });
-
-      console.log(dataSetterGetter.get('HairstylistList'), vm.hairstylists);
-      loadUtil = allHairstylist.loadUtil();
-      console.log(loadUtil);
-      $scope.loadMore = function () {
-        loadUtil.loadMore(function (data) {
-          console.log(data, loadUtil.hasNext)
-          angular.forEach(data, function (item) {
-            $.each(item.slave, function (k, v) {
-              if (k.indexOf('-') > -1) {
-                item.hairstylist = v
-              }
-            });
-            listService.list('hairstylistOfCustomer:'+UID()).$loaded().then(function (data) {
-              angular.forEach(data, function (h) {
-                if (h.hairstylistUid == item.hairstylistUid) {
-                  item.isContact = true;
-                }
-              })
-            })
-          });
-          vm.hairstylists = vm.hairstylists.concat(data);
-          dataSetterGetter.set('HairstylistList', vm.hairstylists);
-          angular.forEach(vm.hairstylists, function (item) {
-            listService.list('like:'+item.hairstylistUid).$loaded().then(function (likes) {
-              console.log(likes);
-              item.likes = likes;
-              angular.forEach(likes, function (like) {
-                if (like.likerUid == UID()) {
-                  item.myLike = like;
-                  item.liked = true;
-                }
-              })
-            })
-          });
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        });
-        if (!loadUtil.hasNext) {
-          $scope.noMoreItemsAvailable = true;
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-          Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
-        }
-      };
-      $scope.loadMore();
+      scrollList = listService.join4ScrollList('allHairstylist', 'hairstylist', 'like', 'customerOfHairstylist', 'hairstylistUid', 'updateAt');
     }
+    vm.hairstylists = scrollList.list;
+    console.log(vm.hairstylists);
+    scrollList.scrollRef.scroll.next(PAGE_SIZE);
+    
+    $scope.loadMore = function () {
+      scrollList.scrollRef.scroll.next(PAGE_SIZE);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    };
 
-
-
-    vm.like = function (hairstylist) {
-      var likeList = listService.list('like:'+hairstylist.hairstylistUid);
+    $scope.like = function (item) {
+      var myLike = _.findWhere(_.values(item.slave2), {likerUid: UID()});
+      var likeList = listService.list('like:'+item.hairstylistUid);
       likeList.$loaded().then(function () {
-        if (hairstylist.liked == true) {
-          hairstylist.liked = false;
-          var index = likeList.$indexFor(hairstylist.myLike.$id);
+        if (myLike) {
+          var key = _.invert(item.slave2)[myLike];
+          var index = likeList.$indexFor(key);
           likeList.$remove(index).then(function (ref) {
-            initLike();
           })
         }
         else {
-          hairstylist.liked = true;
-          hairstylist.myLike = {};
-          hairstylist.myLike.likerUid = UID();
-          console.log(hairstylist.myLike, 'like');
-          likeList.add(hairstylist.myLike).then(function (data) {
-            initLike();
-          });
+          var addLike = {};
+          addLike.likerUid = UID();
+          console.log(addLike, 'like');
+          likeList.add(addLike)
         }
       })
     };
 
-    var initLike = function () {
-      angular.forEach(vm.hairstylists, function (item) {
-        listService.list('like:'+item.hairstylistUid).$loaded().then(function (likes) {
-          console.log(likes);
-          item.likes = likes;
-          angular.forEach(likes, function (like) {
-            if (like.likerUid == UID()) {
-              item.myLike = like;
-              item.liked = true;
-            }
-          })
-        })
-      })
-    };
-
-    
     vm.showDetail = function (hairstylist) {
       appModalService.show(
         'templates/customer/salon/modal/hairstylistDetailModal.html',
         'HairstylistDetailModalCtrl as vm',
-        hairstylist
+        {hairstylist: [hairstylist]}
       ).then(function (val) {
         if (val) {
-          $scope.closeModal(hairstylist);
+          $scope.closeModal({hairstylist: hairstylist, choosedPrice: vm.price});
         }
       })
     };
 
 
     
-    vm.confirm = function(formData) {
-      $scope.closeModal(formData);
+    vm.confirm = function(hairstylist) {
+      $scope.closeModal({hairstylist: hairstylist, choosedPrice: vm.price});
     };
     vm.cancel = function() {
       $scope.closeModal(null);

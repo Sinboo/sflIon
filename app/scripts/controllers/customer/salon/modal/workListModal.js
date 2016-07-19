@@ -3,37 +3,49 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkListModalCtrl', function ($scope, WD_URL, $wilddogArray, JoinListLoadMore, dataSetterGetter, workOfGroup, ListLoadMore, appModalService, parameters, listService, $ionicPopover) {
+  .controller('WorkListModalCtrl', function ($scope, WD_URL, $wilddogArray, JoinListLoadMore, dataSetterGetter, workOfGroup, appModalService, parameters, listService, $ionicPopover, PAGE_SIZE) {
     var vm = this;
     vm.group = parameters;
     console.log(vm.group);
-    vm.works = dataSetterGetter.get('WorkListModal'+vm.group) ? dataSetterGetter.get('WorkListModal'+vm.group) : [];
 
-    var loadUtil = workOfGroup.loadUtil(vm.group);
-    console.log(loadUtil);
+    var scrollList = listService.joinScrollList('workOfGroup:'+vm.group, 'work', 'workId', 'updateAt');
+    vm.works = scrollList.list;
+    console.log(vm.works);
+    scrollList.scrollRef.scroll.next(PAGE_SIZE);
+
     $scope.loadMore = function () {
-      console.log('yes', $scope.noMoreItemsAvailable);
-      loadUtil.loadMore(function (data) {
-        console.log(data);
-        vm.works = vm.works.concat(data);
-        dataSetterGetter.set('WorkListModal'+vm.group, vm.works);
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-      });
-      if (!loadUtil.hasNext) {
-        $scope.noMoreItemsAvailable = true;
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-        Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
-      }
+      scrollList.scrollRef.scroll.next(PAGE_SIZE);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
     };
-
-    $scope.doRefresh = function () {
-      $scope.noMoreItemsAvailable = false;
-      $scope.loadMore();
-    };
-
-    $scope.doRefresh();
+    
+    // vm.works = dataSetterGetter.get('WorkListModal'+vm.group) ? dataSetterGetter.get('WorkListModal'+vm.group) : [];
+    //
+    // var loadUtil = workOfGroup.loadUtil(vm.group);
+    // console.log(loadUtil);
+    // $scope.loadMore = function () {
+    //   console.log('yes', $scope.noMoreItemsAvailable);
+    //   loadUtil.loadMore(function (data) {
+    //     console.log(data);
+    //     vm.works = vm.works.concat(data);
+    //     dataSetterGetter.set('WorkListModal'+vm.group, vm.works);
+    //     $scope.$broadcast('scroll.refreshComplete');
+    //     $scope.$broadcast('scroll.infiniteScrollComplete');
+    //   });
+    //   if (!loadUtil.hasNext) {
+    //     $scope.noMoreItemsAvailable = true;
+    //     $scope.$broadcast('scroll.refreshComplete');
+    //     $scope.$broadcast('scroll.infiniteScrollComplete');
+    //     Materialize.toast('<i class="icon ion-android-alert"></i>' + '没有更多数据了!', 2000);
+    //   }
+    // };
+    //
+    // $scope.doRefresh = function () {
+    //   $scope.noMoreItemsAvailable = false;
+    //   $scope.loadMore();
+    // };
+    //
+    // $scope.doRefresh();
+    
 
     vm.showDetail = function (work) {
       appModalService.show(
@@ -46,7 +58,6 @@ angular.module('sflIon')
         }
       })
     };
-
 
 
     vm.confirm = function(formData) {

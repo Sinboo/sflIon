@@ -17,15 +17,15 @@
 
         <div class="col">
           <div class="card contact animated bounceIn item-remove-animate" ng-if="contacts[$index] !== undefined">
-            <div class="item item-image item-text-wrap" ng-click="showDetail(contacts[$index])">
-              <div><img ng-src="{{contacts[$index].hairstylist.avatar}}"></div>
-              <h2 class="lead text-small mt">{{contacts[$index].hairstylist.name}}</h2>
-              <p class="">{{contacts[$index].hairstylist.desc || '艺术总监'}}</p>
+            <div class="item item-image item-text-wrap" ng-click="showDetail(_.values(contacts[$index].slave)[0])">
+              <div><img ng-src="{{_.values(contacts[$index].slave)[0].avatar}}"></div>
+              <h2 class="lead text-small mt">{{_.values(contacts[$index].slave)[0].name}}</h2>
+              <p class="">{{_.values(contacts[$index].slave)[0].desc || '艺术总监'}}</p>
             </div>
             <div class="item item-footer">
               <div class="row no-padding">
                 <div class="col no-padding"><i class="icon ion-ios-chatboxes-outline balanced"></i></div>
-                <a href="tel:{{contacts[$index].hairstylist.mobile}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
+                <a href="tel:{{_.values(contacts[$index].slave)[0].mobile}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
                 <div class="col no-padding bl-grey" ng-click="deleteContact(contacts[$index])"><i class="icon ion-ios-trash-outline royal"></i></div>
               </div>
             </div>
@@ -34,15 +34,15 @@
 
         <div class="col">
           <div class="card contact animated bounceIn item-remove-animate" ng-if="contacts[$index + 1] !== undefined">
-            <div class="item item-image item-text-wrap" ng-click="showDetail(contacts[$index + 1])">
-              <div><img ng-src="{{contacts[$index + 1].hairstylist.avatar}}"></div>
-              <h2 class="lead text-small mt">{{contacts[$index + 1].hairstylist.name}}</h2>
-              <p class="">{{contacts[$index + 1].hairstylist.desc || '艺术总监'}}</p>
+            <div class="item item-image item-text-wrap" ng-click="showDetail(_.values(contacts[$index + 1].slave)[0])">
+              <div><img ng-src="{{_.values(contacts[$index + 1].slave)[0].avatar}}"></div>
+              <h2 class="lead text-small mt">{{_.values(contacts[$index + 1].slave)[0].name}}</h2>
+              <p class="">{{_.values(contacts[$index + 1].slave)[0].desc || '艺术总监'}}</p>
             </div>
             <div class="item item-footer">
               <div class="row no-padding">
                 <div class="col no-padding"><i class="icon ion-ios-chatboxes-outline balanced"></i></div>
-                <a href="tel:{{contacts[$index + 1].hairstylist.mobile}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
+                <a href="tel:{{_.values(contacts[$index + 1].slave)[0].mobile}}" class="col no-padding bl-grey"><i class="icon ion-ios-telephone-outline positive"></i></a>
                 <div class="col no-padding bl-grey" ng-click="deleteContact(contacts[$index + 1])"><i class="icon ion-ios-trash-outline royal"></i></div>
               </div>
             </div>
