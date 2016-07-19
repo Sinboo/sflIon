@@ -11,10 +11,10 @@ angular.module('sflIon')
         scope: { date: '@' },
         link: function (scope, element) {
           var future;
-          future = new Date(scope.date);
+          future = Date.parse(scope.date);
           $interval(function () {
             var diff;
-            diff = Math.floor((future.getTime() - new Date().getTime()) / 1000);
+            diff = Math.floor((future - Date.now()) / 1000);
             return element.text(Util.dhms(diff));
           }, 1000);
         }

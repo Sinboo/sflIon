@@ -36,8 +36,8 @@
             <span class="light text-smaller">价格:{{reservation.slave.orderPrice}}</span><br/>
             <span class="light text-smaller justified">具体要求:{{reservation.slave.notes}}<br/></span>
             <span class="text-smaller light">预订时间: {{reservation.slave.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
-            <span class="text-smaller light" ng-if="now < reservation.slave.bookedStartAt"><span class="text-smaller light">倒计时:</span><span class="text-smaller light" countdown='' date="{{reservation.slave.bookedStartAt | date: 'yyyy-MM-dd HH:mm'}}">&nbsp;</span></span>
-            <span class="text-smaller light" ng-if="now > reservation.slave.bookedStartAt"><span class="text-smaller light">已过期:<span class="text-smaller" am-time-ago="reservation.slave.bookedStartAt"></span></span></span>
+            <span class="text-smaller light" ng-if="now < reservation.slave.bookedStartAt"><span >倒计时:</span><span countdown='' date="{{reservation.slave.bookedStartAt | date: 'yyyy-MM-ddTHH:mm:ss.sss'}}">&nbsp;</span></span>
+            <span class="text-smaller light" ng-if="now > reservation.slave.bookedStartAt"><span >已过期:<span  am-time-ago="reservation.slave.bookedStartAt"></span></span></span>
             <span class="light text-smaller justified pull-right">长按查看详情 </span>
         </div>
 

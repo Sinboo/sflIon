@@ -12,6 +12,7 @@ angular.module('sflIon', [
   'mwl.calendar',
   'angularMoment',
   'ion-sticky',
+  // 'timer',
   'ngCordova',
   'monospaced.elastic',
   'ionic.ui.modalService',

@@ -88,7 +88,7 @@ angular.module('sflIon')
       ).then(function (val) {
         console.log(val);
         if (val) {
-          $state.go('createEditReservation', {reservation: val})
+          $state.go('createEditReservation', {reservation: {work: val}})
         }
       })
     };
