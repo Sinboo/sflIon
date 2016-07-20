@@ -1,0 +1,43 @@
+<ion-view title="评论">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+
+    <div class="row text-center">
+      <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : choosedLike}"   ng-click="setChoosedLike(true)">喜欢的人</div>
+      <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : !choosedLike}"  ng-click="setChoosedLike(false)">所有评论</div>
+    </div>
+
+    <div class="list" ng-if="!choosedLike">
+      <div class="item item-avatar item-text-wrap" ng-repeat="item in comments | filter: searchFilter ">
+        <img ng-src="{{_.values(item.slave)[0].avatar}}">
+        <h2 class="lead">{{_.values(item.slave)[0].name}}</h2>
+        <p>{{item.master.content}}</p>
+        <p class="text-smaller pull-right" am-time-ago="item.createAt"></p>
+      </div>
+    </div>
+
+    <div class="list" ng-if="choosedLike">
+      <div class="item item-avatar" ng-repeat="item in likes | filter: searchFilter ">
+        <img ng-src="{{_.values(item.slave)[0].avatar}}">
+        <h2 class="lead">{{_.values(item.slave)[0].name}}</h2>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="teal lighten-4 item-input-inset" ng-if="choosedLike == false">
+    <label class="item-input-wrapper light-bg" ng-form="commentForm">
+      <textarea id="textChat" ng-model="commentMessage" required minlength="1" maxlength="1500" msd-elastic style="width:100%; resize:none"></textarea>
+    </label>
+    <div class="footer-btn-wrap">
+      <button ng-class="commentForm.$invalid == false ? 'button-dark' : 'button-stable'" class="button button-clear button-icon icon ion-android-checkmark-circle"
+              type="button" ng-click="submitComment(commentMessage)" ng-disabled="commentForm.$invalid"></button>
+    </div>
+  </ion-footer-bar>
+
+  <a ng-if="choosedLike == true" class="btn-floating btn-large waves-effect waves-light" ng-class="{'red':_.findWhere(likes, {likerUid: UID}), 'stable': !_.findWhere(likes, {likerUid: UID})}" style="position:fixed; bottom:5%;right:5%;" ng-click="like();"><i class="icons ion-ios-heart"></i></a>
+
+</ion-view>

@@ -1,0 +1,50 @@
+<ion-view title="发型师详情" >
+
+  <ion-content class="has-header bt-grey profile" ion-sticky>
+    <div class="header"> <!-- style="background-image: url('../../../../img/hairstylist-bg1.jpg')"> -->
+      <img ng-src="{{hairstylist.avatar}}">
+      <span class="badge badge-royal" ng-if="hairstylist.likes.length > 0">{{hairstylist.likes.length + '个赞'}}</span>
+      <h2 class="lead text-medium">{{hairstylist.name}}</h2>
+      <p >{{'创意总监'}}</p>
+      <button class="button button-small icon "  ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"
+              ng-click="confirm(hairstylist)">
+        <span class="positive"> 预订该发型师</span>
+      </button>
+    </div>
+
+    <div class="row item-divider no-padding text-center " style="text-transform: capitalize;background-color: inherit!important;"  >
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 1}" ng-click="type = 1">{{works.length}}<br/>作品</div>
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 2}" ng-click="type = 2">200<br/>评价</div>
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 3}" ng-click="type = 3">300<br/>预约人</div>
+    </div>
+
+    <div ng-if="type === 1">
+      <div class="row post" ng-repeat="work in works" ng-if="$index % 3 == 0">
+        <div class="col"><img ng-src="{{works[$index].slave.coverImg}}" /></div>
+        <div class="col"><img ng-src="{{works[$index + 1].slave.coverImg}}" /></div>
+        <div class="col"><img ng-src="{{works[$index + 2].slave.coverImg}}" /></div>
+      </div>
+    </div>
+
+    <div ng-if="type === 2">
+      <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter">
+        <img ng-src="{{contact.photo}}">
+        <h2 class="font-thin">{{contact.name}}</h2>
+        <p>{{contact.city}}</p>
+        <button class="button button-small button-balanced icon ion-ios-checkmark-empty" ng-if="$index % 3 == 1"> Following</button>
+        <button class="button button-small button-balanced button-outline icon ion-ios-personadd-outline" ng-if="$index % 3 !== 1"> Follow</button>
+      </div>
+    </div>
+
+    <div ng-if="type === 3">
+      <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter" ng-if="$index % 3 === 1">
+        <img ng-src="{{contact.photo}}">
+        <h2 class="font-thin">{{contact.name}}</h2>
+        <p>{{contact.city}}</p>
+        <button class="button button-small button-balanced icon ion-ios-checkmark-empty" ng-if="$index % 3 === 1"> Unfollow</button>
+      </div>
+    </div>
+
+
+  </ion-content>
+</ion-view>

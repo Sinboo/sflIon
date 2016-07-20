@@ -3,17 +3,24 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistListCtrl', function ($scope, $state, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, noBackGoTo, appModalService, listService, $ionicPopover, PAGE_SIZE) {
-    $scope.noBackGoTo = noBackGoTo;
-    $scope.rating = 4;
+  .controller('HairstylistsCtrl', function ($scope, $state, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE) {
     $scope._ = _;
     $scope.UID = UID();
+    $scope.rating = 4;
+    $scope.price = $state.params.price ? $state.params.price : null;
+    console.log($state.params)
+    var scrollList;
 
-    var scrollList = listService.join3ScrollList('allHairstylist', 'hairstylist', 'like', 'hairstylistUid', 'updateAt');
+    if ($scope.price !== null) {
+      scrollList = listService.join3ScrollList('hairstylistUnderPrice:'+$scope.price.id, 'hairstylist', 'like', 'hairstylistUid', 'updateAt');
+    }
+    else {
+      scrollList = listService.join4ScrollList('allHairstylist', 'hairstylist', 'like', 'customerOfHairstylist', 'hairstylistUid', 'updateAt');
+    }
     $scope.hairstylists = scrollList.list;
     console.log($scope.hairstylists);
     scrollList.scrollRef.scroll.next(PAGE_SIZE);
-
+    
     $scope.loadMore = function () {
       scrollList.scrollRef.scroll.next(PAGE_SIZE);
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -39,11 +46,18 @@ angular.module('sflIon')
     };
 
     $scope.showDetail = function (hairstylist) {
-      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist]});
+      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist], choosedPrice: $scope.price});
     };
-
-    $scope.chooseHairstylist = function (hairstylist) {
-      $state.go('customer.priceList', {hairstylist: hairstylist});
+    
+    $scope.confirm = function(hairstylist) {
+      if ($scope.price) {
+        $state.go('customer.createEditReservation', {value: {hairstylist: hairstylist, choosedPrice: $scope.price}});
+      }
+      else {
+        listService.list('hairstylistOfCustomer:'+UID()).$add({hairstylistUid: hairstylist.uid});
+        listService.list('customerOfHairstylist:'+hairstylist.uid).$add({customerUid: UID()});
+        $state.go('customer.salonContact');
+      }
     };
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {

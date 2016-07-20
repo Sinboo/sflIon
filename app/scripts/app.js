@@ -448,17 +448,91 @@ angular.module('sflIon', [
         }
       }
     })
-    .state('createEditReservation', {
+    .state('customer.createEditReservation', {
       url: '/createEditReservation',
-      params: { reservation: null },
-      templateUrl: 'templates/customer/salon/createEditReservation.html',
-      controller: 'CreateEditReservationCtrl',
+      params: { reservation: null, value: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/createEditReservation.html',
+          controller: 'CreateEditReservationCtrl'
+        }
+      },
       resolve: {
         userProfile: function(UserProfile){
           return UserProfile;
         }
       }
     })
+    .state('customer.priceList', {
+      url: '/priceList',
+      params: { hairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/priceList.html',
+          controller: 'PriceListCtrl'
+        }
+      }
+    })
+    .state('customer.workGroup', {
+      url: '/workGroup',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/workGroup.html',
+          controller: 'WorkGroupCtrl'
+        }
+      }
+    })
+    .state('customer.hairstylists', {
+      url: '/hairstylists',
+      params: { price: null, hairstylist: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/hairstylists.html',
+          controller: 'HairstylistsCtrl'
+        }
+      }
+    })
+    .state('customer.hairstylistDetail', {
+      url: '/hairstylistDetail',
+      params: { hairstylist: null, choosedPrice: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/hairstylistDetail.html',
+          controller: 'HairstylistDetailCtrl'
+        }
+      }
+    })
+    .state('customer.works', {
+      url: '/works',
+      params: { group: null, hairstylist: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/works.html',
+          controller: 'WorksCtrl'
+        }
+      }
+    })
+    .state('customer.workDetail', {
+      url: '/workDetail',
+      params: { work: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/workDetail.html',
+          controller: 'WorkDetailCtrl'
+        }
+      }
+    })
+    .state('customer.comment', {
+      url: '/comment',
+      params: { workId: null, choosedLike: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/comment.html',
+          controller: 'CommentCtrl'
+        }
+      }
+    })
+
     .state('customer.salonContact', {
       url: '/salonContact',
       views: {

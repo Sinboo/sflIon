@@ -1,4 +1,4 @@
-<ion-view cache-view="false" hide-nav-bar="true">
+<ion-view cache-view="false" hide-nav-bar="true" title="编辑预订">
 
   <ion-header-bar>
     <div class="row text-center">
@@ -57,10 +57,10 @@
 
 
       <div class="row text-center date-time-buttons" style="margin-top: 30px">
-        <div class="col stable-bg margin" ng-click="openWorkGroupModal()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
+        <div class="col stable-bg margin" ui-sref="customer.workGroup()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
           <p>优先选发型</p>
         </div>
-        <div class="col stable-bg margin" ng-click="openPriceListModal()"><button class="button button-icon icon ion-cash"></button>
+        <div class="col stable-bg margin" ui-sref="customer.priceList()"><button class="button button-icon icon ion-cash"></button>
           <p>优先选价格</p>
         </div>
       </div>

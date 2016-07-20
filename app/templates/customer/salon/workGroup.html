@@ -1,0 +1,67 @@
+<style>
+  .row {
+    margin: -1px;
+  }
+</style>
+
+<ion-view title="作品分组">
+
+  <ion-content class="has-header">
+    <div class="row  no-padding text-center stable-bg" >
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="chooseWorkGroup('F_SHORT')">
+          <div class="item item-text-wrap balanced-bg  light">
+            <i class="icon ion-android-contact"></i>
+            <span class="text-large">女士短发</span>
+          </div>
+        </div>
+      </div>
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="chooseWorkGroup('F_MID')">
+          <div class="item item-text-wrap energized-bg light">
+            <i class="icon ion-bowtie"></i>
+            <span class="text-large">女士中发</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row no-padding text-center stable-bg" >
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="chooseWorkGroup('F_LONG')">
+          <div class="item item-text-wrap calm-bg  light">
+            <i class="icon ion-fireball"></i>
+            <span class="text-large">女士长发</span>
+          </div>
+        </div>
+      </div>
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="chooseWorkGroup('M')">
+          <div class="item item-text-wrap  dark-bg light">
+            <i class="icon ion-ios-person"></i>
+            <span class="text-large">男士发型</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row no-padding text-center stable-bg" >
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="chooseWorkGroup('perm')">
+          <div class="item item-text-wrap royal-bg light">
+            <i class="icon ion-flame"></i>
+            <span class="text-large">烫发</span>
+          </div>
+        </div>
+      </div>
+      <div class="col no-padding">
+        <div class="card tile tile-large" ng-click="chooseWorkGroup('color')">
+          <div class="item item-text-wrap positive-bg light">
+            <i class="icon ion-bonfire"></i>
+            <span class="text-large">染发</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

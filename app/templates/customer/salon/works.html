@@ -1,0 +1,37 @@
+<ion-view title="作品">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header bg-lightgrey">
+    <!--<ion-refresher-->
+      <!--pulling-text="下拉更新..."-->
+      <!--on-refresh="doRefresh()">-->
+    <!--</ion-refresher>-->
+
+    <div class="card hybrid shop" ng-repeat="item in works | filter: searchFilter track by $index">
+      <div class="item item-thumbnail-left item-text-wrap shop">
+        <img ng-src="{{item.slave1.coverImg}}" ng-click="showDetail(item)">
+        <h2 class="text-small lead no-padding no-margin" ng-click="showDetail(item)">{{item.slave1.name}}</h2>
+        <p class="text-small" ng-click="showDetail(item)">${{item.slave1.price | number: 2}}</p>
+        <p class="text-small" ng-click="showDetail(item)">{{item.slave1.shortDesc}}</p>
+        <span class="interact">
+          <i class="icon calm" ng-class="{'ion-ios-heart': _.findWhere(_.values(item.slave2), {likerUid: UID}), 'ion-ios-heart-outline': !_.findWhere(_.values(item.slave2), {likerUid: UID}) }" ng-click="like(item)"> {{_.values(item.slave2).length}}</i>
+          <i class="icon ion-ios-chatbubble-outline calm"> {{_.values(item.slave3).length}}</i>
+        </span>
+        <br/>
+        <span class="text-small tags pull-left" ng-click="showDetail(item)" ng-if="item.slave1.discount ">{{item.slave1.discount*100 + '%'}}折扣</span>
+        <span class="text-smaller font-thin pull-right" style="margin-top: 10px">
+          <a class="waves-effect waves-light btn button-small red"  style="border-radius: 50px" ng-click="confirm(item)">&nbsp&nbspOK&nbsp&nbsp</a>
+        </span>
+      </div>
+    </div>
+
+    <ion-infinite-scroll ng-if="!noMoreItemsAvailable"
+                         immediate-check="false"
+                         on-infinite="loadMore()"
+                         distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
+
+</ion-view>

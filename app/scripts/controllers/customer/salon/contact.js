@@ -11,36 +11,12 @@ angular.module('sflIon')
     $scope.contacts = JoinList('hairstylistOfCustomer:'+UID(), 'hairstylist', 'hairstylistUid', 'updateAt');
     console.log($scope.contacts);
 
-    $scope.openHairstylistModal = function () {
-      appModalService.show(
-        'templates/customer/salon/modal/hairstylistsModal.html',
-        'HairstylistsModalCtrl as vm'
-      ).then(function (val) {
-        if (val) {
-          listService.list('hairstylistOfCustomer:'+UID()).$add({hairstylistUid: val.hairstylist.uid});
-          listService.list('customerOfHairstylist:'+val.hairstylist.uid).$add({customerUid: UID()});
-        }
-      })
+    $scope.openHairstylist = function () {
+      $state.go('customer.hairstylists');
     };
 
     $scope.showDetail = function (hairstylist) {
-      appModalService.show(
-        'templates/customer/salon/modal/hairstylistDetailModal.html',
-        'HairstylistDetailModalCtrl as vm',
-        {hairstylist: [hairstylist]}
-      ).then(function (val) {
-        console.log(val)
-        if (val) {
-          appModalService.show(
-            'templates/customer/salon/modal/priceListModal.html',
-            'PriceListModalCtrl as vm',
-            hairstylist
-          ).then(function (val) {
-            console.log(val);
-            $state.go('createEditReservation', {reservation: {hairstylist: hairstylist, price: val}})
-          })
-        }
-      })
+      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist]});
     };
     
     $scope.deleteContact = function (contact) {

@@ -1,0 +1,57 @@
+<ion-view title="作品详情">
+
+  <ion-content class="has-header" scroll-event-interval="5" padding="false">
+
+    <div class="card post-detail">
+      <div class="item item-avatar">
+        <img ng-src="{{hairstylist[0].avatar}}">
+        <h2 class="lead">{{hairstylist[0].name}}</h2>
+        <p class="text-smaller">{{hairstylist[0].mobile}}</p>
+      </div>
+      <div class="item item-body">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" active-slide="activeIndex"
+                       ng-init="activeIndex = 0" class="slide-intro">
+          <ion-slide ng-repeat="(key, value) in work.slave1.carouselImgs track by $index">
+            <img class="full-image" ng-src="{{value}}" alt="{{work.name}}">
+          </ion-slide>
+        </ion-slide-box>
+        <div class="item item-text-wrap no-b">
+          <h2 class="text-large lead text-left">{{work.slave1.name}}</h2>
+          <span class="tags pull-right"  >{{work.slave1.discount ? work.slave1.discount * 100 + '% 折扣' : '新品上市'}} </span>
+          <p class="text-medium">${{work.slave1.price | number:2}}</p>
+          <p class="text-small font-thin">
+            {{work.slave1.description}}
+          </p>
+        </div>
+
+        <div class="item comments">
+          <p>
+            <span ng-click="like()"><img ng-src="{{_.values(item.slave)[0].avatar}}" class="likers" ng-repeat="item in likes | limitTo:-5">
+              <span class="pull-left interact"> +{{likes.length || 0}} 个喜欢</span>
+            </span>
+            <span ng-click="openComment(work.workId)" class="pull-right">{{comments.length || 0}} 条评论</span>
+          </p>
+        </div>
+        <div class="item comments no-b" ng-click="openComment(work.workId)">
+          <div class="item item-avatar" ng-if="comments.length > 0" ng-repeat="item in comments" >
+            <img ng-src="{{_.values(item.slave)[0].avatar}}"/>
+            <h2 class="text-small">{{_.values(item.slave)[0].name}}</h2>
+            <p class="text-smaller">{{item.master.content}}</p>
+
+          </div>
+          <p class="font-thin" ng-if="comments.length == 0" ng-click="openComment(work.workId)">暂时还没有人评论哦~ 快去留下第一条评论吧!</p>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="no-bg bt-grey ">
+    <div class="row">
+      <div class="col text-left no-padding" ng-click="openComment(work.workId, true)"><i class="icon text-small" ng-class="_.findWhere(likes, {likerUid: UID}) ? 'ion-ios-heart': 'ion-ios-heart-outline'"> {{_.findWhere(likes, {likerUid: UID}) ? '已喜欢' : '未喜欢'}}</i></div>
+      <div class="col text-center no-padding"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="confirm(work)"> 立即预订</i></div>
+      <div class="col text-right no-padding" ng-click="openComment(work.workId)"><i class="icon ion-ios-chatboxes-outline text-small"> {{comments.length || 0}} 评论</i></div>
+    </div>
+  </ion-footer-bar>
+
+</ion-view>

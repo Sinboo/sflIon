@@ -27,29 +27,50 @@ angular.module('sflIon')
       $scope.reservation.hairstylist.rating = 4;
     }
 
-    $scope.openWorkGroupModal = function () {
-      appModalService.show(
-        'templates/customer/salon/modal/workGroupModal.html',
-        'WorkGroupModalCtrl as vm'
-      ).then(
-        function (value) {
-          if (value) {
-            console.log(value)
-            $scope.reservation.work = null;
-            $scope.reservation.price = null;
-            $scope.reservation.hairstylist = null;
-            $scope.reservation.work = value;
-            listService.list('hairstylist:'+value.slave.hairstylistUid).$loaded().then(function (data) {
-              $scope.reservation.hairstylist = data[0];
-              $scope.reservation.hairstylist.rating = 4;
-            })
-          }
-        },
-        function(err) {
-          Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
-        }
-      );
-    };
+    if ($state.params && $state.params.value && $state.params.value.choosedPrice) {
+      $scope.reservation.work = null;
+      $scope.reservation.price = null;
+      $scope.reservation.hairstylist = null;
+      $scope.reservation.price = $state.params.value.choosedPrice;
+      $scope.reservation.hairstylist = $state.params.value.hairstylist;
+      $scope.reservation.hairstylist.rating = 4;
+    }
+
+    if ($state.params && $state.params.value && $state.params.value.work) {
+      $scope.reservation.work = null;
+      $scope.reservation.price = null;
+      $scope.reservation.hairstylist = null;
+      $scope.reservation.work = $state.params.value.work;
+      listService.list('hairstylist:'+$state.params.value.work.slave.hairstylistUid).$loaded().then(function (data) {
+        $scope.reservation.hairstylist = data[0];
+        $scope.reservation.hairstylist.rating = 4;
+      })
+    }
+
+
+    //   $scope.openWorkGroupModal = function () {
+    //   appModalService.show(
+    //     'templates/customer/salon/modal/workGroupModal.html',
+    //     'WorkGroupModalCtrl as vm'
+    //   ).then(
+    //     function (value) {
+    //       if (value) {
+    //         console.log(value)
+    //         $scope.reservation.work = null;
+    //         $scope.reservation.price = null;
+    //         $scope.reservation.hairstylist = null;
+    //         $scope.reservation.work = value;
+    //         listService.list('hairstylist:'+value.slave.hairstylistUid).$loaded().then(function (data) {
+    //           $scope.reservation.hairstylist = data[0];
+    //           $scope.reservation.hairstylist.rating = 4;
+    //         })
+    //       }
+    //     },
+    //     function(err) {
+    //       Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
+    //     }
+    //   );
+    // };
 
     $scope.saveReservation = function (reservation) {
       console.log(reservation);
@@ -81,27 +102,27 @@ angular.module('sflIon')
 
     };
 
-    $scope.openPriceListModal = function () {
-      appModalService.show(
-        'templates/customer/salon/modal/priceListModal.html',
-        'PriceListModalCtrl as vm'
-      ).then(
-        function (value) {
-          if (value) {
-            console.log(value);
-            $scope.reservation.work = null;
-            $scope.reservation.price = null;
-            $scope.reservation.hairstylist = null;
-            $scope.reservation.price = value.choosedPrice;
-            $scope.reservation.hairstylist = value.hairstylist;
-            $scope.reservation.hairstylist.rating = 4;
-          }
-        },
-        function(err) {
-          Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
-        }
-      );
-    };
+    // $scope.openPriceListModal = function () {
+    //   appModalService.show(
+    //     'templates/customer/salon/modal/priceListModal.html',
+    //     'PriceListModalCtrl as vm'
+    //   ).then(
+    //     function (value) {
+    //       if (value) {
+    //         console.log(value);
+    //         $scope.reservation.work = null;
+    //         $scope.reservation.price = null;
+    //         $scope.reservation.hairstylist = null;
+    //         $scope.reservation.price = value.choosedPrice;
+    //         $scope.reservation.hairstylist = value.hairstylist;
+    //         $scope.reservation.hairstylist.rating = 4;
+    //       }
+    //     },
+    //     function(err) {
+    //       Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
+    //     }
+    //   );
+    // };
 
 
 
