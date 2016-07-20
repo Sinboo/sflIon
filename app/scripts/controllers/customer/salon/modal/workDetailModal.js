@@ -28,16 +28,24 @@ angular.module('sflIon')
       likeList.$loaded(function (data) {
         console.log(data)
         vm.work.likes = data;
-        angular.forEach(vm.work.likes, function (item) {
-          if (item.likerUid == uid) {
-            vm.myLike = item;
-            vm.liked = true;
-            console.log(vm.myLike, vm.liked)
-          }
-          listService.list(userGroup()+':'+item.likerUid).$loaded(function (userProfile) {
-            item.userProfile = userProfile[0];
+        if (vm.work.likes.length == 0) {
+          vm.liked = false;
+        }
+        else {
+          angular.forEach(vm.work.likes, function (item) {
+            if (item.likerUid == uid) {
+              vm.myLike = item;
+              vm.liked = true;
+              console.log(vm.myLike, vm.liked)
+            }
+            else {
+              vm.liked = false;
+            }
+            listService.list(userGroup()+':'+item.likerUid).$loaded(function (userProfile) {
+              item.userProfile = userProfile[0];
+            })
           })
-        })
+        }
       });
     };
     initLike();
