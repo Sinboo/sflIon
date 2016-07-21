@@ -56,6 +56,8 @@
     "org.apache.cordova.whitelist",
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.statusbar",
-    "com.ionic.keyboard"
-  ]
+    "com.ionic.keyboard",
+    "ionic-plugin-keyboard"
+  ],
+  "cordovaPlatforms": []
 }

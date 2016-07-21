@@ -38,6 +38,10 @@ angular.module('sflIon')
       $state.go('customer.comment', {workId: workId, choosedLike: choosedLike});
     };
 
+    $scope.showHairstylistDetail = function (hairstylist) {
+      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist]});
+    };
+
 
     $scope.confirm = function(work) {
       var work1 = {};

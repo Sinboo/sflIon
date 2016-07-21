@@ -3,11 +3,10 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('EditProfileCtrl', function ($scope, userProfile, noBackGoTo) {
+  .controller('EditProfileCtrl', function ($scope, UserProfile, noBackGoTo) {
     $scope.noBackGoTo = noBackGoTo;
     $scope.type = 1;
-    $scope.userProfile = userProfile;
-    console.log($scope.userProfile);
+    $scope.userProfile = UserProfile[0];
     // $scope.hairstylist = parameters.hairstylist[0];
     // console.log($scope.hairstylist);
 

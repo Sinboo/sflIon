@@ -3,7 +3,7 @@
   <ion-content class="has-header bt-grey profile" ion-sticky>
     <div class="header"> <!-- style="background-image: url('../../../../img/hairstylist-bg1.jpg')"> -->
       <img ng-src="{{hairstylist.avatar}}">
-      <span class="badge badge-royal" ng-if="hairstylist.likes.length > 0">{{hairstylist.likes.length + '个赞'}}</span>
+      <span class="badge badge-royal" ng-if="likes.length > 0">{{likes.length + '个赞'}}</span>
       <h2 class="lead text-medium">{{hairstylist.name}}</h2>
       <p >{{'创意总监'}}</p>
       <button class="button button-small icon "  ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"

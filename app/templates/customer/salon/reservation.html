@@ -4,7 +4,7 @@
   </ion-nav-buttons>
 
   <div class="my-2sub-header">
-      <div class="row padding bb-grey text-center" style="margin-top: 40px">
+      <div class="row padding bb-grey text-center" style="margin-top: 50px">
         <div class="col font-thin balanced bb" ng-click="goTo('customer.salonReservation')">预订</div>
         <div class="col font-thin" ng-click="goTo('customer.salonContact')">常用联系人</div>
         <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-    <ion-content class="has-2sub-header">
+    <ion-content class="has-header has-subheader has-tabs-top">
       <div class="card no-margin no-br" ng-if="seletedReservations.length == 0">
         <div class="item item-text-wrap item-icon-left teal lighten-1">
           <i class="icon ion-ionic light"></i>

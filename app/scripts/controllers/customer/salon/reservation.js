@@ -4,14 +4,13 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($scope, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+  .controller('SalonReservationCtrl', function ($scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
     $scope.$on("$ionicView.enter", function(event, data){
       initData();
     });
 
     $scope.viewDate = new Date();
     $scope.now = new Date().getTime();
-    var startOfDay = moment($scope.viewDate).startOf('day')._d;
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
@@ -25,25 +24,16 @@ angular.module('sflIon')
     };
 
     $scope.showDetail = function (reservation) {
-      console.log(reservation)
       if (reservation.workId) {
         listService.list('work').$loaded().then(function (works) {
           var work = works.$getRecord(reservation.workId);
-          appModalService.show(
-            'templates/customer/salon/modal/workDetailModal.html',
-            'WorkDetailModalCtrl as vm',
-            {workId: reservation.workId, slave: work}
-          )
+          $state.go('customer.workDetail', {work: {workId: reservation.workId, slave1: work}});
         });
       }
       else if (reservation.hairstylistUid) {
-        listService.list('hairstylist:'+reservation.hairstylistUid).$loaded().then(function (hairstylist) {
-          appModalService.show(
-            'templates/customer/salon/modal/hairstylistDetailModal.html',
-            'HairstylistDetailModalCtrl as vm',
-            {hairstylist: hairstylist}
-          )
-        })
+        listService.list('hairstylist:' + reservation.hairstylistUid).$loaded().then(function (hairstylist) {
+          $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist[0]]});
+        });
       }
     };
 

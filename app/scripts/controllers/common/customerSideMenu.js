@@ -3,8 +3,8 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('CustomerSideMenuCtrl', function ($scope, $state, userProfile) {
-    $scope.userProfile = userProfile;
+  .controller('CustomerSideMenuCtrl', function ($scope, $state, UserProfile) {
+    $scope.userProfile = UserProfile;
     // $scope.hairstylist = parameters.hairstylist[0];
     // console.log($scope.hairstylist);
 

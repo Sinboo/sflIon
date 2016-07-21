@@ -12,8 +12,8 @@ angular.module('sflIon', [
   'mwl.calendar',
   'angularMoment',
   'ion-sticky',
-  // 'timer',
   'ngCordova',
+  'ngIOS9UIWebViewPatch',
   'monospaced.elastic',
   'ionic.ui.modalService',
   'LocalStorageModule',
@@ -432,11 +432,6 @@ angular.module('sflIon', [
       url: '^/customer',
       templateUrl: 'templates/common/customerSideMenu.html',
       controller: 'CustomerSideMenuCtrl',
-      resolve: {
-        userProfile: function(UserProfile){
-          return UserProfile;
-        }
-      },
       abstract: true
     })
     .state('customer.salonReservation', {
@@ -455,11 +450,6 @@ angular.module('sflIon', [
         'menuContent': {
           templateUrl: 'templates/customer/salon/createEditReservation.html',
           controller: 'CreateEditReservationCtrl'
-        }
-      },
-      resolve: {
-        userProfile: function(UserProfile){
-          return UserProfile;
         }
       }
     })
@@ -578,11 +568,6 @@ angular.module('sflIon', [
           templateUrl: 'templates/account/account.html',
           controller: 'AccountCtrl'
         }
-      },
-      resolve: {
-        userProfile: function(UserProfile){
-          return UserProfile;
-        }
       }
     })
 
@@ -592,11 +577,6 @@ angular.module('sflIon', [
         'menuContent': {
           templateUrl: 'templates/account/editProfile.html',
           controller: 'EditProfileCtrl'
-        }
-      },
-      resolve: {
-        userProfile: function(UserProfile){
-          return UserProfile;
         }
       }
     })

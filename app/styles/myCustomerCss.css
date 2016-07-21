@@ -1,18 +1,19 @@
-.my-2sub-header{
+ .my-2sub-header{
     height: 141px;
 }
 
-.has-2sub-header{
+ .has-2sub-header{
     top:141px;
 }
 
-.my-1sub-header{
+ .my-1sub-header{
     height: 80px;
 }
 
-.has-1sub-header{
+ .has-1sub-header{
     top:80px;
 }
+
 
 /* --------------------------------
 

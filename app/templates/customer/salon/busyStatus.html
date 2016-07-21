@@ -3,15 +3,15 @@
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <div class="my-1sub-header">
-    <div class="row padding bb-grey text-center" style="margin-top: 40px">
+  <div class="bar-subheader">
+    <div class="row padding bb-grey text-center" style="margin-top: 50px">
       <div class="col font-thin " ng-click="goTo('customer.salonReservation')">预订</div>
       <div class="col font-thin " ng-click="goTo('customer.salonContact')">常用联系人</div>
       <div class="col font-thin balanced bb" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
     </div>
   </div>
 
-  <ion-content class="has-1sub-header bg-lightgrey padding">
+  <ion-content class="has-header has-subheader bg-lightgrey padding">
     <div class="item no-padding" ng-repeat="item in hairstylists | filter: searchFilter">
       <div class="row">
         <div class="col s12 m7">

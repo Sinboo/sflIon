@@ -15,7 +15,7 @@
     </ion-header-bar>
     <ion-content padding="false" class="side-menu-left">
       <ion-list>
-        <ion-item class="c1 item-avatar" menu-close><img ng-src="{{userProfile.avatar}}" ui-sref="customer.account"></ion-item>
+        <ion-item class="c1 item-avatar" menu-close><img ng-src="{{userProfile[0].avatar}}" ui-sref="customer.account"></ion-item>
         <ion-item class="c2" menu-close><i class="icon ion-ios-star-outline" ui-sref="customer.salonReservation()"></i></ion-item>
         <ion-item class="c3" menu-close><i class="icon ion-ios-paper-outline" ui-sref="customer.workList()"></i></ion-item>
         <ion-item class="c4" menu-close><i class="icon ion-ios-cart-outline" ui-sref="tabs.shop-front"></i></ion-item>

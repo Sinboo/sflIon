@@ -3,7 +3,7 @@
   <ion-content class="has-header" scroll-event-interval="5" padding="false">
 
     <div class="card post-detail">
-      <div class="item item-avatar">
+      <div class="item item-avatar" ng-click="showHairstylistDetail(hairstylist[0])">
         <img ng-src="{{hairstylist[0].avatar}}">
         <h2 class="lead">{{hairstylist[0].name}}</h2>
         <p class="text-smaller">{{hairstylist[0].mobile}}</p>

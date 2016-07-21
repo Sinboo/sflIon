@@ -3,11 +3,8 @@
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content class="has-header bg-lightgrey">
-    <!--<ion-refresher-->
-      <!--pulling-text="下拉更新..."-->
-      <!--on-refresh="doRefresh()">-->
-    <!--</ion-refresher>-->
+  <ion-content class="has-header bg-lightgrey" style="margin-top: 50px">
+
 
     <div class="card hybrid shop" ng-repeat="item in works | filter: searchFilter track by $index">
       <div class="item item-thumbnail-left item-text-wrap shop">

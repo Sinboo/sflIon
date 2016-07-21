@@ -72,12 +72,10 @@ angular.module('sflIon')
     }
   })
   .factory('UserProfile', function (listService, UID, userGroup) {
-    return listService.list(userGroup()+':'+UID()).$loaded().then(function (data) {
-      return data[0];
-    })
+    return listService.list(userGroup()+':'+UID());
   })
 
-  .service('commonService', function (regionCache, httpService, $http, EXPRESS, localStorageService, publicFunc, $q, $timeout, $state, $stateParams) {
+  .service('commonService', function ($http, localStorageService, $q, $timeout, $state, $stateParams) {
     this.convertDate = function (d) {
       var date = new Date(d);
       var Y = date.getFullYear() + '-';

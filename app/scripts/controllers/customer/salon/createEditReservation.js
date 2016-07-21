@@ -4,15 +4,16 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, UID, userProfile) {
+  .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, UID, UserProfile) {
+    $scope.reservation = {};
     $scope.goTo = noBackGoTo;
     console.log($state.params);
-    console.log(userProfile);
 
-    $scope.reservation = {};
-    $scope.reservation.customerName = userProfile.name;
-    $scope.reservation.customerMobile = userProfile.mobile;
-    $scope.reservation.customerAvatar = userProfile.avatar;
+    UserProfile.$loaded(function (data) {
+      $scope.reservation.customerName = data[0].name;
+      $scope.reservation.customerMobile = data[0].mobile;
+      $scope.reservation.customerAvatar = data[0].avatar;
+    });
 
     if ($state.params && $state.params.reservation && $state.params.reservation.work) {
       $scope.reservation.work = $state.params.reservation.work;

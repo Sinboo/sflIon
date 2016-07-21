@@ -1,14 +1,14 @@
-<ion-view cache-view="false" hide-nav-bar="true" title="编辑预订">
+<ion-view cache-view="false" title="编辑预订">
 
-  <ion-header-bar>
-    <div class="row text-center">
+  <div class="bar-subheader">
+    <div class="row text-center padding" style="margin-top: 50px">
       <div class="col font-thin text-large dark" ng-click="goTo('customer.salonReservation')">取消</div>
       <div class="col font-thin text-large balanced bl-grey" ng-click="saveReservation(reservation)">保存</div>
     </div>
-  </ion-header-bar>
+  </div>
 
   <form name="reminderForm">
-    <ion-content class="has-header">
+    <ion-content class="has-header has-subheader">
 
       <label class="item item-input item-floating-label">
         <span class="input-label">姓名:</span>
