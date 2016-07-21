@@ -5,15 +5,15 @@
   </ion-nav-buttons>
 
   <div class="bar-subheader">
-    <div class="row padding bb-grey text-center" style="margin-top: 50px">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px">
       <div class="col font-thin " ng-click="goTo('customer.salonReservation')">预订</div>
-      <div class="col font-thin balanced bb" ng-click="goTo('customer.salonContact')">常用联系人</div>
+      <div class="col font-thin balanced bb" ng-click="goTo('customer.salonContact')" style="font-size: 18px">常用联系人</div>
       <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
     </div>
   </div>
 
-  <ion-content class="has-header has-subheader bg-lightgrey">
-      <div class="row" ng-repeat="contact in contacts | filter: searchFilter track by $index" ng-if="$index % 2==0">
+  <ion-content class="has-header has-subheader bg-lightgrey ">
+      <div class="row" style="margin-bottom: 10px" ng-repeat="contact in contacts | filter: searchFilter track by $index" ng-if="$index % 2==0">
 
         <div class="col">
           <div class="card contact animated bounceIn item-remove-animate" ng-if="contacts[$index] !== undefined">

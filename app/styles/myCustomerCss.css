@@ -1,9 +1,17 @@
+.handle-padding{
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+
  .my-2sub-header{
-    height: 141px;
+    height: 137px;
+
 }
 
  .has-2sub-header{
-    top:141px;
+    top:137px;
 }
 
  .my-1sub-header{
@@ -13,6 +21,9 @@
  .has-1sub-header{
     top:80px;
 }
+ .header-margin-adjust{
+     margin-top: 55px;
+ }
 
 
 /* --------------------------------

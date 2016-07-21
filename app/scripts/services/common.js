@@ -71,11 +71,13 @@ angular.module('sflIon')
       return localStorageService.cookie.get('user').userGroup;
     }
   })
-  .factory('UserProfile', function (listService, UID, userGroup) {
-    return listService.list(userGroup()+':'+UID());
+  .factory('UserProfile', function (localStorageService) {
+    return function () {
+      return localStorageService.cookie.get('user').userProfile;
+    }
   })
 
-  .service('commonService', function ($http, localStorageService, $q, $timeout, $state, $stateParams) {
+  .service('commonService', function ($http, localStorageService, $q, $timeout, $state, $stateParams, listService, UID, userGroup) {
     this.convertDate = function (d) {
       var date = new Date(d);
       var Y = date.getFullYear() + '-';
@@ -114,6 +116,16 @@ angular.module('sflIon')
 
       return parseFloat(finalResult);
     };
+    this.userProfile = function (UserProfile) {
+      var userProfile = {};
+      var list = listService.list(userGroup()+':'+UID());
+      list.$loaded(function (data) {
+        userProfile = data[0];
+      });
+      return {
+        userProfile: userProfile
+      }
+    }
     
 
 

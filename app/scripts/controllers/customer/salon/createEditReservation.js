@@ -9,11 +9,10 @@ angular.module('sflIon')
     $scope.goTo = noBackGoTo;
     console.log($state.params);
 
-    UserProfile.$loaded(function (data) {
-      $scope.reservation.customerName = data[0].name;
-      $scope.reservation.customerMobile = data[0].mobile;
-      $scope.reservation.customerAvatar = data[0].avatar;
-    });
+    var userProfile = UserProfile();
+    $scope.reservation.customerName = userProfile.name;
+    $scope.reservation.customerMobile = userProfile.mobile;
+    $scope.reservation.customerAvatar = userProfile.avatar;
 
     if ($state.params && $state.params.reservation && $state.params.reservation.work) {
       $scope.reservation.work = $state.params.reservation.work;

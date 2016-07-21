@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('sflIon')
-  .service('loginService', function (localStorageService, WD_URL, userGroup) {
+  .service('loginService', function (localStorageService, WD_URL, userGroup, UserProfile) {
 
     this.initUser = function () {
       function authDataCallback(authData) {
         if (authData) {
           authData.userGroup = userGroup();
+          authData.userProfile = UserProfile();
           localStorageService.cookie.set('user', authData);
         } else {
           localStorageService.cookie.set('user', {anonymous: true});

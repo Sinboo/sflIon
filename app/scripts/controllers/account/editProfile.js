@@ -6,7 +6,7 @@ angular.module('sflIon')
   .controller('EditProfileCtrl', function ($scope, UserProfile, noBackGoTo) {
     $scope.noBackGoTo = noBackGoTo;
     $scope.type = 1;
-    $scope.userProfile = UserProfile[0];
+    $scope.userProfile = UserProfile();
     // $scope.hairstylist = parameters.hairstylist[0];
     // console.log($scope.hairstylist);
 

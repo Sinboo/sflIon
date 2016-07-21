@@ -4,10 +4,18 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+  .controller('SalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
     $scope.$on("$ionicView.enter", function(event, data){
       initData();
+
+      console.log($rootScope.previousState, $rootScope.previousState == 'customer.createEditReservation')
+
+      if ($rootScope.previousState == 'customer.createEditReservation') {
+        $scope.handleMargin = true;
+      }
     });
+
+
 
     $scope.viewDate = new Date();
     $scope.now = new Date().getTime();

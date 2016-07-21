@@ -42,9 +42,11 @@ angular.module('sflIon', [
       StatusBar.styleDefault();
     }
   });
-
+  
   $rootScope.$on('$stateChangeSuccess',
     function (event, toState, toParams, fromState, fromParams) {
+      $rootScope.previousState = fromState.name;
+      $rootScope.currentState = toParams.name;
       //$activityIndicator.stopAnimating();
       $ionicLoading.hide();
       // console.log(fromState, toState)

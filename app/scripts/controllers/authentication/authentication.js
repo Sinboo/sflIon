@@ -22,15 +22,21 @@ angular.module('sflIon')
               listService.list('customer:'+authData.uid.split(':')[1]).$loaded(function (data) {
                 if (data.length > 0) {
                   authData.userGroup = 'customer';
-                  localStorageService.cookie.set('user', authData);
-                  console.log("Logged in as:", authData);
+                  listService.list(authData.userGroup+':'+authData.uid.split(':')[1]).$loaded(function (data) {
+                    authData.userProfile = data[0];
+                    localStorageService.cookie.set('user', authData);
+                    console.log("Logged in as:", authData);
+                  });
                 }
               });
               listService.list('hairstylist:'+authData.uid.split(':')[1]).$loaded(function (data) {
                 if (data.length > 0) {
                   authData.userGroup = 'hairstylist';
-                  localStorageService.cookie.set('user', authData);
-                  console.log("Logged in as:", authData);
+                  listService.list(authData.userGroup+':'+authData.uid.split(':')[1]).$loaded(function (data) {
+                    authData.userProfile = data[0];
+                    localStorageService.cookie.set('user', authData);
+                    console.log("Logged in as:", authData);
+                  });
                 }
               });
               Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '登录成功!', 2000);

@@ -21,7 +21,7 @@
       <!--<div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 3}" ng-click="type = 3">300<br/></div>-->
     </div>
 
-    <div ng-if="type === 1">
+    <div ng-show="type === 1">
       <div class="list history" ng-repeat="order in orders  | filter: searchFilter track by $index">
         <div class="item item-avatar">
           <img ng-src="{{order.hairstylistAvatar}}">
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div ng-if="type === 2">
+    <div ng-show="type === 2">
       <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter">
         <img ng-src="{{contact.photo}}">
         <h2 class="font-thin">{{contact.name}}</h2>
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div ng-if="type === 3">
+    <div ng-show="type === 3">
       <div class="item item-avatar item-button-right followers" ng-repeat="contact in contacts  | filter: searchFilter" ng-if="$index % 3 === 1">
         <img ng-src="{{contact.photo}}">
         <h2 class="font-thin">{{contact.name}}</h2>

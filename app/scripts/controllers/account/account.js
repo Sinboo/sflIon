@@ -5,9 +5,8 @@
 angular.module('sflIon')
   .controller('AccountCtrl', function ($scope, UserProfile, $state, listService) {
     $scope.type = 1;
-    UserProfile.$loaded(function (data) {
-      $scope.userProfile = data[0];
-    });
+    $scope.userProfile = UserProfile();
+    
 
     $scope.editProfile = function () {
       $state.go('customer.editProfile')
