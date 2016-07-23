@@ -4,5 +4,7 @@
 'use strict';
 angular.module('sflIon')
   .controller('CustomerSideMenuCtrl', function ($scope, $state, UserProfile) {
-     $scope.userProfile = UserProfile();
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.userProfile = UserProfile();
+    });
   });

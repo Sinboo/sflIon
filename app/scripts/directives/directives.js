@@ -40,6 +40,7 @@ angular.module('sflIon')
     }
   };
 }])
+
   .directive('sideMenu', [function () {
     return {
       restrict: 'E',

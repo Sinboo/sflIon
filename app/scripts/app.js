@@ -12,6 +12,11 @@ angular.module('sflIon', [
   'mwl.calendar',
   'angularMoment',
   'ion-sticky',
+  'upyun',
+  'uuid',
+  'ionic-fullscreen',
+  'angularValidateWithToast',
+  'ionic-toast',
   'ngCordova',
   'ngIOS9UIWebViewPatch',
   'monospaced.elastic',
@@ -162,6 +167,17 @@ angular.module('sflIon', [
         }
       }
     })
+  })
+  .config(['upyunProvider',function(upyunProvider) {
+    upyunProvider.config({
+      form_api_secret: 'ZeJhPE68fuX7jRkPMeFXOOyBl40=',
+      bucket: 'imtailor'
+    });
+  }])
+  .config(function($ionicConfigProvider) {
+
+    $ionicConfigProvider.scrolling.jsScrolling(true);
+
   })
 
 .config(function ($ionicConfigProvider, calendarConfig, ChartJsProvider) {
@@ -486,7 +502,7 @@ angular.module('sflIon', [
     })
     .state('customer.hairstylistDetail', {
       url: '/hairstylistDetail',
-      params: { hairstylist: null, choosedPrice: null },
+      params: { hairstylist: null, choosedPrice: null, type: null },
       views: {
         'menuContent': {
           templateUrl: 'templates/customer/salon/hairstylistDetail.html',

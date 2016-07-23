@@ -12,42 +12,61 @@
   </div>
 
   <ion-content class="has-header has-subheader bg-lightgrey padding">
-    <div class="item no-padding" ng-repeat="item in hairstylists | filter: searchFilter">
-      <div class="row">
-        <div class="col s12 m7">
-          <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img class="activator" ng-src={{item.hairstylist.avatar}}>
-            </div>
-            <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">{{item.hairstylist.name}}<i class="icon ion-arrow-right"></i></span>
-              <p ><a href="">有3人排队中...</a></p>
-            </div>
-            <div class="card-reveal">
-              <span class="card-title grey-text text-darken-4" style="font-size: 16px!important;"><span style="margin-right: 10px" class="balanced" ng-click="showDetail(item.hairstylist)">{{item.hairstylist.name}}</span>预订详情:<i class="icon ion-close pull-right"></i></span>
-              <ion-scroll direction="y" style="height:100%">
-                <section id="cd-timeline" class="cd-container">
-                  <div ng-repeat="order in item.orderList">
-                    <div class="cd-timeline-block">
-                      <div class="cd-timeline-picture dark">
-                        <img ng-src={{order.slave.customerAvatar}} />
-                      </div>
-                      <!-- cd-timeline-img -->
-                      <div class="cd-timeline-content dark">
-                        <h5 class="marginBottom0 marginTop0">客户:{{order.slave.customerName}}</h5>
-                        <p class="marginTop5 cd-author">时间: {{order.slave.createAt | date: "MM月dd日 HH:mm"}}</p>
-                        <p class="marginTop5 cd-author">服务: {{order.slave.workName || order.slave.priceName}} </p>
-                        <p class="timelineText">订单价格:{{order.slave.orderPrice}}</p>
-                        <p class="timelineText">预约备注:{{order.slave.notes}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </ion-scroll>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ul class="collection">
+      <li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item)[0])" ng-repeat="item in hairstylists | filter: searchFilter">
+        <img ng-src={{_.values(item)[0].avatar}} alt="" class="circle">
+        <span class="title">{{_.values(item)[0].name}}</span>
+        <p>{{item.orderList.length}}个预订: <br>
+          <span class="chip" ng-repeat="order in item.orderList | limitTo:-5">
+            <img ng-src="{{order.slave.customerAvatar}}" alt="Contact Person">
+            {{order.slave.bookedStartAt | date: 'HH:mm'}}
+          </span>
+        <span class="chip" ng-if="item.orderList.length > 5">
+          查看更多...
+        </span>
+        </p>
+        <a href="" ng-if="item.orderList.length == 0" class="secondary-content"><i class="material-icons">闲</i></a>
+        <a href="" ng-if="item.orderList.length > 0" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">忙</span></i></a>
+      </li>
+    </ul>
+
+
+    <!--<div class="item no-padding" ng-repeat="item in hairstylists | filter: searchFilter">-->
+      <!--<div class="row">-->
+        <!--<div class="col">-->
+          <!--<div class="card">-->
+            <!--<div class="card-image waves-effect waves-block waves-light">-->
+              <!--<img class="activator" ng-src={{item.hairstylist.avatar}}>-->
+            <!--</div>-->
+            <!--<div class="card-content">-->
+              <!--<span class="card-title activator grey-text text-darken-4">{{item.hairstylist.name}}<i class="icon ion-arrow-right"></i></span>-->
+              <!--<p ><a href="">有3人排队中...</a></p>-->
+            <!--</div>-->
+            <!--<div class="card-reveal">-->
+              <!--<span class="card-title grey-text text-darken-4" style="font-size: 16px!important;"><span style="margin-right: 10px" class="balanced" ng-click="showDetail(item.hairstylist)">{{item.hairstylist.name}}</span>预订详情:<i class="icon ion-close pull-right"></i></span>-->
+              <!--<ion-scroll direction="y" style="height:100%">-->
+                <!--<section id="cd-timeline" class="cd-container">-->
+                  <!--<div ng-repeat="order in item.orderList">-->
+                    <!--<div class="cd-timeline-block">-->
+                      <!--<div class="cd-timeline-picture dark">-->
+                        <!--<img ng-src={{order.slave.customerAvatar}} />-->
+                      <!--</div>-->
+                      <!--&lt;!&ndash; cd-timeline-img &ndash;&gt;-->
+                      <!--<div class="cd-timeline-content dark">-->
+                        <!--<h5 class="marginBottom0 marginTop0">客户:{{order.slave.customerName}}</h5>-->
+                        <!--<p class="marginTop5 cd-author">时间: {{order.slave.createAt | date: "MM月dd日 HH:mm"}}</p>-->
+                        <!--<p class="marginTop5 cd-author">服务: {{order.slave.workName || order.slave.priceName}} </p>-->
+                        <!--<p class="timelineText">订单价格:{{order.slave.orderPrice}}</p>-->
+                        <!--<p class="timelineText">预约备注:{{order.slave.notes}}</p>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</section>-->
+              <!--</ion-scroll>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
   </ion-content>
 </ion-view>

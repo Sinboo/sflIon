@@ -256,5 +256,30 @@ angular.module('sflIon')
       return listService.list('', query)
     };
   })
+  .factory('Join3List', function (listService, WD_URL) {
+    function buildNorm(childName, childName2, childName3, masterKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1', 'master.'+masterKey],
+        [ref3, 'slave2', 'master.'+masterKey]
+      )
+        .select('master.'+masterKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'}
+        )
+        .ref();
+      return norm;
+    }
+
+    return function (childName, childName2, childName3, masterKey, field) {
+      var norm = buildNorm(childName, childName2, childName3, masterKey, field);
+      var query = norm.orderByChild(field);
+      return listService.list('', query)
+    };
+  })
 
 ;

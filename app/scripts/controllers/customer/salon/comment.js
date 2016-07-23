@@ -3,10 +3,11 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('CommentCtrl', function ($scope, $state, UID, userGroup, $ionicPopover, listService, JoinList) {
+  .controller('CommentCtrl', function ($scope, $state, UID, userGroup, $ionicPopover, listService, Join3List, upyun, appModalService) {
     $scope._ = _;
     $scope.UID = UID();
     $scope.work = {};
+    $scope.comment = {};
     $scope.work.$id = $state.params.workId;
     $scope.choosedLike = $state.params.choosedLike ? $state.params.choosedLike : false;
     console.log($scope.work, $scope.choosedLike);
@@ -14,11 +15,10 @@ angular.module('sflIon')
     $scope.setChoosedLike = function (bl) {
       $scope.choosedLike = bl;
     };
-
-    $scope.comments = JoinList('comment:'+$scope.work.$id, userGroup(), 'commenerUid', 'updateAt');
+    $scope.comments = Join3List('comment:'+$scope.work.$id, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
     console.log($scope.comments);
 
-    $scope.likes = JoinList('like:'+$scope.work.$id, userGroup(), 'likerUid', 'updateAt');
+    $scope.likes = Join3List('like:'+$scope.work.$id, 'customer', 'hairstylist', 'likerUid', 'updateAt');
     console.log($scope.likes);
 
     $scope.like = function () {
@@ -46,7 +46,9 @@ angular.module('sflIon')
         var comment = {};
         comment.content = content;
         comment.commenerUid = $scope.UID;
-        list.add(comment);
+        list.add(comment).then(function () {
+          $scope.comment.commentMessage = "";
+        });
       })
     };
     
@@ -64,7 +66,29 @@ angular.module('sflIon')
       $scope.searchPopover.hide();
       $scope.getSearch();
       $scope.searchItem = '';
-    }
+    };
+    
+    $scope.inputCommentImgModal = function (commentMessage) {
+      appModalService.show(
+        'templates/customer/salon/modal/inputCommentImgModal.html',
+        'InputCommentImgModalCtrl as vm',
+        commentMessage
+      ).then(function (value) {
+        if (value) {
+          console.log(value);
+          var list = listService.list('comment:'+$scope.work.$id);
+          list.$loaded().then(function () {
+            var comment = {};
+            comment.content = value.content;
+            comment.imgUrl = value.imgUrl ? value.imgUrl : null;
+            comment.commenerUid = $scope.UID;
+            list.add(comment).then(function () {
+              $scope.comment.commentMessage = "";
+            });
+          })
+        }
+      })
+    };
 
 
     

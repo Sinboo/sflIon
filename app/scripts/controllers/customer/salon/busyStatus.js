@@ -6,17 +6,17 @@
 angular.module('sflIon')
   .controller('SalonBusyStatusCtrl', function ($scope, $state, noBackGoTo, listService, JoinList, appModalService, $ionicPopover) {
     $scope.goTo = noBackGoTo;
+    $scope._ = _;
+
+    // $scope.hairstylists = listService.list('hairstylist');
+    // console.log($scope.hairstylists);
+
 
     var list = listService.list('hairstylist');
     var initData = function () {
       list.$loaded().then(function (data) {
         $scope.hairstylists = data;
         angular.forEach($scope.hairstylists, function (item) {
-          $.each(item, function (k, v) {
-            if (k.indexOf('-') > -1) {
-              item.hairstylist = v
-            }
-          });
           item.orderList = JoinList('orderOfHairstylist:'+item.$id, 'order', 'orderId', 'updateAt');
         });
         console.log($scope.hairstylists);
@@ -25,23 +25,7 @@ angular.module('sflIon')
     initData();
 
     $scope.showDetail = function (hairstylist) {
-      appModalService.show(
-        'templates/customer/salon/modal/hairstylistDetailModal.html',
-        'HairstylistDetailModalCtrl as vm',
-        {hairstylist: [hairstylist]}
-      ).then(function (val) {
-        console.log(val)
-        if (val) {
-          appModalService.show(
-            'templates/customer/salon/modal/priceListModal.html',
-            'PriceListModalCtrl as vm',
-            hairstylist
-          ).then(function (val) {
-            console.log(val);
-            $state.go('createEditReservation', {reservation: {hairstylist: hairstylist, price: val}})
-          })
-        }
-      })
+      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist], type: 3});
     };
 
 

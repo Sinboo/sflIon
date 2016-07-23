@@ -40,52 +40,67 @@
   .list.list-inline .item-checkbox .checkbox {
     padding-left: 0; }
 </style>
-<ion-view hide-nav-bar="true" class="bg-lightgrey">
+<ion-view class="bg-lightgrey" title="个人信息">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="noBackGoTo('customer.account')"></button>
+  </ion-nav-buttons>
 
-  <ion-header-bar>
-    <div class="row text-center">
-      <div class="col font-thin text-large dark" ng-click="noBackGoTo('customer.account')">取消</div>
-      <div class="col font-thin text-large balanced bl-grey" ng-click="save()">保存</div>
-    </div>
-  </ion-header-bar>
 
-  <ion-content class="profile has-header bt-grey">
+    <ion-content class="profile has-header bt-grey">
+      <form novalidate>
 
-    <div class="header edit">
-      <img ng-src="{{userProfile.avatar}}">
-    </div>
+      <div class="header edit" ng-click="openFileDialog()">
+        <img ng-src="{{userProfile.avatar || 'img/user58.png'}}">
+      </div>
 
-    <p class="bb text-smaller padding-horizontal uppercase">个人信息:</p>
-    <div class="edit padding-horizontal">
-      <label class="item item-input">
-        <span class="input-label">真实姓名</span>
-        <input type="text">
-      </label>
-      <label class="item item-input">
-        <span class="input-label">生日</span>
-        <input type="date">
-      </label>
-    </div>
-    <p class="bb text-smaller padding-horizontal uppercase">性别:</p>
-    <div class="list list-inline text-center">
-      <ion-radio ng-click="setUserGroup('customer')">男</ion-radio>
-      <ion-radio ng-click="setUserGroup('hairstylist')">女</ion-radio>
-    </div>
-    <p class="bb text-smaller padding-horizontal uppercase">通信信息:</p>
-    <div class="edit padding-horizontal">
-      <label class="item item-input">
-        <span class="input-label">手机</span>
-        <input type="tel">
-      </label>
-      <label class="item item-input">
-        <span class="input-label">邮箱</span>
-        <input type="email">
-      </label>
-      <label class="item item-input">
-        <span class="input-label">地址</span>
-        <textarea rows="2"></textarea>
-      </label>
-    </div>
+      <p class="bb text-smaller padding-horizontal uppercase">个人信息:</p>
+      <div class="edit padding-horizontal">
+        <label class="item item-input">
+          <span class="input-label">真实姓名</span>
+          <input type="text" ng-model="userProfile.realName" bsy-form-validate="mustInputErrorTips" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">生日</span>
+          <input type="date" ng-model="userProfile.birthday" bsy-form-validate="mustInputErrorTips" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">个性签名</span>
+          <textarea rows="2" data-ng-model="userProfile.description" bsy-form-validate="mustInputErrorTips" required></textarea>
+        </label>
+      </div>
+      <p class="bb text-smaller padding-horizontal uppercase">性别:</p>
+      <div class="list list-inline text-center" >
+        <ion-radio ng-repeat="item in genderList"
+                   ng-value="item.value"
+                   ng-model="userProfile.gender">
+          {{ item.text }}
+        </ion-radio>
+      </div>
+      <p class="bb text-smaller padding-horizontal uppercase">通信信息:</p>
+      <div class="edit padding-horizontal">
+        <label class="item item-input">
+          <span class="input-label">手机</span>
+          <input type="tel" ng-model="userProfile.mobile" bsy-form-validate="mustInputErrorTips" ng-pattern="/^0?(17[6-7]|13[0-9]|15[0-9]|18[02356789]|14[57])[0-9]{8}$/" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">邮箱</span>
+          <input type="email" class="validate" ng-model="userProfile.email" bsy-form-validate="mustInputErrorTips" required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">地址</span>
+          <textarea rows="2" data-ng-model="userProfile.address" bsy-form-validate="mustInputErrorTips" required></textarea>
+        </label>
+      </div>
 
-  </ion-content>
+        <button class="button button-block button-balanced" check-form ng-click="validate() && save()">保存</button>
+
+      </form>
+
+    </ion-content>
+
+
+
+  <form name="uploadForm" role="form" ng-show="false">
+    <input type="file" name="file" class="uploadImage" id="file" /> <br/>
+  </form>
 </ion-view>

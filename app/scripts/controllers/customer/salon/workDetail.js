@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, JoinList, appModalService) {
+  .controller('WorkDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join3List) {
     $scope._ = _;
     $scope.UID = UID();
     $scope.work = $state.params.work;
@@ -11,9 +11,9 @@ angular.module('sflIon')
 
     $scope.hairstylist = listService.list('hairstylist:'+$scope.work.slave1.hairstylistUid);
 
-    $scope.comments = JoinList('comment:'+$scope.work.workId, userGroup(), 'commenerUid', 'updateAt');
+    $scope.comments = Join3List('comment:'+$scope.work.workId, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
 
-    $scope.likes = JoinList('like:'+$scope.work.workId, userGroup(), 'likerUid', 'updateAt');
+    $scope.likes = Join3List('like:'+$scope.work.workId, 'customer', 'hairstylist', 'likerUid', 'updateAt');
 
     $scope.like = function () {
       var likeList = listService.list('like:'+$scope.work.workId);

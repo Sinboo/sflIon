@@ -4,8 +4,11 @@
 'use strict';
 angular.module('sflIon')
   .controller('AccountCtrl', function ($scope, UserProfile, $state, listService) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.userProfile = UserProfile();
+    });
+
     $scope.type = 1;
-    $scope.userProfile = UserProfile();
     
 
     $scope.editProfile = function () {

@@ -4,11 +4,11 @@
   </ion-nav-button>
 
   <ion-content class="has-header bt-grey profile" ion-sticky>
-    <div class="header" style="background-image: url('../../img/hairstylist-bg1.jpg')">
+    <div class="header" style="background-image: url('img/hairstylist-bg1.jpg')">
       <img ng-src="{{userProfile.avatar}}">
       <!--<span class="badge badge-royal" ng-if="userProfile.likes.length > 0">{{userProfile.likes.length + '个赞'}}</span>-->
       <h2 class="lead text-medium">{{userProfile.name}}</h2>
-      <p >{{'创意总监'}}</p>
+      <p >{{userProfile.description}}</p>
       <button class="button button-small icon "  ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"
               ng-click="editProfile(userProfile)">
         <span class="positive"> 查看/修改详细资料</span>
