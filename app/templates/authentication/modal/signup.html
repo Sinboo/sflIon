@@ -44,6 +44,7 @@
 <ion-modal-view hide-nav-bar="true" class="auth" style="height: 350px!important;">
 
   <ion-content scroll="false" >
+    <form novalidate>
 
     <div class="padding text-center" >
       <ion-list>
@@ -52,33 +53,37 @@
 
           <label class="item item-input">
             <i class="icon ion-android-person placeholder-icon"></i>
-            <input type="text" placeholder="昵称" ng-model="vm.user.name" required>
+            <input type="text" placeholder="昵称" ng-model="vm.user.name" bsy-form-validate="mustInputErrorTips" required>
           </label>
           <label class="item item-input">
             <i class="icon ion-android-mail placeholder-icon"></i>
-            <input type="email" placeholder="邮箱" ng-model="vm.user.email" required>
+            <input type="email" placeholder="邮箱" ng-model="vm.user.email" bsy-form-validate="mustInputErrorTips" required>
           </label>
         </div>
 
         <label class="item item-input">
           <i class="icon ion-android-lock placeholder-icon"></i>
-          <input type="password" placeholder="密码" ng-model="vm.user.password" required>
+          <input type="password" placeholder="密码" ng-model="vm.user.password" bsy-form-validate="mustInputErrorTips" required>
         </label>
         <label class="item item-input">
           <i class="icon ion-android-lock placeholder-icon"></i>
-          <input type="password" placeholder="确认密码" ng-model="vm.user.rpassword" compare-to="vm.user.password">
+          <input type="password" placeholder="确认密码" ng-model="vm.user.rpassword" compare-to="vm.user.password" >
         </label>
         <div class="list list-inline">
-          <ion-radio ng-click="setUserGroup('customer')">用户</ion-radio>
-          <ion-radio ng-click="setUserGroup('hairstylist')">发型师</ion-radio>
-          <ion-radio ng-click="setUserGroup('frontdesk')">前台</ion-radio>
+          <ion-radio ng-repeat="item in userGroupList"
+                     ng-value="item.value"
+                     ng-model="vm.user.userGroup">
+            {{ item.text }}
+          </ion-radio>
         </div>
       </ion-list>
-      <button class="btn waves-effect waves-light button button-positive button-block waves-effect waves-light" ng-click="vm.confirm(vm.user)">注册</button>
+      <button class="btn waves-effect waves-light button button-positive button-block waves-effect waves-light" check-form ng-click="vm.validate() && vm.confirm(vm.user)">注册</button>
       <p class="padding-horizontal">
         <span class="balanced pull-left" ng-click="vm.openLogin();">登录页面</span>
         <span class="dark pull-right" ng-click="vm.cancel()">取消</span>
       </p>
     </div>
+
+    </form>
   </ion-content>
 </ion-modal-view>

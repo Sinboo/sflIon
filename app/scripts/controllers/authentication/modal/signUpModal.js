@@ -3,10 +3,28 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('SignUpModalCtrl', function ($scope, $ionicActionSheet, appModalService) {
+  .controller('SignUpModalCtrl', function ($scope, $ionicActionSheet, appModalService, ionicToast, appService) {
     var vm = this;
     vm.user = {};
 
+    $scope.userGroupList = [
+      { text: "用户", value: "customer" },
+      { text: "发型师", value: "hairstylist" },
+      { text: "前台", value: "receptionist" }
+    ];
+
+    $scope.mustInputErrorTips = {
+      required: '请填写必填项'
+    };
+
+    vm.validate = function () {
+      if (!vm.user.userGroup) {
+        ionicToast.show('请选择角色!', 'middle', false, 2000);return false;
+        // appService.showAlert('提示', '请选择角色', '确定')
+      }
+      return true;
+    };
+    
     vm.confirm = function(formData) {
       $scope.closeModal(formData);
     };
