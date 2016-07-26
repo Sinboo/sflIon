@@ -3,16 +3,17 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('AccountCtrl', function ($scope, UserProfile, $state, listService) {
+  .controller('AccountCtrl', function ($scope, UserProfile, $state, listService, userGroup) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.userProfile = UserProfile();
+      $scope.userGroup = userGroup()
     });
 
     $scope.type = 1;
     
 
     $scope.editProfile = function () {
-      $state.go('customer.editProfile')
+      $state.go($scope.userGroup + '.editProfile')
     };
 
     $scope.orders = listService.list('order');

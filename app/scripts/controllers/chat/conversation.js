@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('ConversationCtrl', function ($scope, $state, UserProfile, UID, listService, JoinList, $ionicPopover) {
+  .controller('ConversationCtrl', function ($scope, $state, UserProfile, UID, userGroup, listService, JoinList, $ionicPopover) {
     $scope.userProfile = UserProfile();
     $scope._ = _;
 
@@ -17,7 +17,10 @@ angular.module('sflIon')
       }
     };
 
-
+    $scope.goChat = function (item) {
+      $state.go(userGroup()+'.chat', {conversation: item})
+    };
+    
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope

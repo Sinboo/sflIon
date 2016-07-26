@@ -76,7 +76,9 @@ angular.module('sflIon')
             msgNoti.senderName = $scope.userProfile.name;
             msgNoti.sendAt = sentMsg.createAt;
             msgNoti.conversation = $scope.leavedConversation;
-            msgNotificationList.$add(msgNoti)
+            msgNotificationList.$add(msgNoti).then(function () {
+              $scope.newMessage = {};
+            })
           }
         });
         $scope.input = "";
@@ -88,7 +90,6 @@ angular.module('sflIon')
     if ( isCordovaApp ) {
       console.log('app');
       $scope.openFileDialog = function () {
-        $scope.newMessage = {};
         $ionicActionSheet.show({
           buttons: [{
             text: '<b>拍照</b> 上传'
@@ -136,6 +137,7 @@ angular.module('sflIon')
       };
 
       $scope.appImgUpload = function (blob) {
+        $scope.newMessage = {};
         appService.Loading('show');
         var uuidString = rfc4122.v4();
         var last = '{.suffix}';
@@ -160,12 +162,12 @@ angular.module('sflIon')
               ).then(function (value) {
                 if (value) {
                   $scope.messages.add($scope.newMessage).then(function (ref) {
-                    var sentMsg = $scope.messages.$getRecord(ref.key());
-                    if (!$scope.isInRoom && sentMsg.createAt > $scope.recipientLeavedAt) {
+                    $scope.newMessage = {};
+                    if (!$scope.isInRoom) {
                       var msgNoti = {};
-                      msgNoti.content = '发来一张图片,请到对话里查看';
+                      msgNoti.content = '发来一张图片,请到其对话页面查看';
                       msgNoti.senderName = $scope.userProfile.name;
-                      msgNoti.sendAt = sentMsg.createAt;
+                      msgNoti.sendAt = new Date().getTime();
                       msgNoti.conversation = $scope.leavedConversation;
                       msgNotificationList.$add(msgNoti)
                     }
@@ -180,7 +182,6 @@ angular.module('sflIon')
     else {
       console.log('web');
       //choose img
-      $scope.newMessage = {};
       $scope.openFileDialog = function() {
         ionic.trigger('click', {
           target: document.getElementById('file')
@@ -188,13 +189,15 @@ angular.module('sflIon')
       };
 
       $(document).on("change", ".uploadImage", function(e){
+        e.stopPropagation();
         e.preventDefault();
         $scope.upload();
-        
       });
 
       //upload image
       $scope.upload = function() {
+        console.log('yes')
+        $scope.newMessage = {};
         appService.Loading('show');
         var uuidString = rfc4122.v4();
         var last = '{.suffix}';
@@ -218,12 +221,12 @@ angular.module('sflIon')
               ).then(function (value) {
                 if (value) {
                   $scope.messages.add($scope.newMessage).then(function (ref) {
-                    var sentMsg = $scope.messages.$getRecord(ref.key());
-                    if ($scope.isInRoom == false && sentMsg.createAt > $scope.recipientLeavedAt) {
+                    $scope.newMessage = {};
+                    if (!$scope.isInRoom) {
                       var msgNoti = {};
-                      msgNoti.content = '发来一张图片,请到对话里查看';
+                      msgNoti.content = '发来一张图片,请点击查看';
                       msgNoti.senderName = $scope.userProfile.name;
-                      msgNoti.sendAt = sentMsg.createAt;
+                      msgNoti.sendAt = new Date().getTime();
                       msgNoti.conversation = $scope.leavedConversation;
                       msgNotificationList.$add(msgNoti)
                     }

@@ -43,7 +43,7 @@ angular.module('sflIon')
           userNew.userProfile = newProfile;
           localStorageService.cookie.set('user', userNew);
           console.log('yes');
-          noBackGoTo('customer.account')
+          noBackGoTo(userGroup() + '.account')
         });
       })
 

@@ -26,6 +26,8 @@ angular.module('sflIon')
                     authData.userProfile = data[0];
                     localStorageService.cookie.set('user', authData);
                     console.log("Logged in as:", authData);
+                    Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '客户登录成功!', 2000);
+                    $state.go('customer.salonReservation')
                   });
                 }
               });
@@ -36,11 +38,11 @@ angular.module('sflIon')
                     authData.userProfile = data[0];
                     localStorageService.cookie.set('user', authData);
                     console.log("Logged in as:", authData);
+                    Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '发型师登录成功!', 2000);
+                    $state.go('hairstylist.salonReservation')
                   });
                 }
               });
-              Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '登录成功!', 2000);
-              $state.go('customer.salonReservation')
             }).catch(function(error) {
               Materialize.toast('<i class="icon ion-close-round"></i>' + error, 2000);
               console.error("Authentication failed:", error);
@@ -72,6 +74,7 @@ angular.module('sflIon')
             }).then(function(authData) {
               var userProfile = {};
               userProfile.name = value.name;
+              userProfile.uid = authData.uid.split(':')[1];
               userProfile.avatar = 'http://imtailor.b0.upaiyun.com/7f7f6a44-6f42-4f8e-bc60-1c44b7b7ba88.png';
               listService.list(value.userGroup+':'+authData.uid.split(':')[1]).add(userProfile);
               authData.userGroup = value.userGroup;

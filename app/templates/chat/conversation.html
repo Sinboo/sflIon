@@ -12,7 +12,7 @@
     <!--</div>-->
 
     <div class="list">
-      <div class="item item-avatar item-text-wrap"  ng-repeat="item in conversations  | filter: searchFilter " ui-sref="customer.chat({conversation: item})">
+      <div class="item item-avatar item-text-wrap"  ng-repeat="item in conversations  | filter: searchFilter " ng-click="goChat(item)">
         <img ng-src="{{item.master.recipientAvatar}}">
         <h2 class="lead">{{item.master.recipientName}}</h2>
         <p class="text-small" ng-if="_.values(item.slave).length">上条消息: {{_.values(item.slave)[_.values(item.slave).length -1].text}} <span ng-if="_.values(item.slave)[_.values(item.slave).length -1].imgUrl"><img width="80px"  ng-src="{{_.values(item.slave)[_.values(item.slave).length -1].imgUrl}}"/></span></p>
