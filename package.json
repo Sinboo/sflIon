@@ -57,7 +57,20 @@
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.statusbar",
     "com.ionic.keyboard",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "https://github.com/apache/cordova-plugin-camera.git",
+    {
+      "locator": "https://github.com/apache/cordova-plugin-camera.git",
+      "id": "cordova-plugin-camera"
+    },
+    "cordova-plugin-file-transfer",
+    "https://github.com/wymsee/cordova-imagePicker.git",
+    {
+      "locator": "https://github.com/wymsee/cordova-imagePicker.git",
+      "id": "cordova-plugin-image-picker"
+    }
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "ios"
+  ]
 }

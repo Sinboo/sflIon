@@ -1,3 +1,8 @@
+.ionic_toast:hover {
+    border: solid white;
+}
+
+
 label.has-error {
     border-right: 3px solid red !important;
 }

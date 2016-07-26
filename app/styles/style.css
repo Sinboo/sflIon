@@ -1099,8 +1099,8 @@ border-left: 2px solid #ccc;
 }
 
 #chat .list .in.item-avatar .card::before{
-    content: '\f361';
-    position: absolute;
+    content: '';
+    position: fixed;
     left: 83px;
     color: #138D75;
     font-family: 'Ionicons';
@@ -1109,8 +1109,8 @@ border-left: 2px solid #ccc;
 }
 
 #chat .list .out.item-avatar-right .card::before{
-    content: '\f363';
-    position: absolute;
+    content: '';
+    position: fixed;
     right: 83px;
     color: #138D75;
     font-family: 'Ionicons';

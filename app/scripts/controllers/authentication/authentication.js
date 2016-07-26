@@ -72,7 +72,7 @@ angular.module('sflIon')
             }).then(function(authData) {
               var userProfile = {};
               userProfile.name = value.name;
-              userProfile.avatar = null;
+              userProfile.avatar = 'http://imtailor.b0.upaiyun.com/7f7f6a44-6f42-4f8e-bc60-1c44b7b7ba88.png';
               listService.list(value.userGroup+':'+authData.uid.split(':')[1]).add(userProfile);
               authData.userGroup = value.userGroup;
               console.log("Logged in as:", authData);
@@ -91,10 +91,6 @@ angular.module('sflIon')
       );
     };
     
-    
-    
-
-
     
     
 

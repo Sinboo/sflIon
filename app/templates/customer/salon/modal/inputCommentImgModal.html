@@ -1,4 +1,4 @@
-<ion-modal-view class="ion-modal"> 
+<ion-modal-view >
   <ion-header-bar> 
     <h1 class="title">添加评论</h1>
     <button class="button button-icon icon ion-android-close" ng-click="vm.cancel()"></button>
@@ -6,7 +6,7 @@
   <ion-content class="padding shop">
     <label class="item item-input"> 
       <span class="input-label">评论内容:</span>
-      <textarea rows="2" style="resize: vertical;" type="text" ng-model="comment.content"> </textarea>
+      <textarea rows="5" style="resize: vertical;" type="text" ng-model="comment.content"> </textarea>
     </label>
     <a class="item item-icon-right" href="" ng-click="openFileDialog()">
       上传图片
@@ -15,6 +15,6 @@
     <a class="item item-image" href="" ng-show="image.ready" ng-click="deleteImage()">
       <img ng-src="{{image.url}}" />
     </a>
-    <button class="button waves-effect waves-teal button-balanced button-outline button-block" ng-click="vm.confirm(comment);">发表评论</button>
+    <button class="button waves-effect waves-teal button-balanced button-outline button-block" ng-click="vm.validate() && vm.confirm(comment);">发表评论</button>
   </ion-content>
 </ion-modal-view>

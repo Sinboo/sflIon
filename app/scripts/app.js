@@ -33,7 +33,9 @@ angular.module('sflIon', [
     $ionicPickerI18n.ok = "确定";
     $ionicPickerI18n.cancel = "取消";
   })
-.run(function($ionicPlatform, $rootScope, localStorageService, loginService, $location, $state, $ionicLoading, amMoment) {
+.run(function($ionicPlatform, $rootScope, localStorageService, loginService, $location, $state, $ionicLoading, WD_URL, amMoment, objectService, listService, ionicToast) {
+  loginService.initUser();
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -85,8 +87,6 @@ angular.module('sflIon', [
         template: '<ion-spinner></ion-spinner>'
       });
     });
-
-  loginService.initUser();
 
   $rootScope.$on('loading:show', function() {
     $ionicLoading.show({template: '加载中...'})
@@ -174,16 +174,12 @@ angular.module('sflIon', [
       bucket: 'imtailor'
     });
   }])
-  .config(function($ionicConfigProvider) {
-
-    $ionicConfigProvider.scrolling.jsScrolling(true);
-
-  })
 
 .config(function ($ionicConfigProvider, calendarConfig, ChartJsProvider) {
 
   // $ionicConfigProvider.tabs.style('standard').position('top');
   // $ionicConfigProvider.navBar.alignTitle('center');
+  $ionicConfigProvider.scrolling.jsScrolling(true);
 
   ChartJsProvider.setOptions({ colours: ['#26a69a', '#29b6f6', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 
@@ -595,6 +591,26 @@ angular.module('sflIon', [
         'menuContent': {
           templateUrl: 'templates/account/editProfile.html',
           controller: 'EditProfileCtrl'
+        }
+      }
+    })
+
+    .state('customer.conversation', {
+      url: '/conversation',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/chat/conversation.html',
+          controller: 'ConversationCtrl'
+        }
+      }
+    })
+    .state('customer.chat', {
+      url: '/chat',
+      params: {conversation: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/chat/chat.html',
+          controller: 'ChatCtrl'
         }
       }
     })

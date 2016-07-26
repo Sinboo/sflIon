@@ -3,9 +3,9 @@
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content class="has-header has-footer">
+  <ion-content class="has-header has-footer" ion-sticky>
 
-    <div class="row text-center">
+    <div class="row item-divider text-center" style="background-color: inherit!important;">
       <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : choosedLike}"   ng-click="setChoosedLike(true)">喜欢的人</div>
       <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : !choosedLike}"  ng-click="setChoosedLike(false)">所有评论</div>
     </div>
@@ -35,8 +35,8 @@
       <textarea id="textChat" ng-model="comment.commentMessage" required minlength="1" maxlength="1500" msd-elastic style="width:100%; resize:none"></textarea>
     </label>
     <div class="footer-btn-wrap">
-      <button ng-class="commentForm.$invalid == false ? 'button-dark' : 'button-stable'" class="button button-clear button-icon icon ion-image"
-              type="button" ng-click="inputCommentImgModal(comment.commentMessage)" ng-disabled="commentForm.$invalid">
+      <button class="button button-clear button-icon icon ion-image"
+              type="button" ng-click="inputCommentImgModal(comment.commentMessage)">
       </button>
       <button ng-class="commentForm.$invalid == false ? 'button-dark' : 'button-stable'" class="button button-clear button-icon icon ion-android-checkmark-circle"
               type="button" ng-click="submitComment(comment.commentMessage)" ng-disabled="commentForm.$invalid">

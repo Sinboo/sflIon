@@ -19,7 +19,7 @@ angular.module('sflIon')
       var likeList = listService.list('like:'+$scope.work.workId);
       likeList.$loaded().then(function (data) {
         var myLike = _.findWhere(data, {likerUid: UID()});
-        console.log(data, myLike)
+        console.log(data, myLike);
         if (myLike) {
           var index = likeList.$indexFor(myLike.$id);
           likeList.$remove(index).then(function (ref) {

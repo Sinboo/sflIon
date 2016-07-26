@@ -2,6 +2,17 @@
 
 
 angular.module('sflIon')
+  .directive('countmessage', function () {
+      return {
+        restrict: 'A',
+        scope: { message: '@', time: '@' },
+        link: function (scope, element) {
+          var count = _.filter(scope.message, function(v) {return (v.createAt > scope.time) }).length;
+          console.log(scope.message, scope.time, _, _.filter(scope.message, function(v) {return (v.createAt > scope.time) }), count)
+          return element.text(count + '未读消息');
+        }
+      };
+  })
   .directive('countdown', [
     'Util',
     '$interval',

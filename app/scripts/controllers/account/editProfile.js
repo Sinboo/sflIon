@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('EditProfileCtrl', function ($scope, UserProfile, noBackGoTo, upyun, rfc4122, $ionicLoading, ionicToast, listService, userGroup, UID, updateWidget, localStorageService) {
+  .controller('EditProfileCtrl', function ($scope, UserProfile, noBackGoTo, upyun, rfc4122, $ionicLoading, ionicToast, listService, userGroup, UID, updateWidget, localStorageService, $ionicActionSheet, $cordovaCamera, $timeout, appService, getFileObject) {
     $scope.noBackGoTo = noBackGoTo;
     $scope.type = 1;
     $scope.userProfile = UserProfile();
@@ -49,18 +49,108 @@ angular.module('sflIon')
 
     };
 
+    var isCordovaApp = !!window.cordova;
+    if ( isCordovaApp ) {
+      console.log('app');
+      $scope.openFileDialog = function () {
+        var hideSheet = $ionicActionSheet.show({
+          buttons: [{
+            text: '<b>拍照</b> 上传'
+          }, {
+            text: '从 <b>相册</b> 中选'
+          }],
+          titleText: '图片上传',
+          cancelText: '取 消',
+          cancel: function () {
+            // add cancel code..
+          },
+          buttonClicked: function (index) {
+            if (index == 1) {
+              $scope.readalbum();
+            } else if (index == 0) {
+              $scope.taskPicture();
+            }
+            return true;
+          }
+        });
+      };
 
-    //choose img
-    $scope.openFileDialog = function() {
-      ionic.trigger('click', {
-        target: document.getElementById('file')
+      $scope.readalbum = function() {
+        document.addEventListener("deviceready", function () {
+          $cordovaCamera.getPicture(appService.getLibraryOptions()).then(function (imageData) {
+            var imgBase64 = "data:image/jpeg;base64," + imageData ;
+            $timeout(function () {
+              var imgBlob = getFileObject(imgBase64);
+              $scope.appImgUpload(imgBlob);
+            }, 0);
+          });
+        })
+      };
+
+      $scope.taskPicture = function () {
+        document.addEventListener("deviceready", function () {
+          $cordovaCamera.getPicture(appService.getCameraOptions()).then(function (imageData) {
+            var imgBase64 = "data:image/jpeg;base64," + imageData ;
+            $timeout(function () {
+              var imgBlob = getFileObject(imgBase64);
+              $scope.appImgUpload(imgBlob);
+            }, 0);
+          });
+        });
+      };
+
+      $scope.appImgUpload = function (blob) {
+        var uuidString = rfc4122.v4();
+        var last = '{.suffix}';
+        var imgUrl = '/' + uuidString + last;
+        upyun.set('save-key', imgUrl);
+        upyun.upload(blob, function(err, response, image){
+          if (err) console.error(err);
+          console.log(image)
+          if (image.code === 200 && image.message === 'ok') {
+            $scope.image = {};
+            $scope.image.ready = true;
+            $scope.image.url = image.absUrl;
+            $scope.userProfile.avatar = $scope.image.url;
+            $scope.$apply();
+            console.log($scope.image.url);
+          }
+        });
+      }
+    }
+    else {
+      console.log('web');
+      //choose img
+      $scope.openFileDialog = function() {
+        ionic.trigger('click', {
+          target: document.getElementById('file')
+        });
+      };
+
+      $(document).on("change", ".uploadImage", function(e){
+        e.preventDefault();
+        $scope.upload();
       });
-    };
 
-    $(document).on("change", ".uploadImage", function(e){
-      e.preventDefault();
-      $scope.upload();
-    });
+      //upload image
+      $scope.upload = function() {
+        var uuidString = rfc4122.v4();
+        var last = '{.suffix}';
+        var imgUrl = '/' + uuidString + last;
+        upyun.set('save-key', imgUrl);
+        upyun.upload('uploadForm', function(err, response, image){
+          if (err) console.error(err);
+          if (image.code === 200 && image.message === 'ok') {
+            $scope.image = {};
+            $scope.image.ready = true;
+            $scope.image.url = image.absUrl;
+            $scope.userProfile.avatar = $scope.image.url;
+            $scope.$apply();
+            console.log($scope.image.url);
+          }
+        });
+      };
+    }
 
     upyun.on('uploading', function(progress) {
       $ionicLoading.show({
@@ -74,41 +164,6 @@ angular.module('sflIon')
         $ionicLoading.hide();
       }
     });
-
-
-    //upload image
-    $scope.upload = function() {
-      var uuidString = rfc4122.v4();
-      var last = '{.suffix}';
-      var imgUrl = '/' + uuidString + last;
-      upyun.set('save-key', imgUrl);
-      upyun.upload('uploadForm', function(err, response, image){
-        if (err) console.error(err);
-        if (image.code === 200 && image.message === 'ok') {
-          $scope.image = {};
-          $scope.image.ready = true;
-          $scope.image.url = image.absUrl;
-          console.log($scope.image.url);
-          $scope.userProfile.avatar = $scope.image.url;
-        }
-        $scope.$apply();
-      });
-    };
-
-    // $scope.deleteImage = function () {
-    //   $ionicPopup.confirm({
-    //     title: '删除图片?',
-    //     template: '您想要删除图片或更换图片?',
-    //     buttons: [{ text: '取消' }, { text: '确认', type: 'button-positive', onTap: function(e) {return 'ok'}}]
-    //   }).then(function(res) {
-    //     console.log(res)
-    //     if(res == 'ok') {
-    //       $scope.image.url = "";
-    //       $scope.image.ready = false;
-    //     }
-    //     else {}
-    //   });
-    // };
 
     
   });

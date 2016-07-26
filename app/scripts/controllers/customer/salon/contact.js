@@ -4,9 +4,10 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonContactCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, JoinList, UID, $ionicPopup, $ionicPopover) {
+  .controller('SalonContactCtrl', function ($scope, $state, noBackGoTo, rfc4122, appModalService, listService, JoinList, UID, UserProfile, $ionicPopup, $ionicPopover) {
     $scope.goTo = noBackGoTo;
     $scope._ = _;
+    $scope.userProfile = UserProfile();
 
     $scope.contacts = JoinList('hairstylistOfCustomer:'+UID(), 'hairstylist', 'hairstylistUid', 'updateAt');
     console.log($scope.contacts);
@@ -46,7 +47,44 @@ angular.module('sflIon')
           });
         }
       });
-    }
+    };
+
+    $scope.openConversation = function (hairstylist) {
+      var flag = false;
+      var conversationList = listService.list('conversation:'+UID());
+      var conversationList2 = listService.list('conversation:'+hairstylist.uid);
+      conversationList.$loaded().then(function (data) {
+        angular.forEach(data, function (item) {
+          if (item.recipientId == hairstylist.uid) {
+            $state.go('customer.chat', {conversation: item});
+            flag = true;
+          }
+        });
+        if (!flag) {
+          var conversation = {};
+          conversation.conversationId = rfc4122.v4();
+          conversation.recipientId = hairstylist.uid;
+          conversation.recipientName = hairstylist.name;
+          conversation.recipientAvatar = hairstylist.avatar;
+          conversation.recipientMobile = hairstylist.mobile;
+          conversation = JSON.parse(JSON.stringify(conversation));
+          var conversation2 = {};
+          conversation2.conversationId = conversation.conversationId;
+          conversation2.recipientId = UID();
+          conversation2.recipientName = $scope.userProfile.name;
+          conversation2.recipientAvatar = $scope.userProfile.avatar;
+          conversation2.recipientMobile = $scope.userProfile.mobile;
+          conversation2.lastLeaveAt = 0;
+          conversation2 = JSON.parse(JSON.stringify(conversation2));
+          conversationList2.add(conversation2).then(function () {
+            conversationList.add(conversation).then(function () {
+              console.log(conversation);
+              $state.go('customer.chat', {conversation: conversation});
+            })
+          })
+        }
+      });
+    };
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope

@@ -1,0 +1,15 @@
+<ion-modal-view class="ion-modal">
+  <ion-header-bar> 
+    <h1 class="title">发送图片</h1>
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel()"></button>
+  </ion-header-bar>
+  <ion-content class="padding shop">
+    <div class="row text-center padding">
+      <div class="col font-thin text-large dark" ng-click="vm.confirm()">取消</div>
+      <div class="col font-thin text-large balanced bl-grey" ng-click="vm.confirm(true)">发送</div>
+    </div>
+    <a class="item item-image" href="">
+      <img ng-src="{{vm.imgUrl}}" />
+    </a>
+  </ion-content>
+</ion-modal-view>
