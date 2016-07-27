@@ -85,6 +85,25 @@ angular.module('sflIon')
       }
     };
 
+    //mac cmd + enter, win ctrl + enter to next line, enter to submit
+    var map = ionic.Platform.platform().indexOf('mac') !== -1 ? {13: false, 93: false} : {13: false, 17: false};
+    $scope.keydown = function(e, input) {
+      if (e.keyCode in map) {
+        map[e.keyCode] = true;
+        if (map[13] && map[93]) {
+          $scope.input = input + '\n';
+        }
+        else if (e.keyCode == 13) {
+          $scope.sendChat(input)
+        }
+      }
+    };
+    $scope.keyup = function(e) {
+      for (var key in map) {
+        map[key] = false;
+      }
+    };
+
 
     var isCordovaApp = !!window.cordova;
     if ( isCordovaApp ) {

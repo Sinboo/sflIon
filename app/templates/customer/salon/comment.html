@@ -1,9 +1,9 @@
-<ion-view title="评论">
+<ion-view id="commentPage" title="评论">
   <ion-nav-buttons side="right">
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content class="has-header has-footer" ion-sticky>
+  <ion-content class="has-header has-footer scroll-content" ion-sticky  delegate-handle="commentPageScroll">
 
     <div class="row item-divider text-center" style="background-color: inherit!important;">
       <div class="col font-thin" ng-class="{'text-large balanced bl-grey' : choosedLike}"   ng-click="setChoosedLike(true)">喜欢的人</div>

@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('CommentCtrl', function ($scope, $state, UID, userGroup, $ionicPopover, listService, Join3List, upyun, appModalService) {
+  .controller('CommentCtrl', function ($scope, $state, UID, userGroup, $ionicPopover, listService, Join3List, upyun, appModalService, appService, $ionicScrollDelegate, $timeout) {
     $scope._ = _;
     $scope.UID = UID();
     $scope.work = {};
@@ -15,11 +15,27 @@ angular.module('sflIon')
     $scope.setChoosedLike = function (bl) {
       $scope.choosedLike = bl;
     };
+
+    var footerBar, scroller;
+    var viewScroll = $ionicScrollDelegate.$getByHandle('commentPageScroll');
+    var scrollToBottom = function () {
+      $timeout(function () {
+        viewScroll.scrollBottom(true);
+        footerBar = document.body.querySelector('#comment .uploadImage');
+        scroller = document.body.querySelector('#comment .scroll-content');
+      }, 0)};
+
     $scope.comments = Join3List('comment:'+$scope.work.$id, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
     console.log($scope.comments);
+    $scope.comments.$watch(function () {
+      scrollToBottom();
+    });
 
     $scope.likes = Join3List('like:'+$scope.work.$id, 'customer', 'hairstylist', 'likerUid', 'updateAt');
     console.log($scope.likes);
+    $scope.likes.$watch(function () {
+      scrollToBottom();
+    });
 
     $scope.like = function () {
       var likeList = listService.list('like:'+$scope.work.$id);

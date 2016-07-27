@@ -1099,7 +1099,7 @@ border-left: 2px solid #ccc;
 }
 
 #chat .list .in.item-avatar .card::before{
-    content: '';
+    content: '\f361';
     position: fixed;
     left: 83px;
     color: #138D75;
@@ -1109,7 +1109,7 @@ border-left: 2px solid #ccc;
 }
 
 #chat .list .out.item-avatar-right .card::before{
-    content: '';
+    content: '\f363';
     position: fixed;
     right: 83px;
     color: #138D75;
