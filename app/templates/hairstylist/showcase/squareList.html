@@ -14,8 +14,8 @@
     <ion-content class="has-header has-subheader bg-lightgrey">
       <div class="list card" ng-repeat="item in squares | filter: searchFilter ">
         <div class="item item-avatar" ng-click="showDetail(item)">
-          <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}" />
-          <h2 class="balanced">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name}}</h2>
+          <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}" />
+          <h2 class="balanced">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name || _.values(item.slave3)[0].name}}</h2>
           <p class="text-small" am-time-ago="{{item.master.createAt}}"></p>
         </div>
         <div class="item item-body" ng-click="showDetail(item)">
@@ -50,8 +50,8 @@
           </div>
 
           <p>
-            <a href="#" class="subdued"><i class="icon calm" ng-class="{'ion-ios-heart': _.findWhere(_.values(item.slave3), {likerUid: UID}), 'ion-ios-heart-outline': !_.findWhere(_.values(item.slave3), {likerUid: UID}) }"  ng-click="like(item)"> {{_.values(item.slave3).length}}</i></a>
-            <a href="#" class="subdued"><i class="icon ion-ios-chatbubble-outline calm"> {{_.values(item.slave4).length}}</i></a>
+            <a class="subdued"><i class="icon calm" ng-class="{'ion-ios-heart': _.findWhere(_.values(item.slave4), {likerUid: UID}), 'ion-ios-heart-outline': !_.findWhere(_.values(item.slave4), {likerUid: UID}) }" attr-click click="like" arg="item" ng-click="$event.stopPropagation()"> {{_.values(item.slave4).length}}</i></a>
+            <a class="subdued"><i class="icon ion-ios-chatbubble-outline calm"> {{_.values(item.slave5).length}}</i></a>
           </p>
         </div>
       </div>

@@ -12,21 +12,28 @@
   </div>
 
     <ion-content class="has-header has-subheader bg-lightgrey">
-      <div class="list card" ng-repeat="post in news.items | filter: searchFilter ">
-        <div class="item item-avatar">
-          <img ng-src="{{post.sourceLogo}}" />
-          <h2 class="balanced">{{post.author}}</h2>
-          <p class="text-small" am-time-ago="{{post.publishedDate}}"></p>
-        </div>
-        <div class="item item-body">
-          <img class="full-image" ng-src="{{post.image}}">
-          <p>{{post.title}}</p>
-          <p>
-            <a href="#" class="subdued"><i class="icon calm" ng-class="{'ion-ios-heart': liked, 'ion-ios-heart-outline': !liked }" ng-click="liked = !liked"> {{post.likes.length}} Likes</i></a>
-            <a href="#" class="subdued"><i class="icon ion-ios-chatbubble-outline calm"> {{post.comments.length}} Comments</i></a>
-          </p>
+      <div class="row" ng-repeat="item in fashions | filter: searchFilter track by $index" ng-click="showDetail(item)">
+        <div class="col s12 m7">
+          <div class="card">
+            <div class="card-image">
+              <img ng-src="{{item.master.coverImg}}">
+              <span class="card-title">{{item.master.name}}</span>
+            </div>
+            <div class="card-content">
+              <p>{{item.master.shortDesc}}</p>
+              <p class="text-small pull-right" am-time-ago="{{item.master.createAt}}"></p>
+            </div>
+            <div class="card-action">
+              <p>
+                <a class="subdued"><i class="icon calm" ng-class="{'ion-ios-heart': _.findWhere(_.values(item.slave3), {likerUid: UID}), 'ion-ios-heart-outline': !_.findWhere(_.values(item.slave3), {likerUid: UID}) }"  attr-click click="like" arg="item" ng-click="$event.stopPropagation()"> {{_.values(item.slave3).length}}</i></a>
+                <a class="subdued"><i class="icon ion-ios-chatbubble-outline calm"> {{_.values(item.slave4).length}}</i></a>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+
+
 
       <ion-infinite-scroll ng-if="!noMoreItemsAvailable"
                            immediate-check="false"
@@ -35,7 +42,7 @@
       </ion-infinite-scroll>
     </ion-content>
 
-  <a class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="addWork()"><i class="icons ion-plus-round"></i></a>
+  <a class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="addFashion()"><i class="icons ion-plus-round"></i></a>
 
 
 </ion-view>

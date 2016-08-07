@@ -8,7 +8,7 @@ angular.module('sflIon')
     $scope._ = _;
     $scope.UID = UID();
 
-    var scrollList = listService.join5by2keyScrollList('square', 'hairstylist', 'customer', 'like', 'comment', 'uid', 'updateAtR');
+    var scrollList = listService.join6by2keyScrollList('square', 'hairstylist', 'customer', 'receptionist', 'like', 'comment', 'uid', 'updateAtR');
     $scope.squares = SortList(scrollList.list);
     scrollList.scrollRef.scroll.next(PAGE_SIZE);
     console.log($scope.squares);
@@ -19,11 +19,11 @@ angular.module('sflIon')
     };
 
     $scope.like = function (item) {
-      var myLike = _.findWhere(_.values(item.slave3), {likerUid: UID()});
+      var myLike = _.findWhere(_.values(item.slave4), {likerUid: UID()});
       var likeList = listService.list('like:'+item.$id);
       likeList.$loaded().then(function () {
         if (myLike) {
-          var key = _.invert(item.slave3)[myLike];
+          var key = _.invert(item.slave4)[myLike];
           var index = likeList.$indexFor(key);
           likeList.$remove(index).then(function (ref) {
           })
@@ -44,17 +44,8 @@ angular.module('sflIon')
 
     $scope.addSquare = function () {
       $state.go('hairstylist.createEditSquare');
-      console.log('yes')
     };
     
-    
-
-    
-
-
-
-
-
     
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {

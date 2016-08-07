@@ -22,7 +22,7 @@ angular.module('sflIon')
       console.log(square);
       listService.list('square').add(square).then(function () {
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '帖子提交成功!', 2000);
-        $state.go('hairstylist.squareList')
+        $scope.goTo('hairstylist.squareList')
       })
 
     };

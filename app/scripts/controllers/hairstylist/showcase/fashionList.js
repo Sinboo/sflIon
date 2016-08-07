@@ -3,15 +3,15 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE) {
+  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
     $scope.noBackGoTo = noBackGoTo;
     $scope._ = _;
     $scope.UID = UID();
 
-    var scrollList = listService.join4by2keyScrollList('work', 'hairstylist', 'like', 'comment', 'hairstylistUid', 'updateAtR');
-    $scope.works = scrollList.list;
+    var scrollList = listService.join5by2keyScrollList('fashion', 'hairstylist', 'receptionist', 'like', 'comment', 'uid', 'updateAtR');
+    $scope.fashions = SortList(scrollList.list);
     scrollList.scrollRef.scroll.next(PAGE_SIZE);
-    console.log($scope.works);
+    console.log($scope.fashions);
 
     $scope.loadMore = function () {
       scrollList.scrollRef.scroll.next(PAGE_SIZE);
@@ -19,11 +19,11 @@ angular.module('sflIon')
     };
 
     $scope.like = function (item) {
-      var myLike = _.findWhere(_.values(item.slave2), {likerUid: UID()});
+      var myLike = _.findWhere(_.values(item.slave3), {likerUid: UID()});
       var likeList = listService.list('like:'+item.$id);
       likeList.$loaded().then(function () {
         if (myLike) {
-          var key = _.invert(item.slave2)[myLike];
+          var key = _.invert(item.slave3)[myLike];
           var index = likeList.$indexFor(key);
           likeList.$remove(index).then(function (ref) {
           })
@@ -37,17 +37,13 @@ angular.module('sflIon')
       })
     };
 
-    $scope.showDetail = function (work) {
-      console.log(work);
-      var detailWork = {};
-      detailWork.workId = work.$id;
-      detailWork.slave1 = work.master;
-      $state.go('hairstylist.workDetail', {work: detailWork, isHairstylist: true});
+    $scope.showDetail = function (fashion) {
+      console.log(fashion);
+      $state.go('hairstylist.fashionDetail', {fashion: fashion, isHairstylist: true});
     };
 
-    $scope.addWork = function () {
-      $state.go('hairstylist.createEditWork');
-      console.log('yes')
+    $scope.addFashion = function () {
+      $state.go('hairstylist.createEditFashion');
     };
     
 

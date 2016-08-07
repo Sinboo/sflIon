@@ -2,6 +2,19 @@
 
 
 angular.module('sflIon')
+  .directive('attrClick', function(){
+    return {
+      restrict: 'A',
+      scope: {click: '&', arg: '='},
+      link: function(scope, element, attrs) {
+        element.bind('click',
+          function () {
+            scope.click()(scope.arg)
+          }
+        );
+      }
+    }
+  })
   .directive('imgSliderModal', function(appModalService, $ionicSlideBoxDelegate, $timeout){
     var openImgSliderModal = function (images, index) {
       appModalService.show(

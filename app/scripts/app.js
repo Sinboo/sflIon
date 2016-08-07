@@ -292,6 +292,25 @@ angular.module('sflIon', [
         }
       }
     })
+    .state('hairstylist.fashionDetail', {
+      url: '/fashionDetail',
+      params: { fashion: null, isHairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/fashionDetail.html',
+          controller: 'FashionDetailCtrl'
+        }
+      }
+    })
+    .state('hairstylist.createEditFashion', {
+      url: '/createEditFashion',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditFashion.html',
+          controller: 'CreateEditFashionCtrl'
+        }
+      }
+    })
     .state('hairstylist.createEditWork', {
       url: '/createEditWork',
       views: {

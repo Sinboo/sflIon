@@ -4,32 +4,28 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditWorkCtrl', function ($scope, $state, noBackGoTo, WORK_GROUP, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, UserProfile) {
+  .controller('CreateEditFashionCtrl', function ($scope, $state, noBackGoTo, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup) {
     $scope.carouselImgs = {};
     $scope.goTo = noBackGoTo;
-    $scope.WORK_GROUP = WORK_GROUP;
     console.log($state.params);
-    $scope.work = {};
+    $scope.fashion = {};
 
-    $scope.submitWork = function () {
-      var work = {};
-      angular.copy($scope.work, work);
-      work.coverImg = $scope.coverImg;
-      work.carouselImgs = $scope.carouselImgs;
-      work.hairstylistUid = UID();
-      work = JSON.parse(JSON.stringify(work));
-      console.log(work);
-      listService.list('work').add(work).then(function (ref) {
-        listService.list('workOfGroup:'+work.type).add({workId: ref.key()}).then(function () {
-          Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '作品提交成功!', 2000);
-          $scope.goTo('hairstylist.workList')
-        })
+    $scope.submitFashion = function () {
+      var fashion = {};
+      angular.copy($scope.fashion, fashion);
+      fashion.coverImg = $scope.coverImg;
+      fashion.carouselImgs = $scope.carouselImgs;
+      fashion.uid = UID();
+      fashion.userGroup = userGroup();
+      fashion = JSON.parse(JSON.stringify(fashion));
+      console.log(fashion);
+      listService.list('fashion').add(fashion).then(function (ref) {
+        Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '潮流提交成功!', 2000);
+        $scope.goTo('hairstylist.fashionList')
       })
     };
-
-
+    
     $scope.validate = function () {
-      if (!$scope.work.type) {ionicToast.show('请选择作品所属分组!', 'top', false, 2000);return false;}
       if (!$scope.carouselImgs) {ionicToast.show('请上传作品封面图!', 'top', false, 2000);return false;}
       if (_.size(JSON.parse(JSON.stringify($scope.carouselImgs))) == 0) {ionicToast.show('请至少上传一张轮播图!', 'middle', false, 2000);return false;}
       return true;

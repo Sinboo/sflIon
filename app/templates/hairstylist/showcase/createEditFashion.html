@@ -1,0 +1,107 @@
+<style>
+  .list.list-inline {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    -ms-flex-wrap: none;
+    flex-wrap: nowrap;
+    width: 100%;
+    /* Radio item */
+    /* Checkbox */
+    /* /!\ not fully working with long-text on */ }
+  .list.list-inline .item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit; }
+  .list.list-inline .item-radio .item-content {
+    /* give some room to the right for the checkmark icon */
+    padding: 12px;
+    padding-right: 16px; }
+  .list.list-inline .item-radio .radio-icon {
+    /* checkmark icon will be hidden by default */
+    padding: 5px; }
+  .list.list-inline .item-checkbox {
+    padding-left: 44px; }
+  .list.list-inline .item-checkbox .checkbox {
+    padding-left: 0; }
+</style>
+<ion-view cache-view="false" title="编辑潮流">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="goTo('hairstylist.workList')"></button>
+  </ion-nav-buttons>
+
+    <ion-content class="has-header">
+      <form novalidate>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">潮流名称:</span>
+        <input type="text" placeholder="潮流名称" ng-model="fashion.name" bsy-form-validate="mustInputErrorTips" required/>
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">潮流简介:</span>
+        <input type="tel" placeholder="潮流简介" ng-model="fashion.shortDesc" bsy-form-validate="mustInputErrorTips" required/>
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">详细介绍:</span>
+        <textarea rows="3" style="resize:none;" placeholder="潮流的详细介绍" ng-model="fashion.description" bsy-form-validate="mustInputErrorTips" required></textarea>
+      </label>
+
+      <p class="bb text-smaller padding-horizontal uppercase">潮流封面图:</p>
+      <div class="row text-center date-time-buttons" style="margin-top: 30px">
+        <div class="col stable-bg margin" ng-if="!coverImg" ng-click="openFileDialog('cover')"><button class="button button-icon icon ion-aperture"></button>
+          <p>上传作品封面图片</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('cover')" ng-if="coverImg"><img style="width: 100%" ng-src="{{coverImg}}"/>
+        </div>
+      </div>
+
+      <p class="bb text-smaller padding-horizontal uppercase">潮流轮播图:</p>
+      <div class="row text-center date-time-buttons" style="margin-top: 30px">
+        <div class="col stable-bg margin" ng-if="!carouselImgs.one" ng-click="openFileDialog('one')"><button class="button button-icon icon ion-wand"></button>
+          <p>轮播图1</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('one')" ng-if="carouselImgs.one"><img style="width: 100%" ng-src="{{carouselImgs.one}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.two" ng-click="openFileDialog('two')"><button class="button button-icon icon ion-wand"></button>
+          <p>轮播图2</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('two')" ng-if="carouselImgs.two"><img style="width: 100%" ng-src="{{carouselImgs.two}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.three" ng-click="openFileDialog('three')"><button class="button button-icon icon ion-wand"></button>
+          <p>轮播图3</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('three')" ng-if="carouselImgs.three"><img style="width: 100%" ng-src="{{carouselImgs.three}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.four" ng-click="openFileDialog('four')"><button class="button button-icon icon ion-wand"></button>
+          <p>轮播图4</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('four')" ng-if="carouselImgs.four"><img style="width: 100%" ng-src="{{carouselImgs.four}}"/>
+        </div>
+      </div>
+
+      <button class="button button-block button-balanced" check-form ng-click="validate() && submitFashion()">提交潮流</button>
+
+      </form>
+    </ion-content>
+
+  <form name="uploadForm" role="form" ng-show="false">
+    <input type="file" name="file" class="uploadImage" id="file" /> <br/>
+  </form>
+</ion-view>

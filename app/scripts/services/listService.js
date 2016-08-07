@@ -145,6 +145,38 @@ angular.module('sflIon')
         ref: norm
       }
     };
+    this.join6by2keyScrollList = function (childName, childName2, childName3, childName4, childName5, childName6, secondaryKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var ref4 = new Wilddog(WD_URL).child(childName4);
+      var ref5 = new Wilddog(WD_URL).child(childName5);
+      var ref6 = new Wilddog(WD_URL).child(childName6);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1', 'master.'+secondaryKey],
+        [ref3, 'slave2', 'master.'+secondaryKey],
+        [ref4, 'slave3', 'master.'+secondaryKey],
+        [ref5, 'slave4'],
+        [ref6, 'slave5']
+      )
+        .select('master.'+secondaryKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'},
+          {key: 'slave3.$value', alias: 'slave3'},
+          {key: 'slave4.$value', alias: 'slave4'},
+          {key: 'slave5.$value', alias: 'slave5'}
+        )
+        .ref();
+      var scrollRef = new Wilddog.util.Scroll(norm, field);
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: norm
+      }
+    };
     this.join5ScrollList = function (childName, childName2, childName3, childName4, childName5, masterKey, field) {
       var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
       var ref2 = new Wilddog(WD_URL).child(childName2);
