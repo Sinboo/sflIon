@@ -1,0 +1,45 @@
+<ion-view title="客户信息维护" cache-view="true">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <div class="bar-subheader">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px">
+      <div class="col font-thin " ng-click="goTo('hairstylist.addCustomerMaintain')">维护新客户</div>
+      <div class="col font-thin text-large balanced bl-grey" ng-click="goTo('hairstylist.customerMaintains')">客户维护列表</div>
+    </div>
+  </div>
+
+  <ion-content class="has-header has-subheader bg-lightgrey padding">
+    <ul class="collection">
+      <li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item.slave)[0])" ng-repeat="item in customerMaintains | filter: searchFilter">
+        <img ng-src={{_.values(item.slave)[0].avatar}} alt="" class="circle">
+        <span class="title">{{_.values(item.slave)[0].name}}</span>
+
+        <p>
+          真实照片: <span ng-click="$event.stopPropagation()"><img width="100px" fullscreen ng-src="{{_.values(item.master)[0].realImage}}" /></span><br>
+          真实姓名: {{_.values(item.master)[0].realName}} <br>
+          性别: {{_.values(item.master)[0].gender == 'male' ? '男' : '女'}} <br>
+          年龄: {{_.values(item.master)[0].birthday | ageFilter}} <br>
+          生日: {{_.values(item.master)[0].birthday | date: "yyyy年MM月dd日"}} <br>
+          手机: {{_.values(item.master)[0].mobile}} <br>
+          邮箱: {{_.values(item.master)[0].email}} <br>
+          地址: {{_.values(item.master)[0].address}} <br>
+          描述: {{_.values(item.master)[0].description}} <br>
+          <span class="text-smaller font-thin pull-right" style="margin-top: 10px">
+            <button class="waves-effect waves-light btn button-small red" style="border-radius: 50px" ng-click="$event.stopPropagation()" ui-sref="hairstylist.maintainCustomer({customer: _.values(item.slave)[0]})">&nbsp&nbsp<i class="icons ion-plus-round"></i>&nbsp&nbsp</button>
+          </span><br><br>
+          {{item.customerMaintainDetails.length}}人维护: <br>
+          <span class="chip" ng-repeat="order in item.customerMaintainDetails | limitTo:-3">
+            <img ng-src="{{_.values(order.slave1)[0].avatar || _.values(order.slave2)[0].avatar}}" alt="Contact Person">
+            {{order.master.createAt | date: "yy.MM.dd"}}
+          </span>
+          <span class="chip" ng-if="item.customerMaintainDetails.length > 3">
+            点击查看更多
+          </span>
+        </p>
+        <a href="" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">{{_.findWhere(customerLevels, {value: _.values(item.master)[0].level}).text}}用户</span></i></a>
+      </li>
+    </ul>
+  </ion-content>
+</ion-view>

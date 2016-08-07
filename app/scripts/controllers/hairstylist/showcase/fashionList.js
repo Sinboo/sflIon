@@ -3,17 +3,15 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorksCtrl', function ($scope, $state, UID, WD_URL, $wilddogArray, JoinListLoadMore, dataSetterGetter, workOfGroup, appModalService, listService, $ionicPopover, PAGE_SIZE) {
+  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE) {
+    $scope.noBackGoTo = noBackGoTo;
     $scope._ = _;
     $scope.UID = UID();
-    console.log(UID())
-    $scope.group = $state.params.group;
-    console.log($scope.group);
 
-    var scrollList = listService.join4ScrollList('workOfGroup:'+$scope.group, 'work', 'like', 'comment', 'workId', 'updateAtR');
+    var scrollList = listService.join4by2keyScrollList('work', 'hairstylist', 'like', 'comment', 'hairstylistUid', 'updateAtR');
     $scope.works = scrollList.list;
-    console.log($scope.works);
     scrollList.scrollRef.scroll.next(PAGE_SIZE);
+    console.log($scope.works);
 
     $scope.loadMore = function () {
       scrollList.scrollRef.scroll.next(PAGE_SIZE);
@@ -22,32 +20,36 @@ angular.module('sflIon')
 
     $scope.like = function (item) {
       var myLike = _.findWhere(_.values(item.slave2), {likerUid: UID()});
-      var likeList = listService.list('like:'+item.workId);
-      likeList.$loaded().then(function (data) {
+      var likeList = listService.list('like:'+item.$id);
+      likeList.$loaded().then(function () {
         if (myLike) {
           var key = _.invert(item.slave2)[myLike];
           var index = likeList.$indexFor(key);
-          likeList.$remove(index);
+          likeList.$remove(index).then(function (ref) {
+          })
         }
         else {
           var addLike = {};
           addLike.likerUid = UID();
           console.log(addLike, 'like');
-          likeList.add(addLike);
+          likeList.add(addLike)
         }
       })
     };
 
     $scope.showDetail = function (work) {
-      $state.go('customer.workDetail', {work: work});
+      console.log(work);
+      var detailWork = {};
+      detailWork.workId = work.$id;
+      detailWork.slave1 = work.master;
+      $state.go('hairstylist.workDetail', {work: detailWork, isHairstylist: true});
+    };
+
+    $scope.addWork = function () {
+      $state.go('hairstylist.createEditWork');
+      console.log('yes')
     };
     
-    $scope.confirm = function (work) {
-      var work1 = {};
-      work1.workId = work.workId;
-      work1.slave = work.slave1;
-      $state.go('customer.createEditReservation', {value: {work: work1}});
-    }
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope

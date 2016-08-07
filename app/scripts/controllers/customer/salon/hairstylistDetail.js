@@ -7,6 +7,7 @@ angular.module('sflIon')
     $scope.type = $state.params.type ? $state.params.type : 1;
     $scope.hairstylist = $state.params.hairstylist[0];
     $scope.price = $state.params.choosedPrice;
+    $scope.isHairstylist = $state.params.isHairstylist;
     console.log($scope.hairstylist);
 
     $scope.likes = listService.list('like:'+$scope.hairstylist.uid);

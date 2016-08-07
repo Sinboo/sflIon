@@ -7,6 +7,7 @@ angular.module('sflIon')
     $scope._ = _;
     $scope.UID = UID();
     $scope.work = $state.params.work;
+    $scope.isHairstylist = $state.params.isHairstylist;
     console.log($scope.work, userGroup());
 
     $scope.hairstylist = listService.list('hairstylist:'+$scope.work.slave1.hairstylistUid);
@@ -34,13 +35,23 @@ angular.module('sflIon')
       })
     };
 
-    $scope.openComment = function (workId, choosedLike) {
-      $state.go('customer.comment', {workId: workId, choosedLike: choosedLike});
-    };
+    if ($scope.isHairstylist) {
+      $scope.openComment = function (workId, choosedLike) {
+        $state.go('hairstylist.comment', {workId: workId, choosedLike: choosedLike});
+      };
+      $scope.showHairstylistDetail = function (hairstylist) {
+        $state.go('hairstylist.hairstylistDetail', {hairstylist: [hairstylist], isHairstylist: true});
+      };
+    }
+    else {
+      $scope.openComment = function (workId, choosedLike) {
+        $state.go('customer.comment', {workId: workId, choosedLike: choosedLike});
+      };
+      $scope.showHairstylistDetail = function (hairstylist) {
+        $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist], isHairstylist: true});
+      };
+    }
 
-    $scope.showHairstylistDetail = function (hairstylist) {
-      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist]});
-    };
 
 
     $scope.confirm = function(work) {

@@ -15,6 +15,7 @@ angular.module('sflIon', [
   'upyun',
   'uuid',
   'ionic-fullscreen',
+  'ion-floating-menu',
   'angularValidateWithToast',
   'ionic-toast',
   'ngCordova',
@@ -242,6 +243,117 @@ angular.module('sflIon', [
       }
     })
 
+
+    .state('hairstylist.hairstylistDetail', {
+      url: '/hairstylistDetail',
+      params: { hairstylist: null, choosedPrice: null, type: null, isHairstylist: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/hairstylistDetail.html',
+          controller: 'HairstylistDetailCtrl'
+        }
+      }
+    })
+
+    .state('hairstylist.squareList', {
+      url: '/squareList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/squareList.html',
+          controller: 'SquareListCtrl'
+        }
+      }
+    })
+    .state('hairstylist.squareDetail', {
+      url: '/squareDetail',
+      params: { square: null, isHairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/squareDetail.html',
+          controller: 'SquareDetailCtrl'
+        }
+      }
+    })
+    .state('hairstylist.createEditSquare', {
+      url: '/createEditSquare',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditSquare.html',
+          controller: 'CreateEditSquareCtrl'
+        }
+      }
+    })
+    .state('hairstylist.fashionList', {
+      url: '/fashionList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/fashionList.html',
+          controller: 'FashionListCtrl'
+        }
+      }
+    })
+    .state('hairstylist.createEditWork', {
+      url: '/createEditWork',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditWork.html',
+          controller: 'CreateEditWorkCtrl'
+        }
+      }
+    })
+    .state('hairstylist.workList', {
+      url: '/workList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/workList.html',
+          controller: 'HairstylistWorkListCtrl'
+        }
+      }
+    })
+    .state('hairstylist.workGroup', {
+      url: '/workGroup',
+      params: {isHairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/workGroup.html',
+          controller: 'WorkGroupCtrl'
+        }
+      }
+    })
+    .state('hairstylist.works', {
+      url: '/works',
+      params: { group: null, hairstylist: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/works.html',
+          controller: 'HairstylistWorksCtrl'
+        }
+      }
+    })
+    .state('hairstylist.workDetail', {
+      url: '/workDetail',
+      params: { work: null, isHairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/workDetail.html',
+          controller: 'WorkDetailCtrl'
+        }
+      }
+    })
+    .state('hairstylist.comment', {
+      url: '/comment',
+      params: { workId: null, choosedLike: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/comment.html',
+          controller: 'CommentCtrl'
+        }
+      }
+    })
+
+
+
+
     .state('hairstylist.account', {
       url: '/account',
       views: {
@@ -283,11 +395,40 @@ angular.module('sflIon', [
 
     .state('hairstylist.customerDetail', {
       url: '/customerDetail',
-      params: { customer: null },
+      params: { customer: null, type: null },
       views: {
         'menuContent': {
           templateUrl: 'templates/hairstylist/salon/customerDetail.html',
           controller: 'CustomerDetailCtrl'
+        }
+      }
+    })
+    .state('hairstylist.maintainCustomer', {
+      url: '/maintainCustomer',
+      params: { customer: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/salon/maintainCustomer.html',
+          controller: 'MaintainCustomerCtrl'
+        }
+      }
+    })
+
+    .state('hairstylist.customerMaintains', {
+      url: '/customerMaintains',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/customerMaintain/customerMaintains.html',
+          controller: 'CustomerMaintainsCtrl'
+        }
+      }
+    })
+    .state('hairstylist.addCustomerMaintain', {
+      url: '/addCustomerMaintain',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/customerMaintain/addCustomerMaintain.html',
+          controller: 'AddCustomerMaintainCtrl'
         }
       }
     })
@@ -375,7 +516,7 @@ angular.module('sflIon', [
     })
     .state('customer.workDetail', {
       url: '/workDetail',
-      params: { work: null},
+      params: { work: null, isHairstylist: null},
       views: {
         'menuContent': {
           templateUrl: 'templates/customer/salon/workDetail.html',

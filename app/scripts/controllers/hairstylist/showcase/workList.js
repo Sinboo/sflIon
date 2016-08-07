@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, WORK_GROUP2, SortList) {
+  .controller('HairstylistWorkListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, WORK_GROUP2, SortList) {
     $scope.noBackGoTo = noBackGoTo;
     $scope._ = _;
     $scope.UID = UID();
@@ -43,16 +43,22 @@ angular.module('sflIon')
       var detailWork = {};
       detailWork.workId = work.$id;
       detailWork.slave1 = work.master;
-      $state.go('customer.workDetail', {work: detailWork});
+      $state.go('hairstylist.workDetail', {work: detailWork, isHairstylist: true});
     };
 
     $scope.openWorkGroup = function () {
-      $state.go('customer.workGroup');
+      $state.go('hairstylist.workGroup', {isHairstylist: true});
+    };
+
+    $scope.addWork = function () {
+      $state.go('hairstylist.createEditWork');
+      console.log('yes')
     };
 
     $scope.chooseWorkGroup = function (group) {
-      $state.go('customer.works', {group: group})
+      $state.go('hairstylist.works', {group: group})
     };
+    
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope

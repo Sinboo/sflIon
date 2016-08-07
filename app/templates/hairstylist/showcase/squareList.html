@@ -1,0 +1,69 @@
+<ion-view title="社区广场">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <div class="bar-subheader">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px">
+      <div class="col font-thin text-large balanced bl-grey" >社区广场</div>
+      <div class="col font-thin " ng-click="noBackGoTo('hairstylist.workList')">作品展示</div>
+      <div class="col font-thin" ng-click="noBackGoTo('hairstylist.fashionList')">潮流前线</div>
+    </div>
+  </div>
+
+    <ion-content class="has-header has-subheader bg-lightgrey">
+      <div class="list card" ng-repeat="item in squares | filter: searchFilter ">
+        <div class="item item-avatar" ng-click="showDetail(item)">
+          <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}" />
+          <h2 class="balanced">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name}}</h2>
+          <p class="text-small" am-time-ago="{{item.master.createAt}}"></p>
+        </div>
+        <div class="item item-body" ng-click="showDetail(item)">
+          <h3>{{item.master.name}}</h3>
+          <p>{{item.master.description}}</p>
+          <img class="full-image" ng-click="$event.stopPropagation()" fullscreen ng-src="{{_.values(item.master.carouselImgs)[0]}}" ng-if="_.size(item.master.carouselImgs) == 1"/>
+
+          <div ng-if="_.size(item.master.carouselImgs) > 1">
+            <div class="row" ng-repeat="img in _.values(item.master.carouselImgs) track by $index" ng-if="$index % 3 == 0">
+              <div class="col">
+                <div class="card tile" ng-if="_.values(item.master.carouselImgs)[$index]">
+                  <div class="item item-image">
+                    <img img-slider-modal images="item.master.carouselImgs" index="$index" ng-click="$event.stopPropagation()" ng-src="{{_.values(item.master.carouselImgs)[$index]}}" ng-click="openImgView(_.values(item.master.carouselImgs), $index)">
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card tile" ng-if="_.values(item.master.carouselImgs)[$index + 1]">
+                  <div class="item item-image">
+                    <img img-slider-modal images="item.master.carouselImgs" index="$index + 1" ng-click="$event.stopPropagation()" ng-src="{{_.values(item.master.carouselImgs)[$index + 1]}}" ng-click="openImgView(_.values(item.master.carouselImgs), $index + 1)">
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card tile" ng-if="_.values(item.master.carouselImgs)[$index + 2]">
+                  <div class="item item-image">
+                    <img img-slider-modal images="item.master.carouselImgs" index="$index + 2" ng-click="$event.stopPropagation()" ng-src="{{_.values(item.master.carouselImgs)[$index + 2]}}" ng-click="openImgView(_.values(item.master.carouselImgs), $index + 2)">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            <a href="#" class="subdued"><i class="icon calm" ng-class="{'ion-ios-heart': _.findWhere(_.values(item.slave3), {likerUid: UID}), 'ion-ios-heart-outline': !_.findWhere(_.values(item.slave3), {likerUid: UID}) }"  ng-click="like(item)"> {{_.values(item.slave3).length}}</i></a>
+            <a href="#" class="subdued"><i class="icon ion-ios-chatbubble-outline calm"> {{_.values(item.slave4).length}}</i></a>
+          </p>
+        </div>
+      </div>
+
+      <ion-infinite-scroll ng-if="!noMoreItemsAvailable"
+                           immediate-check="false"
+                           on-infinite="loadMore()"
+                           distance="1%">
+      </ion-infinite-scroll>
+    </ion-content>
+
+  <a class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="addSquare()"><i class="icons ion-plus-round"></i></a>
+
+
+</ion-view>

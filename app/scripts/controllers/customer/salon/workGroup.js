@@ -6,7 +6,12 @@ angular.module('sflIon')
   .controller('WorkGroupCtrl', function ($scope, $state) {
 
     $scope.chooseWorkGroup = function (group) {
-      $state.go('customer.works', {group: group})
+      if ($state.params.isHairstylist) {
+        $state.go('hairstylist.works', {group: group})
+      }
+      else {
+        $state.go('customer.works', {group: group})
+      }
     };
     
   });

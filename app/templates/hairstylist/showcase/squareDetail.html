@@ -3,24 +3,23 @@
   <ion-content class="has-header" scroll-event-interval="5" padding="false">
 
     <div class="card post-detail">
-      <div class="item item-avatar" ng-click="showHairstylistDetail(hairstylist[0])" style="margin-bottom: 10px">
-        <img ng-src="{{hairstylist[0].avatar}}">
-        <h2 class="lead">{{hairstylist[0].name}}</h2>
-        <p class="text-smaller">{{hairstylist[0].mobile}}</p>
+      <div class="item item-avatar" ng-click="showUserDetail(userProfile[0])" style="margin-bottom: 10px">
+        <img ng-src="{{userProfile[0].avatar}}">
+        <h2 class="lead">{{userProfile[0].name}}</h2>
+        <p class="text-smaller">{{userProfile[0].mobile}}</p>
       </div>
       <div class="item item-body">
         <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" active-slide="activeIndex"
                        ng-init="activeIndex = 0" class="slide-intro">
-          <ion-slide ng-repeat="(key, value) in work.slave1.carouselImgs track by $index">
+          <ion-slide ng-repeat="(key, value) in square.master.carouselImgs track by $index">
             <img style="width: 100%; vertical-align: middle;" ng-src="{{value}}" alt="{{work.name}}">
           </ion-slide>
         </ion-slide-box>
         <div class="item item-text-wrap no-b">
-          <h2 class="text-large lead text-left">{{work.slave1.name}}</h2>
-          <span class="tags pull-right"  >{{work.slave1.discount ? work.slave1.discount * 100 + '% 折扣' : '新品上市'}} </span>
-          <p class="text-medium">${{work.slave1.price | number:2}}</p>
+          <h2 class="text-large lead text-left">{{square.master.name}}</h2>
+          <!--<span class="tags pull-right"  >{{square.master.discount ? square.master.discount * 100 + '% 折扣' : '新品上市'}} </span>-->
           <p class="text-small font-thin">
-            {{work.slave1.description}}
+            {{square.master.description}}
           </p>
         </div>
 
@@ -40,8 +39,8 @@
             <p><img width="100px" fullscreen ng-src="{{item.master.imgUrl}}" /></p>
             <p class="text-smaller pull-right" am-time-ago="item.master.createAt"></p>
           </div>
-          <p class="font-thin text-center" ng-if="comments.length > 5" ng-click="openComment(work.workId)">点击查看更多...</p>
-          <p class="font-thin text-center" ng-if="comments.length == 0" ng-click="openComment(work.workId)">暂时还没有人评论哦~ 快去留下第一条评论吧!</p>
+          <p class="font-thin text-center" ng-if="comments.length > 5" ng-click="openComment()">点击查看更多...</p>
+          <p class="font-thin text-center" ng-if="comments.length == 0" ng-click="openComment()">暂时还没有人评论哦~ 快去留下第一条评论吧!</p>
         </div>
       </div>
     </div>
@@ -50,9 +49,8 @@
 
   <ion-footer-bar class="no-bg bt-grey ">
     <div class="row">
-      <div class="col text-left no-padding" ng-click="openComment(work.workId, true)"><i class="icon text-small" ng-class="_.findWhere(likes, {likerUid: UID}) ? 'ion-ios-heart': 'ion-ios-heart-outline'"> {{_.findWhere(likes, {likerUid: UID}) ? '已喜欢' : '未喜欢'}}</i></div>
-      <div class="col text-center no-padding" ng-show="!isHairstylist"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="confirm(work)"> 立即预订</i></div>
-      <div class="col text-right no-padding" ng-click="openComment(work.workId)"><i class="icon ion-ios-chatboxes-outline text-small"> {{comments.length || 0}} 评论</i></div>
+      <div class="col text-left no-padding" ng-click="openComment(true)"><i class="icon text-small" ng-class="_.findWhere(likes, {likerUid: UID}) ? 'ion-ios-heart': 'ion-ios-heart-outline'"> {{_.findWhere(likes, {likerUid: UID}) ? '已喜欢' : '未喜欢'}}</i></div>
+      <div class="col text-right no-padding" ng-click="openComment()"><i class="icon ion-ios-chatboxes-outline text-small"> {{comments.length || 0}} 评论</i></div>
     </div>
   </ion-footer-bar>
 

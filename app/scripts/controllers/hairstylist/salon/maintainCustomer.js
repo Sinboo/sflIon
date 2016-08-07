@@ -3,17 +3,39 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('EditProfileCtrl', function ($scope, UserProfile, noBackGoTo, upyun, rfc4122, $ionicLoading, ionicToast, listService, userGroup, UID, updateWidget, localStorageService, $ionicActionSheet, $cordovaCamera, $timeout, appService, getFileObject) {
+  .controller('MaintainCustomerCtrl', function ($scope, $state, UserProfile, noBackGoTo, upyun, rfc4122, $ionicLoading, ionicToast, listService, userGroup, UID, updateWidget, localStorageService, $ionicActionSheet, $cordovaCamera, $timeout, appService, getFileObject, CUSTOMER_LEVEL) {
+    var o1 = {}; var o2 = {};
     $scope.noBackGoTo = noBackGoTo;
-    $scope.type = 1;
-    $scope.userProfile = UserProfile();
-    $scope.userProfile.birthday = $scope.userProfile.birthday ? new Date($scope.userProfile.birthday) : undefined;
-    console.log($scope.userProfile);
+    $scope.customerUid = $state.params.customer.uid;
+    var customerProfile = $state.params.customer;
+    console.log($scope.customerUid);
+    $scope.customerMaintain = listService.list('customerMaintain:'+$scope.customerUid);
+    console.log($scope.customerMaintain);
+
+
+    $scope.customerMaintain.$loaded().then(function (data) {
+      if (data.length == 0) {
+        listService.list('customer:'+$scope.customerUid).$loaded().then(function (customer) {
+          $scope.customerMaintain.$add(data[0]);
+          angular.copy(customer[0], o1);
+        })
+      }
+      else {
+        angular.copy(data[0], o1);
+        $scope.hairstylist = listService.list('hairstylist:'+ data[0].updateById);
+        $scope.receptionist = listService.list('receptionist:'+ data[0].updateById);
+      }
+    });
+
 
     $scope.genderList = [
       { text: "男", value: "male" },
       { text: "女", value: "female" }
     ];
+    
+    $scope.customerLevels = CUSTOMER_LEVEL;
+    
+    
 
     $scope.mustInputErrorTips = {
       required: '请填写必填项',
@@ -29,30 +51,20 @@ angular.module('sflIon')
       return true;
     };
 
-    $scope.save = function () {
-      var list = listService.list(userGroup() + ':' + UID());
-      list.$loaded().then(function (data) {
-        var index = list.$indexFor($scope.userProfile.$id);
-        var userProfile = {};
-        angular.copy($scope.userProfile, userProfile);
-        userProfile.birthday = Date.parse(userProfile.birthday);
-        var newProfile = updateWidget(userProfile);
-        list[index] = newProfile;
-        list.$save(index).then(function () {
-          var userNew = localStorageService.cookie.get('user');
-          userNew.userProfile = newProfile;
-          localStorageService.cookie.set('user', userNew);
-          Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '编辑保存成功!', 2000);
-          noBackGoTo(userGroup() + '.account')
-        });
-      })
-
+    $scope.save = function (customerMaintain) {
+      angular.copy(customerMaintain, o2);
+      var changeParts = _.omit(o2, function(v,k) { return o1[k] === v; });
+      console.log(changeParts);
+      listService.list('customerMaintainDetail:'+customerMaintain.$id).add(changeParts);
+      $scope.customerMaintain.save(customerMaintain).then(function () {
+        $state.go('hairstylist.customerDetail', {customer: [customerProfile], type: 2})
+      });
     };
 
     var isCordovaApp = !!window.cordova;
     if ( isCordovaApp ) {
       console.log('app');
-      $scope.openFileDialog = function () {
+      $scope.openFileDialog = function (customerMaintain) {
         var hideSheet = $ionicActionSheet.show({
           buttons: [{
             text: '<b>拍照</b> 上传'
@@ -66,40 +78,40 @@ angular.module('sflIon')
           },
           buttonClicked: function (index) {
             if (index == 1) {
-              $scope.readalbum();
+              $scope.readalbum(customerMaintain);
             } else if (index == 0) {
-              $scope.taskPicture();
+              $scope.taskPicture(customerMaintain);
             }
             return true;
           }
         });
       };
 
-      $scope.readalbum = function() {
+      $scope.readalbum = function(customerMaintain) {
         document.addEventListener("deviceready", function () {
           $cordovaCamera.getPicture(appService.getLibraryOptions()).then(function (imageData) {
             var imgBase64 = "data:image/jpeg;base64," + imageData ;
             $timeout(function () {
               var imgBlob = getFileObject(imgBase64);
-              $scope.appImgUpload(imgBlob);
+              $scope.appImgUpload(imgBlob, customerMaintain);
             }, 0);
           });
         })
       };
 
-      $scope.taskPicture = function () {
+      $scope.taskPicture = function (customerMaintain) {
         document.addEventListener("deviceready", function () {
           $cordovaCamera.getPicture(appService.getCameraOptions()).then(function (imageData) {
             var imgBase64 = "data:image/jpeg;base64," + imageData ;
             $timeout(function () {
               var imgBlob = getFileObject(imgBase64);
-              $scope.appImgUpload(imgBlob);
+              $scope.appImgUpload(imgBlob, customerMaintain);
             }, 0);
           });
         });
       };
 
-      $scope.appImgUpload = function (blob) {
+      $scope.appImgUpload = function (blob, customerMaintain) {
         var uuidString = rfc4122.v4();
         var last = '{.suffix}';
         var imgUrl = '/' + uuidString + last;
@@ -111,7 +123,7 @@ angular.module('sflIon')
             $scope.image = {};
             $scope.image.ready = true;
             $scope.image.url = image.absUrl;
-            $scope.userProfile.avatar = $scope.image.url;
+            customerMaintain.realImage = $scope.image.url;
             $scope.$apply();
             console.log($scope.image.url);
           }
@@ -121,19 +133,21 @@ angular.module('sflIon')
     else {
       console.log('web');
       //choose img
-      $scope.openFileDialog = function() {
+      $scope.openFileDialog = function(customerMaintain) {
         ionic.trigger('click', {
           target: document.getElementById('file')
         });
+
+        $(document).on("change", ".uploadImage", function(e){
+          e.preventDefault();
+          $scope.upload(customerMaintain);
+        });
       };
 
-      $(document).on("change", ".uploadImage", function(e){
-        e.preventDefault();
-        $scope.upload();
-      });
+
 
       //upload image
-      $scope.upload = function() {
+      $scope.upload = function(customerMaintain) {
         var uuidString = rfc4122.v4();
         var last = '{.suffix}';
         var imgUrl = '/' + uuidString + last;
@@ -144,7 +158,7 @@ angular.module('sflIon')
             $scope.image = {};
             $scope.image.ready = true;
             $scope.image.url = image.absUrl;
-            $scope.userProfile.avatar = $scope.image.url;
+            customerMaintain.realImage = $scope.image.url;
             $scope.$apply();
             console.log($scope.image.url);
           }

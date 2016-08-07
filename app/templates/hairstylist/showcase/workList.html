@@ -1,21 +1,17 @@
-<ion-view title="作品">
+<ion-view title="作品展示">
   <ion-nav-buttons side="right">
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
   <div class="bar-subheader">
     <div class="row padding bb-grey text-center " style="margin-top: 55px">
-      <div class="col font-thin" ng-click="noBackGoTo('customer.hairstylistList')">发型师</div>
-      <div class="col font-thin text-large balanced bl-grey">作品</div>
+      <div class="col font-thin" ng-click="noBackGoTo('hairstylist.squareList')">社区广场</div>
+      <div class="col font-thin text-large balanced bl-grey">作品展示</div>
+      <div class="col font-thin" ng-click="noBackGoTo('hairstylist.fashionList')">潮流前线</div>
     </div>
   </div>
 
     <ion-content class="has-header has-subheader bg-lightgrey">
-      <!--<ion-refresher-->
-        <!--pulling-text="下拉更新..."-->
-        <!--on-refresh="doRefresh()">-->
-      <!--</ion-refresher>-->
-
       <div class="card image" ng-repeat="item in works | filter: searchFilter track by $index">
         <div class="item item-image">
           <img ng-src="{{item.master.coverImg}}" ng-click="showDetail(item)"/>
@@ -43,6 +39,10 @@
       </ion-infinite-scroll>
     </ion-content>
 
-  <a class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="openWorkGroup()"><i class="icons ion-android-apps"></i></a>
+  <ion-floating-menu menu-color="#26a69a">
+    <ion-floating-item icon="ion-edit" button-color="#ea4a4f" click="addWork()"></ion-floating-item>
+    <ion-floating-item icon="ion-grid" button-color="#2196F3" click="openWorkGroup()"></ion-floating-item>
+  </ion-floating-menu>
+
 
 </ion-view>

@@ -25,7 +25,7 @@ angular.module('sflIon')
       });
 
       connection.on("value", function(snap) {
-        console.log("# of online users = " + _.size(snap));
+        console.log(snap.val(), "# of online users = " + _.size(snap.val()));
       });
 
       var conversation = {};

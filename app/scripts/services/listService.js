@@ -116,6 +116,35 @@ angular.module('sflIon')
         ref: norm
       }
     };
+    this.join5by2keyScrollList = function (childName, childName2, childName3, childName4, childName5, secondaryKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var ref4 = new Wilddog(WD_URL).child(childName4);
+      var ref5 = new Wilddog(WD_URL).child(childName5);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1', 'master.'+secondaryKey],
+        [ref3, 'slave2', 'master.'+secondaryKey],
+        [ref4, 'slave3'],
+        [ref5, 'slave4']
+      )
+        .select('master.'+secondaryKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'},
+          {key: 'slave3.$value', alias: 'slave3'},
+          {key: 'slave4.$value', alias: 'slave4'}
+        )
+        .ref();
+      var scrollRef = new Wilddog.util.Scroll(norm, field);
+      var list = $wilddogArray(scrollRef);
+      return {
+        list: customerList(list),
+        scrollRef: scrollRef,
+        ref: norm
+      }
+    };
     this.join5ScrollList = function (childName, childName2, childName3, childName4, childName5, masterKey, field) {
       var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
       var ref2 = new Wilddog(WD_URL).child(childName2);
@@ -238,15 +267,29 @@ angular.module('sflIon')
     function buildNorm(childName, childName2, masterKey, field) {
       var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
       var ref2 = new Wilddog(WD_URL).child(childName2);
-      var norm = new Wilddog.util.NormalizedCollection(
-        [ref1, 'master'],
-        [ref2, 'slave', 'master.'+masterKey]
-      )
-        .select('master.'+masterKey, 'master.'+field,
-          {key: 'master.$value', alias: 'master'},
-          {key: 'slave.$value', alias: 'slave'}
+      var norm;
+      if (masterKey == 'theKey') {
+        norm = new Wilddog.util.NormalizedCollection(
+          [ref1, 'master'],
+          [ref2, 'slave']
         )
-        .ref();
+          .select('master.'+field,
+            {key: 'master.$value', alias: 'master'},
+            {key: 'slave.$value', alias: 'slave'}
+          )
+          .ref();
+      }
+      else {
+        norm = new Wilddog.util.NormalizedCollection(
+          [ref1, 'master'],
+          [ref2, 'slave', 'master.'+masterKey]
+        )
+          .select('master.'+masterKey, 'master.'+field,
+            {key: 'master.$value', alias: 'master'},
+            {key: 'slave.$value', alias: 'slave'}
+          )
+          .ref();
+      }
       return norm;
     }
 

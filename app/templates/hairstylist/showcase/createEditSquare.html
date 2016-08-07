@@ -1,0 +1,131 @@
+<style>
+  .list.list-inline {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    -ms-flex-wrap: none;
+    flex-wrap: nowrap;
+    width: 100%;
+    /* Radio item */
+    /* Checkbox */
+    /* /!\ not fully working with long-text on */ }
+  .list.list-inline .item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit; }
+  .list.list-inline .item-radio .item-content {
+    /* give some room to the right for the checkmark icon */
+    padding: 12px;
+    padding-right: 16px; }
+  .list.list-inline .item-radio .radio-icon {
+    /* checkmark icon will be hidden by default */
+    padding: 5px; }
+  .list.list-inline .item-checkbox {
+    padding-left: 44px; }
+  .list.list-inline .item-checkbox .checkbox {
+    padding-left: 0; }
+</style>
+<ion-view cache-view="false" title="编辑社区帖子">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="goTo('hairstylist.workList')"></button>
+  </ion-nav-buttons>
+
+    <ion-content class="has-header">
+      <form novalidate>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">标题:</span>
+        <input type="text" placeholder="标题" ng-model="square.name" bsy-form-validate="mustInputErrorTips" required/>
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">帖子内容:</span>
+        <textarea rows="6" style="resize:vertical;" placeholder="帖子内容" ng-model="square.description" bsy-form-validate="mustInputErrorTips" required></textarea>
+      </label>
+
+      <!--<p class="bb text-smaller padding-horizontal uppercase">作品所属分组:</p>-->
+      <!--<div class="list list-inline text-center" style="margin-top: 20px">-->
+        <!--<ion-radio ng-repeat="item in square_GROUP" name="level"-->
+                   <!--ng-value="item.value"-->
+                   <!--ng-model="square.type">-->
+          <!--{{ item.text }}-->
+        <!--</ion-radio>-->
+      <!--</div>-->
+
+      <p class="bb text-smaller padding-horizontal uppercase">添加图片:(允许上传1~9张)</p>
+      <div class="row text-center date-time-buttons" style="margin-top: 30px">
+        <div class="col stable-bg margin" ng-if="!carouselImgs.one" ng-click="openFileDialog('one')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图1</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('one')" ng-if="carouselImgs.one"><img style="width: 100%" ng-src="{{carouselImgs.one}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.two" ng-click="openFileDialog('two')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图2</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('two')" ng-if="carouselImgs.two"><img style="width: 100%" ng-src="{{carouselImgs.two}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.three" ng-click="openFileDialog('three')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图3</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('three')" ng-if="carouselImgs.three"><img style="width: 100%" ng-src="{{carouselImgs.three}}"/>
+        </div>
+      </div>
+      <div class="row text-center date-time-buttons">
+        <div class="col stable-bg margin" ng-if="!carouselImgs.four" ng-click="openFileDialog('four')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图4</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('four')" ng-if="carouselImgs.four"><img style="width: 100%" ng-src="{{carouselImgs.four}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.five" ng-click="openFileDialog('five')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图5</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('five')" ng-if="carouselImgs.five"><img style="width: 100%" ng-src="{{carouselImgs.five}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.six" ng-click="openFileDialog('six')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图6</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('six')" ng-if="carouselImgs.six"><img style="width: 100%" ng-src="{{carouselImgs.six}}"/>
+        </div>
+      </div>
+      <div class="row text-center date-time-buttons">
+        <div class="col stable-bg margin" ng-if="!carouselImgs.seven" ng-click="openFileDialog('seven')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图7</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('seven')" ng-if="carouselImgs.seven"><img style="width: 100%" ng-src="{{carouselImgs.seven}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.eight" ng-click="openFileDialog('eight')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图8</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('eight')" ng-if="carouselImgs.eight"><img style="width: 100%" ng-src="{{carouselImgs.eight}}"/>
+        </div>
+        <div class="col stable-bg margin" ng-if="!carouselImgs.nine" ng-click="openFileDialog('nine')"><button class="button button-icon icon ion-wand"></button>
+          <p>贴图9</p>
+        </div>
+        <div class="col stable-bg margin" ng-click="deleteImage('nine')" ng-if="carouselImgs.nine"><img style="width: 100%" ng-src="{{carouselImgs.nine}}"/>
+        </div>
+      </div>
+
+      <button class="button button-block button-balanced" check-form ng-click="validate() && submitSquare()">发布帖子</button>
+
+      </form>
+    </ion-content>
+
+  <form name="uploadForm" role="form" ng-show="false">
+    <input type="file" name="file" class="uploadImage" id="file" /> <br/>
+  </form>
+</ion-view>

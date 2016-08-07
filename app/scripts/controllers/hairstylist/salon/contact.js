@@ -12,42 +12,13 @@ angular.module('sflIon')
     $scope.contacts = JoinList('customerOfHairstylist:'+UID(), 'customer', 'customerUid', 'updateAt');
     console.log($scope.contacts);
 
-    // $scope.openHairstylist = function () {
-    //   $state.go('customer.hairstylists');
-    // };
-
     $scope.showDetail = function (customer) {
       $state.go('hairstylist.customerDetail', {customer: [customer]});
     };
-    
-    // $scope.deleteContact = function (contact) {
-    //   var confirmPopup = $ionicPopup.confirm({
-    //     title: '删除联系人?',
-    //     template: '您确定要删除此联系人吗?',
-    //     cancelText: '取消',
-    //     okText: '确定',
-    //     okType: 'button-balanced'
-    //   });
-    //
-    //   confirmPopup.then(function(res) {
-    //     if(res) {
-    //       console.log(contact)
-    //       var list1 = listService.list('customerOfHairstylist:'+UID());
-    //       list1.$loaded().then(function () {
-    //         var deletingContact = list1.$indexFor(contact.$id);
-    //         list1.$remove(deletingContact);
-    //       });
-    //       var list2 = listService.list('hairstylistOfCustomer:'+contact.customerUid);
-    //       list2.$loaded().then(function (data) {
-    //         var hairstylistOfCustomer = _.findWhere(data, {hairstylistUid: UID()});
-    //         var key = hairstylistOfCustomer.$id;
-    //         console.log(hairstylistOfCustomer, key);
-    //         var deletingContact = list2.$indexFor(key);
-    //         list2.$remove(deletingContact);
-    //       });
-    //     }
-    //   });
-    // };
+
+    $scope.maintainContact = function (customer) {
+      $state.go('hairstylist.maintainCustomer', {customer: customer});
+    };
 
     $scope.openConversation = function (customer) {
       var flag = false;

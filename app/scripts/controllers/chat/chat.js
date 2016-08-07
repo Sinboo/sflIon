@@ -208,14 +208,14 @@ angular.module('sflIon')
       };
 
       $(document).on("change", ".uploadImage", function(e){
-        e.stopPropagation();
+        e.stopImmediatePropagation();
         e.preventDefault();
         $scope.upload();
       });
 
       //upload image
       $scope.upload = function() {
-        console.log('yes')
+        console.log('yes');
         $scope.newMessage = {};
         appService.Loading('show');
         var uuidString = rfc4122.v4();

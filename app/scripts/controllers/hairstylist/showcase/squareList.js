@@ -3,16 +3,15 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, WORK_GROUP2, SortList) {
+  .controller('SquareListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
     $scope.noBackGoTo = noBackGoTo;
     $scope._ = _;
     $scope.UID = UID();
-    $scope.WORK_GROUP = WORK_GROUP2;
 
-    var scrollList = listService.join4by2keyScrollList('work', 'hairstylist', 'like', 'comment', 'hairstylistUid', 'updateAtR');
-    $scope.works = SortList(scrollList.list);
+    var scrollList = listService.join5by2keyScrollList('square', 'hairstylist', 'customer', 'like', 'comment', 'uid', 'updateAtR');
+    $scope.squares = SortList(scrollList.list);
     scrollList.scrollRef.scroll.next(PAGE_SIZE);
-    console.log($scope.works);
+    console.log($scope.squares);
 
     $scope.loadMore = function () {
       scrollList.scrollRef.scroll.next(PAGE_SIZE);
@@ -20,11 +19,11 @@ angular.module('sflIon')
     };
 
     $scope.like = function (item) {
-      var myLike = _.findWhere(_.values(item.slave2), {likerUid: UID()});
+      var myLike = _.findWhere(_.values(item.slave3), {likerUid: UID()});
       var likeList = listService.list('like:'+item.$id);
       likeList.$loaded().then(function () {
         if (myLike) {
-          var key = _.invert(item.slave2)[myLike];
+          var key = _.invert(item.slave3)[myLike];
           var index = likeList.$indexFor(key);
           likeList.$remove(index).then(function (ref) {
           })
@@ -38,21 +37,25 @@ angular.module('sflIon')
       })
     };
 
-    $scope.showDetail = function (work) {
-      console.log(work);
-      var detailWork = {};
-      detailWork.workId = work.$id;
-      detailWork.slave1 = work.master;
-      $state.go('customer.workDetail', {work: detailWork});
+    $scope.showDetail = function (square) {
+      console.log(square);
+      $state.go('hairstylist.squareDetail', {square: square, isHairstylist: true});
     };
 
-    $scope.openWorkGroup = function () {
-      $state.go('customer.workGroup');
+    $scope.addSquare = function () {
+      $state.go('hairstylist.createEditSquare');
+      console.log('yes')
     };
+    
+    
 
-    $scope.chooseWorkGroup = function (group) {
-      $state.go('customer.works', {group: group})
-    };
+    
+
+
+
+
+
+    
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope

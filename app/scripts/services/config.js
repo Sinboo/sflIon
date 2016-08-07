@@ -13,6 +13,22 @@ void function () {
       perm: '时尚烫发',
       nursing: '营养护理'
     },
+    WORK_GROUP: [
+      { text: "女短", value: "F_SHORT" },
+      { text: "女中", value: "F_MID" },
+      { text: "女长", value: "F_LONG" },
+      { text: "男发", value: "MAN" },
+      { text: "染发", value: "COLOR" },
+      { text: "烫发", value: "PERM" }
+    ],
+    WORK_GROUP2: [
+      { text: "女士短发", value: "F_SHORT" },
+      { text: "女士中发", value: "F_MID" },
+      { text: "女士长发", value: "F_LONG" },
+      { text: "男士发型", value: "MAN" },
+      { text: "时尚染发", value: "COLOR" },
+      { text: "时尚烫发", value: "PERM" }
+    ],
     ORDER_GROUP: {
       booked: "预定",
       underDoing: '进行中',
@@ -22,7 +38,16 @@ void function () {
     N_VIP_PRICE: {
       normalPrice: '普通价',
       vipPrice: 'VIP专享价'
-    }
+    },
+    CUSTOMER_LEVEL: [
+      { text: "高端", value: "top" },
+      { text: "中高端", value: "topMiddle" },
+      { text: "中端", value: "middle" },
+      { text: "中低端", value: "middleLow" },
+      { text: "低端", value: "low" }
+    ]
+    
+    
 
 
     // 'A': {

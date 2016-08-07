@@ -1,0 +1,41 @@
+<ion-view title="潮流前线">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <div class="bar-subheader">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px">
+      <div class="col font-thin " ng-click="noBackGoTo('hairstylist.squareList')">社区广场</div>
+      <div class="col font-thin " ng-click="noBackGoTo('hairstylist.workList')">作品展示</div>
+      <div class="col font-thin text-large balanced bl-grey">潮流前线</div>
+    </div>
+  </div>
+
+    <ion-content class="has-header has-subheader bg-lightgrey">
+      <div class="list card" ng-repeat="post in news.items | filter: searchFilter ">
+        <div class="item item-avatar">
+          <img ng-src="{{post.sourceLogo}}" />
+          <h2 class="balanced">{{post.author}}</h2>
+          <p class="text-small" am-time-ago="{{post.publishedDate}}"></p>
+        </div>
+        <div class="item item-body">
+          <img class="full-image" ng-src="{{post.image}}">
+          <p>{{post.title}}</p>
+          <p>
+            <a href="#" class="subdued"><i class="icon calm" ng-class="{'ion-ios-heart': liked, 'ion-ios-heart-outline': !liked }" ng-click="liked = !liked"> {{post.likes.length}} Likes</i></a>
+            <a href="#" class="subdued"><i class="icon ion-ios-chatbubble-outline calm"> {{post.comments.length}} Comments</i></a>
+          </p>
+        </div>
+      </div>
+
+      <ion-infinite-scroll ng-if="!noMoreItemsAvailable"
+                           immediate-check="false"
+                           on-infinite="loadMore()"
+                           distance="1%">
+      </ion-infinite-scroll>
+    </ion-content>
+
+  <a class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="addWork()"><i class="icons ion-plus-round"></i></a>
+
+
+</ion-view>

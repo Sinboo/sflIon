@@ -275,9 +275,21 @@ color:#898a8b !important;
     right: 10px;
     font-size: 1em;    
 }
+.card.image .item.item-image .interact2{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1em;
+}
 .card.image .item.item-image .interact i{
     margin:0 5px;
     background-color: #656171;
+    padding:2px 10px;
+    border-radius: 20px;
+}
+.card.image .item.item-image .interact2 i{
+    margin:0 5px;
+    background-color: #2196F3;
     padding:2px 10px;
     border-radius: 20px;
 }

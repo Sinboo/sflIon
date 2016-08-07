@@ -2,16 +2,49 @@
 
 
 angular.module('sflIon')
-  .directive('countmessage', function () {
-      return {
-        restrict: 'A',
-        scope: { message: '@', time: '@' },
-        link: function (scope, element) {
-          var count = _.filter(scope.message, function(v) {return (v.createAt > scope.time) }).length;
-          console.log(scope.message, scope.time, _, _.filter(scope.message, function(v) {return (v.createAt > scope.time) }), count)
-          return element.text(count + '未读消息');
-        }
-      };
+  .directive('imgSliderModal', function(appModalService, $ionicSlideBoxDelegate, $timeout){
+    var openImgSliderModal = function (images, index) {
+      appModalService.show(
+        'templates/common/modal/ImgSliderModal.html',
+        'ImgSliderModalCtrl as vm',
+        {images: images, index: index}
+      )
+    };
+    return {
+      restrict: 'A',
+      scope: {images: '=', index: '='},
+      link: function(scope, element, attrs) {
+        element.bind('click',
+          function () {
+            openImgSliderModal(scope.images, scope.index)
+          }
+        );
+      }
+    }
+  })
+  .filter('ageFilter', function() {
+    function calculateAge(birthday) {
+      var ageDifMs = Date.now() - birthday;
+      var ageDate = new Date(ageDifMs); // miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+
+    return function(birthdate) {
+      return calculateAge(birthdate);
+    };
+  })
+  .directive("formatDate", function(){
+    return {
+      require: 'ngModel',
+      link: function(scope, elem, attr, modelCtrl) {
+        modelCtrl.$formatters.push(function(modelValue){
+          return new Date(modelValue);
+        })
+        modelCtrl.$parsers.push(function(modelValue){
+          return Date.parse(modelValue);
+        })
+      }
+    }
   })
   .directive('countdown', [
     'Util',
