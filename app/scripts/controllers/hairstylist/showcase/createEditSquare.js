@@ -5,6 +5,9 @@
 'use strict';
 angular.module('sflIon')
   .controller('CreateEditSquareCtrl', function ($scope, $state, noBackGoTo, WORK_GROUP, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup, UserProfile) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+    });
     $scope.carouselImgs = {};
     $scope.goTo = noBackGoTo;
     $scope.WORK_GROUP = WORK_GROUP;
@@ -22,7 +25,12 @@ angular.module('sflIon')
       console.log(square);
       listService.list('square').add(square).then(function () {
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '帖子提交成功!', 2000);
-        $scope.goTo('hairstylist.squareList')
+        if ($scope.isHairstylist) {
+          $scope.goTo('hairstylist.squareList')
+        }
+        else {
+          $scope.goTo('customer.squareList')
+        }
       })
 
     };

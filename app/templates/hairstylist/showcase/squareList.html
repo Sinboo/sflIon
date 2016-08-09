@@ -4,10 +4,16 @@
   </ion-nav-buttons>
 
   <div class="bar-subheader">
-    <div class="row padding bb-grey text-center " style="margin-top: 55px">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px" ng-if="isHairstylist">
       <div class="col font-thin text-large balanced bl-grey" >社区广场</div>
       <div class="col font-thin " ng-click="noBackGoTo('hairstylist.workList')">作品展示</div>
       <div class="col font-thin" ng-click="noBackGoTo('hairstylist.fashionList')">潮流前线</div>
+    </div>
+    <div class="row padding bb-grey text-center " style="margin-top: 55px" ng-if="!isHairstylist">
+      <div class="col font-thin" ng-click="noBackGoTo('customer.hairstylistList')">发型师</div>
+      <div class="col font-thin " ng-click="noBackGoTo('customer.workList')">作品</div>
+      <div class="col font-thin text-large balanced bl-grey" >社区</div>
+      <div class="col font-thin" ng-click="noBackGoTo('customer.fashionList')">潮流</div>
     </div>
   </div>
 

@@ -46,12 +46,12 @@ angular.module('sflIon')
     };
 
     $scope.showDetail = function (hairstylist) {
-      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist], choosedPrice: $scope.price});
+      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist], choosedPrice: $state.params.price ? $state.params.price : null});
     };
     
     $scope.confirm = function(hairstylist) {
       if ($scope.price) {
-        $state.go('customer.createEditReservation', {value: {hairstylist: hairstylist, choosedPrice: $scope.price}});
+        $state.go('customer.createEditReservation', {value: {hairstylist: hairstylist, choosedPrice: $state.params.price ? $state.params.price : null}});
       }
       else {
         listService.list('hairstylistOfCustomer:'+UID()).$add({hairstylistUid: hairstylist.uid});
@@ -73,7 +73,6 @@ angular.module('sflIon')
       $scope.searchPopover.hide();
       $scope.getSearch();
       $scope.searchItem = '';
-    }
-    
+    };
     
   });

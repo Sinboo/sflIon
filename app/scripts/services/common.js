@@ -76,7 +76,7 @@ angular.module('sflIon')
   })
   .factory('UID', function (localStorageService) {
     return function () {
-      return localStorageService.cookie.get('user').uid.split(':')[1];
+      return localStorageService.cookie.get('user').uid.split(':')[1] || localStorageService.cookie.get('user').uid;
     }
   })
   .factory('userGroup', function (localStorageService) {

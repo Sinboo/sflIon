@@ -11,8 +11,8 @@
     </div>
   </div>
 
-    <ion-content class="has-header has-subheader bg-lightgrey">
-      <div class="card image" ng-repeat="item in works | filter: searchFilter track by $index">
+    <ion-content class="has-header has-subheader bb-grey">
+      <div class="card image card-tag" ng-repeat="item in works | filter: searchFilter track by $index">
         <div class="item item-image">
           <img ng-src="{{item.master.coverImg}}" ng-click="showDetail(item)"/>
           <span class="interact">
@@ -26,12 +26,32 @@
           <div class="item item-avatar" ng-click="showDetail(item)">
             <img ng-src="{{_.values(item.slave1)[0].avatar}}">
             <h2>{{_.values(item.slave1)[0].name}}</h2>
-            <p>{{item.master.name}}</p>
+            <p><span style="font-weight: 900;color: #80d8ff">{{item.master.name}}</span></p>
             <p>{{item.master.shortDesc}}</p>
-            <p class="text-smaller" am-time-ago="{{item.master.createAt}}"></p>
+            <!--<p class="text-smaller" am-time-ago="{{item.master.createAt}}"></p>-->
           </div>
+
         </div>
       </div>
+
+      <!--<div class="list card card-tag" style="margin-top: 10px" ng-repeat="item in works | filter: searchFilter track by $index" ng-click="showDetail(item)">-->
+        <!--<div class="item item-body">-->
+          <!--<img class="full-image" ng-src="{{item.master.coverImg}}">-->
+          <!--<span class="interact">-->
+            <!--<i class="icon ion-ios-heart" ng-class="{'calm light-bg': _.findWhere(_.values(item.slave2), {likerUid: UID}), 'light': !_.findWhere(_.values(item.slave2), {likerUid: UID}) }" attr-click click="like" arg="item" ng-click="$event.stopPropagation()"> {{_.values(item.slave2).length}}</i>-->
+            <!--<i class="icon ion-ios-chatbubble light"> {{_.values(item.slave3).length}}</i>-->
+          <!--</span>-->
+          <!--<p class="text-small date" am-time-ago="{{item.master.createAt}}"></p>-->
+          <!--<p class="text-smaller group " attr-click click="chooseWorkGroup" arg="item.master.type" ng-click="$event.stopPropagation()" ><a class="light">{{_.findWhere(WORK_GROUP, {value: item.master.type}).text}}</a></p>-->
+        <!--</div>-->
+        <!--<div class="item item-avatar">-->
+          <!--<img ng-src="{{_.values(item.slave1)[0].avatar}}">-->
+          <!--<h2 class="balanced">{{_.values(item.slave1)[0].name}}</h2>-->
+          <!--<p class="text-small">{{_.values(item.slave1)[0].description}}</p>-->
+          <!--<h4>{{item.master.name}}</h4>-->
+          <!--<p>{{item.master.shortDesc}}</p>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <ion-infinite-scroll ng-if="!noMoreItemsAvailable"
                            immediate-check="false"

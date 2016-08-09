@@ -3,10 +3,15 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('SquareListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
+  .controller('SquareListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $location, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+    });
+
     $scope.noBackGoTo = noBackGoTo;
     $scope._ = _;
     $scope.UID = UID();
+
 
     var scrollList = listService.join6by2keyScrollList('square', 'hairstylist', 'customer', 'receptionist', 'like', 'comment', 'uid', 'updateAtR');
     $scope.squares = SortList(scrollList.list);
@@ -39,11 +44,21 @@ angular.module('sflIon')
 
     $scope.showDetail = function (square) {
       console.log(square);
-      $state.go('hairstylist.squareDetail', {square: square, isHairstylist: true});
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.squareDetail', {square: square, isHairstylist: true});
+      }
+      else {
+        $state.go('customer.squareDetail', {square: square});
+      }
     };
 
     $scope.addSquare = function () {
-      $state.go('hairstylist.createEditSquare');
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.createEditSquare');
+      }
+      else {
+        $state.go('customer.createEditSquare');
+      }
     };
     
     

@@ -523,6 +523,16 @@ angular.module('sflIon', [
         }
       }
     })
+    .state('customer.customerDetail', {
+      url: '/customerDetail',
+      params: { customer: null, type: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/customerDetail.html',
+          controller: 'CCustomerDetailCtrl'
+        }
+      }
+    })
     .state('customer.works', {
       url: '/works',
       params: { group: null, hairstylist: null },
@@ -591,6 +601,54 @@ angular.module('sflIon', [
         }
       }
     })
+    .state('customer.squareList', {
+      url: '/squareList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/squareList.html',
+          controller: 'SquareListCtrl'
+        }
+      }
+    })
+    .state('customer.squareDetail', {
+      url: '/squareDetail',
+      params: { square: null, isHairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/squareDetail.html',
+          controller: 'SquareDetailCtrl'
+        }
+      }
+    })
+    .state('customer.createEditSquare', {
+      url: '/createEditSquare',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditSquare.html',
+          controller: 'CreateEditSquareCtrl'
+        }
+      }
+    })
+    .state('customer.fashionList', {
+      url: '/fashionList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/fashionList.html',
+          controller: 'FashionListCtrl'
+        }
+      }
+    })
+    .state('customer.fashionDetail', {
+      url: '/fashionDetail',
+      params: { fashion: null, isHairstylist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/fashionDetail.html',
+          controller: 'FashionDetailCtrl'
+        }
+      }
+    })
+    
 
     .state('customer.account', {
       url: '/account',

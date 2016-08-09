@@ -17,7 +17,7 @@ angular.module('sflIon')
           if (parameters.group == 'wash' || parameters.group == 'cut') {
             if (item.name == '艺术导师') {
               var price = {};
-              price.name = item.name;
+              price.name = (parameters.group == 'wash' ? '洗吹造型(' : '洗剪造型(') +  item.name + ')';
               price.subName = item.price.notes;
               price.number = item.price.normalPrice;
               price.id = item.$id;
@@ -32,7 +32,7 @@ angular.module('sflIon')
             else {
               $.each(item.price, function (k, v) {
                 var price = {};
-                price.name = item.name;
+                price.name = (parameters.group == 'wash' ? '洗吹造型(' : '洗剪造型(') +  item.name + ')';
                 price.subName = N_VIP_PRICE[k] ? '-' + N_VIP_PRICE[k] : N_VIP_PRICE[k];
                 price.number = v;
                 price.id = item.$id;
@@ -68,7 +68,7 @@ angular.module('sflIon')
           if (parameters.group == 'wash' || parameters.group == 'cut') {
             if (item.name == '艺术导师') {
               var price = {};
-              price.name = item.name;
+              price.name = (parameters.group == 'wash' ? '洗吹造型(' : '洗剪造型(') +  item.name + ')';
               price.subName = item.price.notes;
               price.number = item.price.normalPrice;
               price.id = item.$id;
@@ -77,7 +77,7 @@ angular.module('sflIon')
             else {
               $.each(item.price, function (k, v) {
                 var price = {};
-                price.name = item.name;
+                price.name = (parameters.group == 'wash' ? '洗吹造型(' : '洗剪造型(') +  item.name + ')';
                 price.subName = N_VIP_PRICE[k] ? '-' + N_VIP_PRICE[k] : N_VIP_PRICE[k];
                 price.number = v;
                 price.id = item.$id;

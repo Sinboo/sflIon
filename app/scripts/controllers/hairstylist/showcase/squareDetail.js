@@ -4,10 +4,12 @@
 'use strict';
 angular.module('sflIon')
   .controller('SquareDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join3List) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $state.params.isHairstylist;
+    });
     $scope._ = _;
     $scope.UID = UID();
     $scope.square = $state.params.square;
-    $scope.isHairstylist = $state.params.isHairstylist;
     console.log($scope.square);
 
     $scope.userProfile = listService.list($scope.square.master.userGroup + ':' + $scope.square.master.uid);
@@ -35,27 +37,26 @@ angular.module('sflIon')
       })
     };
 
-    if ($scope.isHairstylist) {
-      $scope.openComment = function (choosedLike) {
+    $scope.openComment = function (choosedLike) {
+      if ($scope.isHairstylist) {
         $state.go('hairstylist.comment', {workId: $scope.square.$id, choosedLike: choosedLike});
-      };
-      $scope.showUserDetail = function (userProfile) {
-        var params = {};
+      }
+      else {
+        $state.go('customer.comment', {workId: $scope.square.$id, choosedLike: choosedLike});
+      }
+    };
+    $scope.showUserDetail = function (userProfile) {
+      var params = {};
+      if ($scope.isHairstylist) {
         params[$scope.square.master.userGroup] = [userProfile];
         params.isHairstylist = true;
         $state.go('hairstylist.' + $scope.square.master.userGroup + 'Detail', params);
-      };
-    }
-    else {
-      $scope.openComment = function (choosedLike) {
-        $state.go('customer.comment', {workId: $scope.square.$id, choosedLike: choosedLike});
-      };
-      $scope.showUserDetail = function (userProfile) {
-        var params = {};
+      }
+      else {
         params[$scope.square.master.userGroup] = [userProfile];
         $state.go('customer.' + $scope.square.master.userGroup + 'Detail', params);
-      };
-    }
+      }
+    };
 
 
 

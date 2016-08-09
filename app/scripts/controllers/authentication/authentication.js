@@ -19,10 +19,10 @@ angular.module('sflIon')
               email: value.email,
               password: value.password
             }).then(function(authData) {
-              listService.list('customer:'+authData.uid.split(':')[1]).$loaded(function (data) {
+              listService.list('customer:'+ (authData.uid.split(':')[1] || authData.uid)).$loaded(function (data) {
                 if (data.length > 0) {
                   authData.userGroup = 'customer';
-                  listService.list(authData.userGroup+':'+authData.uid.split(':')[1]).$loaded(function (data) {
+                  listService.list(authData.userGroup+':'+(authData.uid.split(':')[1] || authData.uid)).$loaded(function (data) {
                     authData.userProfile = data[0];
                     localStorageService.cookie.set('user', authData);
                     console.log("Logged in as:", authData);
@@ -31,10 +31,10 @@ angular.module('sflIon')
                   });
                 }
               });
-              listService.list('hairstylist:'+authData.uid.split(':')[1]).$loaded(function (data) {
+              listService.list('hairstylist:'+ (authData.uid.split(':')[1] || authData.uid)).$loaded(function (data) {
                 if (data.length > 0) {
                   authData.userGroup = 'hairstylist';
-                  listService.list(authData.userGroup+':'+authData.uid.split(':')[1]).$loaded(function (data) {
+                  listService.list(authData.userGroup+':'+(authData.uid.split(':')[1] || authData.uid)).$loaded(function (data) {
                     authData.userProfile = data[0];
                     localStorageService.cookie.set('user', authData);
                     console.log("Logged in as:", authData);
@@ -72,16 +72,17 @@ angular.module('sflIon')
                 password: value.password
               });
             }).then(function(authData) {
+              console.log(authData);
               var userProfile = {};
               userProfile.name = value.name;
-              userProfile.uid = authData.uid.split(':')[1];
+              userProfile.uid = (authData.uid.split(':')[1] || authData.uid);
               userProfile.avatar = 'http://imtailor.b0.upaiyun.com/7f7f6a44-6f42-4f8e-bc60-1c44b7b7ba88.png';
-              listService.list(value.userGroup+':'+authData.uid.split(':')[1]).add(userProfile);
+              listService.list(value.userGroup+':'+(authData.uid.split(':')[1] || authData.uid)).add(userProfile);
               authData.userGroup = value.userGroup;
               console.log("Logged in as:", authData);
               localStorageService.cookie.set('user', authData);
               Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '注册并登录成功!', 2000);
-              $state.go('customer.salonReservation')
+              $state.go(authData.userGroup + '.salonReservation')
             }).catch(function(error) {
               console.error("Error: ", error);
               Materialize.toast('<i class="icon ion-close-round"></i>' + error, 2000);

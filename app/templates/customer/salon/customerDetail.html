@@ -1,0 +1,80 @@
+<ion-view title="用户详情" >
+
+  <ion-content class="has-header bt-grey profile" ion-sticky>
+    <div class="header"> <!-- style="background-image: url('../../../../img/hairstylist-bg1.jpg')"> -->
+      <img ng-src="{{customer.avatar}}">
+      <span class="badge badge-royal" ng-if="likes.length > 0">{{likes.length + '星客户'}}</span>
+      <h2 class="lead text-medium">{{customer.name}}</h2>
+      <p >{{customer.description}}</p>
+      <!--<button class="button button-small icon "  ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"-->
+              <!--ng-click="maintainCustomer(customer)">-->
+        <!--&lt;!&ndash;<span class="positive"> 发消息给Ta</span>&ndash;&gt;-->
+      <!--</button>-->
+    </div>
+
+    <div class="row item-divider no-padding text-center " style="text-transform: capitalize;background-color: inherit!important;"  >
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 1}" ng-click="type = 1">{{orderList.length}}<br/>订单</div>
+      <!--<div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 2}" ng-click="type = 2">{{customerMaintainDetails.length}}<br/>客户信息维护</div>-->
+      <div class="col font-thin" ng-class="{'text-medium balanced bb' : type === 3}" ng-click="type = 3">{{works.length}}<br/>帖子分享</div>
+    </div>
+
+    <div ng-if="type === 1">
+      <div class="list history" ng-repeat="order in orderList  | filter: searchFilter track by $index">
+        <div class="item item-avatar">
+          <img ng-src="{{order.slave.hairstylistAvatar}}">
+          <div class="inner-content">
+            <h2 class="lead text-small" am-time-ago="order.createAt"></h2>
+            <p class="text-smaller">发型师:{{order.slave.hairstylistName}}</p>
+            <p class="text-smaller">服务:{{order.slave.workName || order.slave.priceName}}</p>
+            <p class="text-smaller">{{order.orderPrice ? '订单价格' + order.orderPrice + '元' : ''}}</p>
+            <p class="text-medium text-right">
+              <i class="icon ion-ios-bookmarks-outline padding"></i>
+              <i class="icon ion-ios-star-outline padding bl-grey"></i>
+              <i class="icon ion-ios-trash-outline padding bl-grey"></i>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--<div ng-if="type === 2">-->
+      <!--<section id="cd-timeline" class="cd-container">-->
+        <!--<div ng-repeat="item in customerMaintainDetails">-->
+          <!--<div class="cd-timeline-block">-->
+            <!--<div class="cd-timeline-picture dark">-->
+              <!--<img ng-src="{{(_.values(item.slave1)[0].avatar) || (_.values(item.slave2)[0].avatar)}}" />-->
+            <!--</div>-->
+            <!--&lt;!&ndash; cd-timeline-img &ndash;&gt;-->
+            <!--<div class="cd-timeline-content dark">-->
+              <!--<h5 class="marginBottom0 marginTop0" ng-if="item.slave1">维护人:发型师-{{_.values(item.slave1)[0].realName}}</h5>-->
+              <!--<h5 class="marginBottom0 marginTop0" ng-if="item.slave2">维护人:前台-{{_.values(item.slave2)[0].receptionistName}}</h5>-->
+              <!--<p class="marginTop5 cd-author">时间: {{item.master.createAt | date: "MM月dd日 HH:mm"}}</p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.realName">维护内容-真实姓名: {{item.master.realName}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.realImage">维护内容-真实照片: <img width="150px" ng-src="{{item.master.realImage}}"/></p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.gender">维护内容-性别: {{item.master.gender == 'male' ? '男' : '女'}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.age">维护内容-年龄: {{item.master.age}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.birthday">维护内容-生日: {{item.master.birthday | date: "yyyy年MM月dd日"}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.mobile">维护内容-手机: {{item.master.mobile}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.email">维护内容-邮箱: {{item.master.email}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.address">维护内容-地址: {{item.master.address}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.description">维护内容-描述: {{item.master.description}} </p>-->
+              <!--<p class="marginTop5 cd-author" ng-if="item.master.level">维护内容-客户等级: {{_.findWhere(customerLevels, {value: item.master.level}).text}} </p>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</section>-->
+    <!--</div>-->
+
+    <div ng-if="type === 3">
+      <div class="row post" ng-repeat="work in works" ng-if="$index % 3 == 0">
+        <div class="col"><img ng-src="{{works[$index].slave.coverImg}}" /></div>
+        <div class="col"><img ng-src="{{works[$index + 1].slave.coverImg}}" /></div>
+        <div class="col"><img ng-src="{{works[$index + 2].slave.coverImg}}" /></div>
+      </div>
+    </div>
+
+
+
+
+  </ion-content>
+</ion-view>

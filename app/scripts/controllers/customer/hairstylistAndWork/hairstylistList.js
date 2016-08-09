@@ -59,7 +59,16 @@ angular.module('sflIon')
       $scope.searchPopover.hide();
       $scope.getSearch();
       $scope.searchItem = '';
-    }
+    };
+
+    // listService.list('hairstylist').$loaded().then(function (data) {
+    //   console.log(data)
+    //   angular.forEach(data, function (item) {
+    //     listService.list('allHairstylist').add({hairstylistUid: _.values(item)[0].uid}).then(function () {
+    //       console.log(_.values(item)[0].uid)
+    //     })
+    //   })
+    // })
     
     
   });

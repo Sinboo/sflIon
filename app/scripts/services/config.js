@@ -29,6 +29,14 @@ void function () {
       { text: "时尚染发", value: "COLOR" },
       { text: "时尚烫发", value: "PERM" }
     ],
+    RESERVATION_TIME_LIST: [
+      [{text: "10:00", valid: true}, {text: "10:30", valid: true}, {text: "11:00", valid: true}, {text: "11:30", valid: true}],
+      [{text: "12:00", valid: true}, {text: "12:30", valid: true}, {text: "13:00", valid: true}, {text: "13:30", valid: true}],
+      [{text: "14:00", valid: true}, {text: "14:30", valid: true}, {text: "15:00", valid: true}, {text: "15:30", valid: true}],
+      [{text: "16:00", valid: true}, {text: "16:30", valid: true}, {text: "17:00", valid: true}, {text: "17:30", valid: true}],
+      [{text: "18:00", valid: true}, {text: "18:30", valid: true}, {text: "19:00", valid: true}, {text: "19:30", valid: true}],
+      [{text: "20:00", valid: true}, {text: "20:30", valid: true}, {text: "21:00", valid: true}, {text: "21:30", valid: true}]
+    ],
     ORDER_GROUP: {
       booked: "预定",
       underDoing: '进行中',

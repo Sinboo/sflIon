@@ -23,21 +23,6 @@ angular.module('sflIon')
         getReservations(moment($scope.viewDate._d).startOf('day')._d);
       })
     };
-
-    // $scope.showDetail = function (reservation) {
-    //   if (reservation.workId) {
-    //     listService.list('work').$loaded().then(function (works) {
-    //       var work = works.$getRecord(reservation.workId);
-    //       $state.go('customer.workDetail', {work: {workId: reservation.workId, slave1: work}});
-    //     });
-    //   }
-    //   else if (reservation.hairstylistUid) {
-    //     listService.list('hairstylist:' + reservation.hairstylistUid).$loaded().then(function (hairstylist) {
-    //       $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist[0]]});
-    //     });
-    //   }
-    // };
-
     
 
     $scope.decrementDate = function () {

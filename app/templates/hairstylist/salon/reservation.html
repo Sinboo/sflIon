@@ -24,7 +24,7 @@
       <div class="card no-margin no-br" ng-if="seletedReservations.length == 0">
         <div class="item item-text-wrap item-icon-left teal lighten-1">
           <i class="icon ion-ionic light"></i>
-          <span class="light">{{outOfDate == true ? '过期日不能添加预订' : '点击红色'+'添加一个预订吧!'}}</span>
+          <span class="light">{{'该日没有订单!'}}</span>
         </div>
       </div>
       <div class="card no-margin bb-grey no-br no-box" ng-if="reservations.length > 0" ng-repeat="reservation in seletedReservations | filter: searchFilter | orderBy: 'updateAtR':true track by $index">
@@ -32,13 +32,13 @@
              ng-if="reservation.slave.type == 'booked'">
             <i class="icon light ion-ios-clock"></i>
             <span class="light text-medium">{{reservation.slave.workName || reservation.slave.priceName}}</span><br/>
-            <span class="light text-smaller">发型师:{{reservation.slave.hairstylistName}}</span>
+            <span class="light text-smaller">客户:{{reservation.slave.customerName}}</span>
             <span class="light text-smaller">价格:{{reservation.slave.orderPrice}}</span><br/>
             <span class="light text-smaller justified">具体要求:{{reservation.slave.notes}}<br/></span>
             <span class="text-smaller light">预订时间: {{reservation.slave.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
             <span class="text-smaller light" ng-if="now < reservation.slave.bookedStartAt"><span >倒计时:</span><span countdown='' date="{{reservation.slave.bookedStartAt | date: 'yyyy-MM-ddTHH:mm:ss.sss'}}">&nbsp;</span></span>
             <span class="text-smaller light" ng-if="now > reservation.slave.bookedStartAt"><span >已过期:<span  am-time-ago="reservation.slave.bookedStartAt"></span></span></span>
-            <span class="light text-smaller justified pull-right">长按查看详情 </span>
+            <!--<span class="light text-smaller justified pull-right">长按查看详情 </span>-->
         </div>
 
         <div class="item item-text-wrap item-icon-left indigo lighten-1" ng-click="open[$index] = !open[$index]" on-hold="onCardHold($index, reservation);"
@@ -71,6 +71,6 @@
 
   </ion-content>
 
-  <a ng-if='!outOfDate' class="btn-floating btn-large waves-effect waves-light red" style="position:absolute;bottom:5%; right:42%;"  ui-sref="customer.createEditReservation({reservation: null})"><i class="icon ion-plus"></i></a>
+  <!--<a ng-if='!outOfDate' class="btn-floating btn-large waves-effect waves-light red" style="position:absolute;bottom:5%; right:42%;"  ui-sref="customer.createEditReservation({reservation: null})"><i class="icon ion-plus"></i></a>-->
 
 </ion-view>

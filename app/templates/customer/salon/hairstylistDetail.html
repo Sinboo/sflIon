@@ -6,7 +6,7 @@
       <span class="badge badge-royal" ng-if="likes.length > 0">{{likes.length + '个赞'}}</span>
       <h2 class="lead text-medium">{{hairstylist.name}}</h2>
       <p >{{'创意总监'}}</p>
-      <button class="button button-small icon "  ng-disabled="isHairstylist" ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"
+      <button class="button button-small icon "  ng-if="!isHairstylist" ng-class="{'button-positive button-outline ion-android-checkmark-circle': !follow, 'button-balanced ion-ios-undo-outline':follow }"
               ng-click="confirm(hairstylist)">
         <span class="positive"> 预订该发型师</span>
       </button>

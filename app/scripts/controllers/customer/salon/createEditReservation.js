@@ -4,10 +4,16 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, UID, UserProfile) {
+  .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, UID, UserProfile, RESERVATION_TIME_LIST, $filter, ionicToast, $interval) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      setValid($scope.viewDate._d);
+    });
+
     $scope.reservation = {};
     $scope.goTo = noBackGoTo;
     console.log($state.params);
+    $scope.Date = Date;
+    $scope.moment = moment;
 
     var userProfile = UserProfile();
     $scope.reservation.customerName = userProfile.name;
@@ -28,18 +34,18 @@ angular.module('sflIon')
     }
 
     if ($state.params && $state.params.value && $state.params.value.choosedPrice) {
-      $scope.reservation.work = null;
-      $scope.reservation.price = null;
-      $scope.reservation.hairstylist = null;
+      $scope.reservation.work = undefined;
+      $scope.reservation.price = undefined;
+      $scope.reservation.hairstylist = undefined;
       $scope.reservation.price = $state.params.value.choosedPrice;
       $scope.reservation.hairstylist = $state.params.value.hairstylist;
       $scope.reservation.hairstylist.rating = 4;
     }
 
     if ($state.params && $state.params.value && $state.params.value.work) {
-      $scope.reservation.work = null;
-      $scope.reservation.price = null;
-      $scope.reservation.hairstylist = null;
+      $scope.reservation.work = undefined;
+      $scope.reservation.price = undefined;
+      $scope.reservation.hairstylist = undefined;
       $scope.reservation.work = $state.params.value.work;
       listService.list('hairstylist:'+$state.params.value.work.slave.hairstylistUid).$loaded().then(function (data) {
         $scope.reservation.hairstylist = data[0];
@@ -47,35 +53,10 @@ angular.module('sflIon')
       })
     }
 
-
-    //   $scope.openWorkGroupModal = function () {
-    //   appModalService.show(
-    //     'templates/customer/salon/modal/workGroupModal.html',
-    //     'WorkGroupModalCtrl as vm'
-    //   ).then(
-    //     function (value) {
-    //       if (value) {
-    //         console.log(value)
-    //         $scope.reservation.work = null;
-    //         $scope.reservation.price = null;
-    //         $scope.reservation.hairstylist = null;
-    //         $scope.reservation.work = value;
-    //         listService.list('hairstylist:'+value.slave.hairstylistUid).$loaded().then(function (data) {
-    //           $scope.reservation.hairstylist = data[0];
-    //           $scope.reservation.hairstylist.rating = 4;
-    //         })
-    //       }
-    //     },
-    //     function(err) {
-    //       Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
-    //     }
-    //   );
-    // };
-
     $scope.saveReservation = function (reservation) {
       console.log(reservation);
-      var postData = {}
-      postData.bookedStartAt = Date.parse(reservation.bookedStartAt);
+      var postData = {};
+      postData.bookedStartAt = Date.parse($filter('date')(Date.parse(moment($scope.viewDate._d).endOf('day')._d), "yyyy-MM-dd  ") + reservation.bookedStartAt);
       postData.hairstylistUid = reservation.hairstylist ? reservation.hairstylist.uid : null;
       postData.hairstylistName = reservation.hairstylist ? reservation.hairstylist.name : null;
       postData.hairstylistAvatar = reservation.hairstylist ? reservation.hairstylist.avatar : null;
@@ -102,6 +83,53 @@ angular.module('sflIon')
 
     };
 
+    $scope.reservationTimeList = RESERVATION_TIME_LIST;
+
+    $scope.mustInputErrorTips = {
+      required: '请填写必填项',
+    };
+    $scope.validate = function () {
+      if (!$scope.reservation.price && !$scope.reservation.work && !$scope.reservation.hairstylist) {ionicToast.show('请优先选发型或价格!', 'middle', false, 2000);return false;}
+      if (!$scope.reservation.bookedStartAt) {ionicToast.show('请选择预订时间!', 'middle', false, 2000);return false;}
+      return true;
+    };
+
+
+    $scope.viewDate = new Date();
+    $scope.now = new Date().getTime();
+    $scope.decrementDate = function () {
+      if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').subtract(1, 'days');
+      else $scope.viewDate = moment($scope.viewDate._d).startOf('day').subtract(1, 'days');
+      setValid($scope.viewDate._d);
+    };
+
+    $scope.incrementDate = function () {
+      if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').add(1, 'days');
+      else $scope.viewDate = moment($scope.viewDate._d).startOf('day').add(1, 'day');
+      setValid($scope.viewDate._d);
+    };
+
+    function setValid(date) {
+      angular.forEach($scope.reservationTimeList, function (timeList) {
+        angular.forEach(timeList, function (timeLable) {
+          var future = Date.parse($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd  ") + timeLable.text);
+          timeLable.valid = future - Date.now() > 0;
+        })
+      });
+      $interval(function () {
+        angular.forEach($scope.reservationTimeList, function (timeList) {
+          angular.forEach(timeList, function (timeLable) {
+            var future = Date.parse($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd  ") + timeLable.text);
+            timeLable.valid = future - Date.now() > 0;
+          })
+        });
+      }, 600000);
+    }
+
+
+
+
+
     // $scope.openPriceListModal = function () {
     //   appModalService.show(
     //     'templates/customer/salon/modal/priceListModal.html',
@@ -124,44 +152,29 @@ angular.module('sflIon')
     //   );
     // };
 
-
-
-
-
-
-
-    // for (var i=0; i<8; i++) {
-    //   var product = {};
-    //   product.name = '最新韩式空气刘海';
-    //   product.price = 188;
-    //   product.discount = 0.8;
-    //   product.coverImg = 'http://imtailor.b0.upaiyun.com/AAAB/AAAZ/2016/07/08a6f91f-f860-4de8-808a-baa1a3a0d53e.jpg';
-    //   product.carouselImgs = {};
-    //   product.carouselImgs.one = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.carouselImgs.two = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.carouselImgs.three = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.carouselImgs.four = 'http://img2.imgtn.bdimg.com/it/u=1940010301,1280011837&fm=21&gp=0.jpg';
-    //   product.shortDesc = '美丽的故事美丽的故事美丽的故事美丽的故事';
-    //   product.detailDesc = '正道是阿斯顿发送美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事美丽的故事到弗兰克就爱看的激发了肯德基福利卡极度分裂卡士大夫科技科技科圣诞节疯狂';
-    //   product.hairstylistIds = null;
-    //   product.group = 'hairCut';
-    //   product = JSON.parse(JSON.stringify(product));
-    // //   listService.list('products').add(product);
-    // //
-    // }
-
-    // var workList = listService.list('customer');
-    // workList.$loaded().then(function (data) {
-    //   console.log(data)
-    //   angular.forEach(data, function (work) {
-    //     $.each(work, function (k, v) {
-    //       if (k.indexOf('-K') > -1) {
-    //         v.uid = work.$id;
+    //   $scope.openWorkGroupModal = function () {
+    //   appModalService.show(
+    //     'templates/customer/salon/modal/workGroupModal.html',
+    //     'WorkGroupModalCtrl as vm'
+    //   ).then(
+    //     function (value) {
+    //       if (value) {
+    //         console.log(value)
+    //         $scope.reservation.work = null;
+    //         $scope.reservation.price = null;
+    //         $scope.reservation.hairstylist = null;
+    //         $scope.reservation.work = value;
+    //         listService.list('hairstylist:'+value.slave.hairstylistUid).$loaded().then(function (data) {
+    //           $scope.reservation.hairstylist = data[0];
+    //           $scope.reservation.hairstylist.rating = 4;
+    //         })
     //       }
-    //     });
-    //     workList.$save(work);
-    //   })
-    // })
+    //     },
+    //     function(err) {
+    //       Materialize.toast('<i class="icon ion-close-round"></i>' + err, 2000);
+    //     }
+    //   );
+    // };
 
     
 

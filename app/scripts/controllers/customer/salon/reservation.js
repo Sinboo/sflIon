@@ -12,11 +12,7 @@ angular.module('sflIon')
         $scope.handleMargin = true;
       }
     });
-
-
-
-    $scope.viewDate = new Date();
-    $scope.now = new Date().getTime();
+    
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
@@ -44,9 +40,9 @@ angular.module('sflIon')
     };
 
 
-
-
-
+    
+    $scope.viewDate = new Date();
+    $scope.now = new Date().getTime();
     $scope.decrementDate = function () {
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').subtract(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').subtract(1, 'days');

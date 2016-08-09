@@ -52,7 +52,7 @@ angular.module('sflIon')
       link: function(scope, elem, attr, modelCtrl) {
         modelCtrl.$formatters.push(function(modelValue){
           return new Date(modelValue);
-        })
+        });
         modelCtrl.$parsers.push(function(modelValue){
           return Date.parse(modelValue);
         })

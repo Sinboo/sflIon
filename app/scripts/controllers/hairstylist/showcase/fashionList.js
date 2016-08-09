@@ -3,7 +3,10 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
+  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $location, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+    });
     $scope.noBackGoTo = noBackGoTo;
     $scope._ = _;
     $scope.UID = UID();
@@ -39,7 +42,12 @@ angular.module('sflIon')
 
     $scope.showDetail = function (fashion) {
       console.log(fashion);
-      $state.go('hairstylist.fashionDetail', {fashion: fashion, isHairstylist: true});
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.fashionDetail', {fashion: fashion, isHairstylist: true});
+      }
+      else {
+        $state.go('customer.fashionDetail', {fashion: fashion});
+      }
     };
 
     $scope.addFashion = function () {
