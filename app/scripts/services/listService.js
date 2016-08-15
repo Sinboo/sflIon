@@ -295,6 +295,41 @@ angular.module('sflIon')
     };
     return JoinListLoadMore;
   })
+  .factory('JoinListNormRef', function (listService, WD_URL) {
+    function buildNorm(childName, childName2, masterKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var norm;
+      if (masterKey == 'theKey') {
+        norm = new Wilddog.util.NormalizedCollection(
+          [ref1, 'master'],
+          [ref2, 'slave']
+        )
+          .select('master.'+field,
+            {key: 'master.$value', alias: 'master'},
+            {key: 'slave.$value', alias: 'slave'}
+          )
+          .ref();
+      }
+      else {
+        norm = new Wilddog.util.NormalizedCollection(
+          [ref1, 'master'],
+          [ref2, 'slave', 'master.'+masterKey]
+        )
+          .select('master.'+masterKey, 'master.'+field,
+            {key: 'master.$value', alias: 'master'},
+            {key: 'slave.$value', alias: 'slave'}
+          )
+          .ref();
+      }
+      return norm;
+    }
+
+    return function (childName, childName2, masterKey, field) {
+      var norm = buildNorm(childName, childName2, masterKey, field);
+      return norm
+    };
+  })
   .factory('JoinList', function (listService, WD_URL) {
     function buildNorm(childName, childName2, masterKey, field) {
       var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
@@ -352,6 +387,31 @@ angular.module('sflIon')
 
     return function (childName, childName2, childName3, masterKey, field) {
       var norm = buildNorm(childName, childName2, childName3, masterKey, field);
+      var query = norm.orderByChild(field);
+      return listService.list('', query)
+    };
+  })
+  .factory('Join3ListBy2Key', function (listService, WD_URL) {
+    function buildNorm(childName, childName2, childName3, secondaryKey, field) {
+      var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
+      var ref2 = new Wilddog(WD_URL).child(childName2);
+      var ref3 = new Wilddog(WD_URL).child(childName3);
+      var norm = new Wilddog.util.NormalizedCollection(
+        [ref1, 'master'],
+        [ref2, 'slave1'],
+        [ref3, 'slave2', 'master.'+secondaryKey]
+      )
+        .select('master.'+secondaryKey, 'master.'+field,
+          {key: 'master.$value', alias: 'master'},
+          {key: 'slave1.$value', alias: 'slave1'},
+          {key: 'slave2.$value', alias: 'slave2'}
+        )
+        .ref();
+      return norm;
+    }
+
+    return function (childName, childName2, childName3, secondaryKey, field) {
+      var norm = buildNorm(childName, childName2, childName3, secondaryKey, field);
       var query = norm.orderByChild(field);
       return listService.list('', query)
     };

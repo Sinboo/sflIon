@@ -6,7 +6,7 @@
   <div class="my-2sub-header handle-padding">
       <div class="row padding bb-grey text-center " style="margin-top: 55px">
         <div class="col font-thin text-large balanced bb" ng-click="goTo('customer.salonReservation')">预订</div>
-        <div class="col font-thin" ng-click="goTo('customer.salonContact')">常用发型师</div>
+        <div class="col font-thin" ng-click="goTo('customer.salonContact')">发型师管理</div>
         <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
       </div>
 
@@ -29,16 +29,17 @@
       </div>
       <div class="card no-margin bb-grey no-br no-box" ng-if="reservations.length > 0" ng-repeat="reservation in seletedReservations | filter: searchFilter | orderBy: 'updateAtR':true track by $index">
         <div class="item item-text-wrap item-icon-left teal lighten-1" on-hold="showDetail(reservation.slave)"
-             ng-if="reservation.slave.type == 'booked'">
+             ng-if="reservation.type == 'booked'" ui-sref="receptionist.createEditReservation({reservation: reservation})">
             <i class="icon light ion-ios-clock"></i>
-            <span class="light text-medium">{{reservation.slave.workName || reservation.slave.priceName}}</span><br/>
-            <span class="light text-smaller">发型师:{{reservation.slave.hairstylistName}}</span>
-            <span class="light text-smaller">价格:{{reservation.slave.orderPrice}}</span><br/>
-            <span class="light text-smaller justified">具体要求:{{reservation.slave.notes}}<br/></span>
-            <span class="text-smaller light">预订时间: {{reservation.slave.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
-            <span class="text-smaller light" ng-if="now < reservation.slave.bookedStartAt"><span >倒计时:</span><span countdown='' date="{{reservation.slave.bookedStartAt | date: 'yyyy-MM-dd HH:mm:ss.sss'}}">&nbsp;</span></span>
-            <span class="text-smaller light" ng-if="now > reservation.slave.bookedStartAt"><span >已过期:<span  am-time-ago="reservation.slave.bookedStartAt"></span></span></span>
-            <span class="light text-smaller justified pull-right">长按查看详情 </span>
+            <span class="light text-medium">{{reservation.workName || reservation.priceName}}</span><br/>
+            <span class="light text-smaller">发型师:{{reservation.hairstylistName}}</span>
+            <span class="light text-smaller">价格:{{reservation.orderPrice}}</span><br/>
+            <span class="light text-smaller justified">客户名字:{{reservation.customerName}}<br/></span>
+            <span class="light text-smaller justified">具体要求:{{reservation.notes}}<br/></span>
+            <span class="text-smaller light">预订时间: {{reservation.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
+            <span class="text-smaller light" ng-if="now < reservation.bookedStartAt"><span >倒计时:</span><span countdown='' date="{{reservation.bookedStartAt | date: 'yyyy-MM-dd HH:mm:ss.sss'}}">&nbsp;</span></span>
+            <span class="text-smaller light" ng-if="now > reservation.bookedStartAt"><span >已过期:<span  am-time-ago="reservation.bookedStartAt"></span></span></span>
+            <span class="light text-smaller justified pull-right">长按联系客户 </span>
         </div>
 
         <div class="item item-text-wrap item-icon-left indigo lighten-1" ng-click="open[$index] = !open[$index]" on-hold="onCardHold($index, reservation);"
@@ -69,9 +70,8 @@
         </a>
       </div>
 
-
   </ion-content>
 
-  <a ng-if='!outOfDate' class="btn-floating btn-large waves-effect waves-light red" style="position:absolute;bottom:5%; right:42%;"  ui-sref="customer.createEditReservation({reservation: null})"><i class="icon ion-plus"></i></a>
+  <a ng-if='!outOfDate' class="btn-floating btn-large waves-effect waves-light red" style="position:absolute;bottom:5%; right:42%;"  ui-sref="receptionist.createEditReservation({reservation: null})"><i class="icon ion-plus"></i></a>
 
 </ion-view>

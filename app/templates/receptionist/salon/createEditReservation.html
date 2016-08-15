@@ -1,0 +1,155 @@
+<style>
+  .list.list-inline {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    -ms-flex-wrap: none;
+    flex-wrap: nowrap;
+    width: 100%;
+    /* Radio item */
+    /* Checkbox */
+    /* /!\ not fully working with long-text on */ }
+  .list.list-inline .item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit; }
+  .list.list-inline .item-radio .item-content {
+    /* give some room to the right for the checkmark icon */
+    padding: 12px;
+    padding-right: 16px; }
+  .list.list-inline .item-radio .radio-icon {
+    /* checkmark icon will be hidden by default */
+    padding: 5px; }
+  .list.list-inline .item-checkbox {
+    padding-left: 44px; }
+  .list.list-inline .item-checkbox .checkbox {
+    padding-left: 0; }
+
+</style>
+<ion-view cache-view="false" title="编辑预订">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="goTo('receptionist.salonReservation')"></button>
+  </ion-nav-buttons>
+
+    <ion-content class="has-header">
+      <form novalidate>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">姓名:</span>
+        <input type="text" placeholder="请输入您的姓名" ng-model="reservation.customerName" bsy-form-validate="mustInputErrorTips" required/>
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">手机:</span>
+        <input type="tel" placeholder="请输入您的手机号" ng-model="reservation.customerMobile" bsy-form-validate="mustInputErrorTips" required/>
+      </label>
+
+      <label class="item item-input item-floating-label">
+        <span class="input-label">具体要求:</span>
+        <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
+      </label>
+
+      <label class="item item-input" ng-if="reservation.priceId || reservation.workId">
+        <span class="input-label">选择的服务:</span>
+        <div class="item-text-wrap" ng-if="reservation.priceId">
+          <span class="tags"><span class="calm">{{reservation.priceName}}</span></span>
+          <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+        </div>
+        <div class="item-text-wrap" ng-if="reservation.workId">
+          <span class="tags"><span class="calm">{{reservation.workName}}</span></span>
+          <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+        </div>
+      </label>
+      <label class="item item-input" >
+        <span class="input-label">选择的发型师:</span>
+        <div class="item-text-wrap">
+          <span class="tags ">{{reservation.hairstylistName}}</span>
+        </div>
+      </label>
+      <label class="item item-input" >
+        <span class="input-label">预订的时间:</span>
+        <div class="item-text-wrap">
+          <span class="tags ">{{viewDate._d ? (viewDate._d | amDateFormat:'YYYY-MM-DD ' + reservation.bookedStartAt) : (reservation.bookedStartAt | date: 'yyyy-MM-dd HH:mm')}}</span>
+        </div>
+      </label>
+
+      <!--<div class="row text-center date-time-buttons" style="margin-top: 30px">-->
+        <!--<div class="col stable-bg margin" ui-sref="customer.workGroup()"><button class="button button-icon icon ion-ios-keypad-outline"></button>-->
+          <!--<p>优先选发型</p>-->
+        <!--</div>-->
+        <!--<div class="col stable-bg margin" ui-sref="customer.priceList()"><button class="button button-icon icon ion-cash"></button>-->
+          <!--<p>优先选价格</p>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <div style="margin-top: 30px">
+        <p class="bb text-smaller padding-horizontal uppercase">发型师<span style="color: blue; margin: 0 10px">{{reservation.hairstylistName}}</span>的预订详情:</p>
+        <div class="item item-divider padding no-bg no-b bb-grey" >
+          <div class="row no-padding">
+            <div class="col text-grey" ng-click="decrementDate(dateFilter)"><i class="icon ion-ios-arrow-back"></i></div>
+            <div class="col text-grey text-center text-small">{{viewDate| amCalendar:referenceTime:formats}}
+            </div>
+            <div class="col text-grey text-right" ng-click="incrementDate(dateFilter)"><i class="icon ion-ios-arrow-forward"></i></div>
+          </div>
+        </div>
+      </div>
+
+        <div class="list list-inline text-center" ng-repeat="timeList in reservationTimeList">
+          <ion-radio ng-repeat="item in timeList" name="reservationTime"
+                     ng-value="item.text" ng-disabled="!item.valid || item.booked"
+                     ng-model="reservation.bookedStartAt" class="no-padding">
+
+            <div class="chip no-padding" style="width: 90px" ng-if="item.booked">
+              <img ng-src="{{item.order.customerAvatar}}" alt="客户">
+              <span style="font-size: 10px!important;margin-left: -11px!important;">{{item.order.bookedStartAt | date: 'HH:mm'}}-{{item.order.expectEndAt | date: 'HH:mm'}}</span>
+            </div>
+            <span ng-if="!item.booked && item.valid">{{ item.text }}</span>
+            <del ng-if="!item.valid" style="color: red">{{ item.text }}</del>
+          </ion-radio>
+        </div>
+
+
+        <!--<ion-list show-reorder="true">-->
+          <!--<ion-item ng-repeat="item in orderList track by $index" class="drag-item item-light item-avatar card item-complex ">-->
+            <!--<div class="item-content" style="margin-left: -80px!important;">-->
+              <!--<img ng-src="{{item.slave.customerAvatar}}" />-->
+              <!--<div class="item-divider">客户姓名:{{item.slave.customerName}}</div>-->
+              <!--<div class="item-text-wrap">-->
+                <!--<ul>-->
+                  <!--<li>预订服务: {{item.slave.workName || item.slave.priceName}}</li>-->
+                  <!--<li>价格: {{item.slave.orderPrice}}</li>-->
+                  <!--<li>客户手机: {{item.slave.customerMobile}}</li>-->
+                <!--</ul>-->
+              <!--</div>-->
+              <!--<span class="badge badge-assertive">{{item.slave.bookedStartAt | date: 'HH:mm'}}</span>-->
+            <!--</div>-->
+            <!--<span class="item-note" style="margin-right: 50px!important;">-->
+            <!--倒计时:<span countdown='' date="{{item.slave.bookedStartAt | date: 'yyyy-MM-dd HH:mm:ss.sss'}}">&nbsp;</span>-->
+            <!--</span>-->
+            <!--<ion-reorder-button class="ion-navicon"-->
+                                <!--on-reorder="moveItem(item, $fromIndex, $toIndex)">-->
+            <!--</ion-reorder-button>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+
+
+      <button class="button button-block button-balanced" check-form ng-click="validate() && saveReservation(reservation)">确认提交</button>
+      </form>
+    </ion-content>
+
+</ion-view>

@@ -2,7 +2,9 @@
   "name": "SflIon",
   "version": "0.0.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "angular-drag-drop": "^2.0.6"
+  },
   "devDependencies": {
     "grunt": "~0.4.5",
     "glob": "~4.3.5",

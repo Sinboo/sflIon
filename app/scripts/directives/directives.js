@@ -15,6 +15,7 @@ angular.module('sflIon')
       }
     }
   })
+
   .directive('imgSliderModal', function(appModalService, $ionicSlideBoxDelegate, $timeout){
     var openImgSliderModal = function (images, index) {
       appModalService.show(
@@ -35,6 +36,7 @@ angular.module('sflIon')
       }
     }
   })
+
   .filter('ageFilter', function() {
     function calculateAge(birthday) {
       var ageDifMs = Date.now() - birthday;
@@ -46,6 +48,7 @@ angular.module('sflIon')
       return calculateAge(birthdate);
     };
   })
+
   .directive("formatDate", function(){
     return {
       require: 'ngModel',
@@ -59,6 +62,7 @@ angular.module('sflIon')
       }
     }
   })
+
   .directive('countdown', [
     'Util',
     '$interval',
@@ -68,7 +72,7 @@ angular.module('sflIon')
         scope: { date: '@' },
         link: function (scope, element) {
           var future;
-          future = Date.parse(scope.date);
+          future = moment(scope.date).valueOf();
           $interval(function () {
             var diff;
             diff = Math.floor((future - Date.now()) / 1000);

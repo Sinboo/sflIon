@@ -4,29 +4,52 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistSalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+  .controller('ReceptionistSalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.viewDate = new Date();
+      $scope.now = new Date().getTime();
       initData();
+      console.log($rootScope.previousState, $rootScope.previousState == 'customer.createEditReservation')
+      if ($rootScope.previousState == 'customer.createEditReservation') {
+        $scope.handleMargin = true;
+      }
     });
-
-
-    $scope.viewDate = new Date();
-    $scope.now = new Date().getTime();
+    
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
-    var reservationList = JoinList('orderOfHairstylist:'+UID(), 'order', 'orderId', 'updateAt');
+    var reservationList = listService.list('order');
     reservationList.$watch(function (event) {
       initData();
     });
     var initData = function () {
-      reservationList.$loaded().then(function (data) {
-        $scope.reservations = data;
-        console.log(data);
-        getReservations(moment($scope.viewDate._d).startOf('day')._d);
-      })
+      console.log($rootScope.reservationListFlag);
+      if (!$rootScope.reservationListFlag) {
+        reservationList.$loaded().then(function (data) {
+          $rootScope.reservationListFlag = true;
+          $scope.reservations = data;
+          getReservations(moment($scope.viewDate._d || $scope.viewDate).startOf('day')._d);
+        })
+      }
+      else {
+        $scope.reservations = reservationList;
+      }
     };
-    
+
+    $scope.showDetail = function (reservation) {
+      if (reservation.workId) {
+        listService.list('work').$loaded().then(function (works) {
+          var work = works.$getRecord(reservation.workId);
+          $state.go('customer.workDetail', {work: {workId: reservation.workId, slave1: work}});
+        });
+      }
+      else if (reservation.hairstylistUid) {
+        listService.list('hairstylist:' + reservation.hairstylistUid).$loaded().then(function (hairstylist) {
+          $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist[0]]});
+        });
+      }
+    };
+
 
     $scope.decrementDate = function () {
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').subtract(1, 'days');
@@ -47,11 +70,10 @@ angular.module('sflIon')
       var range = moment().range(date, moment(date).endOf('day'));
       $scope.seletedReservations = [];
       angular.forEach($scope.reservations, function (value) {
-        if (value.slave && moment(value.slave.bookedStartAt).within(range)) {
+        if (moment(value.bookedStartAt).within(range)) {
           $scope.seletedReservations.push(value);
         }
       });
-      console.log($scope.seletedReservations)
     }
 
     $ionicPopover.fromTemplateUrl('templates/customer/salon/pop/addReservationPop.html', {
@@ -74,7 +96,13 @@ angular.module('sflIon')
       $scope.searchPopover.hide();
       $scope.getSearch();
       $scope.searchItem = '';
-    };
+    }
+
+
+
+    
+    
+
 
 
   });

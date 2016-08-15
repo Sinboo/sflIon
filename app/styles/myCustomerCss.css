@@ -1,8 +1,69 @@
 
+/* drag and drop */
+.dragging {
+    -moz-transform: scale(1.05, 1.05);
+    -ms-transform: scale(1.05, 1.05);
+    -o-transform: scale(1.05, 1.05);
+    -webkit-transform: scale(1.05, 1.05);
+    transform: scale(1.05, 1.05);
+
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder {
+    -moz-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    -webkit-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+}
+
+.drag-item.item-avatar .item-content > img:first-child {
+    width: 40px;
+    max-width: 40px;
+    margin-top: 12px;
+    border-radius: 50%;
+}
+
+.drag-item.item-avatar .item-content .item-text-wrap {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+
+.drag-item.item-light .item-divider {
+    background-color: white;
+}
+.drag-item.item-complex.item-light > .drag-item.item-content.active, .drag-item.item-complex.item-light > .drag-item.item-content:active {
+    background-color: white;
+}
+
+
+.drag-active .drop-container {
+    position: relative;
+}
+.drag-active .drop-container * {
+    pointer-events: none;
+}
+.drag-active .drop-container:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9999;
+    content: "";
+}
+/*********end***********/
+
+/* ng-if lag fix */
+.ng-leave { display:none; }
+
+
 .ionic_toast:hover {
     border: solid white;
 }
-
 
 label.has-error {
     border-right: 3px solid red !important;

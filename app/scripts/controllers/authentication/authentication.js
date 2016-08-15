@@ -43,6 +43,18 @@ angular.module('sflIon')
                   });
                 }
               });
+              listService.list('receptionist:'+ (authData.uid.split(':')[1] || authData.uid)).$loaded(function (data) {
+                if (data.length > 0) {
+                  authData.userGroup = 'receptionist';
+                  listService.list(authData.userGroup+':'+(authData.uid.split(':')[1] || authData.uid)).$loaded(function (data) {
+                    authData.userProfile = data[0];
+                    localStorageService.cookie.set('user', authData);
+                    console.log("Logged in as:", authData);
+                    Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '前台登录成功!', 2000);
+                    $state.go('receptionist.salonReservation')
+                  });
+                }
+              });
             }).catch(function(error) {
               Materialize.toast('<i class="icon ion-close-round"></i>' + error, 2000);
               console.error("Authentication failed:", error);
@@ -76,7 +88,7 @@ angular.module('sflIon')
               var userProfile = {};
               userProfile.name = value.name;
               userProfile.uid = (authData.uid.split(':')[1] || authData.uid);
-              userProfile.avatar = 'http://imtailor.b0.upaiyun.com/7f7f6a44-6f42-4f8e-bc60-1c44b7b7ba88.png';
+              userProfile.avatar = value.avatar || 'http://imtailor.b0.upaiyun.com/7f7f6a44-6f42-4f8e-bc60-1c44b7b7ba88.png';
               listService.list(value.userGroup+':'+(authData.uid.split(':')[1] || authData.uid)).add(userProfile);
               authData.userGroup = value.userGroup;
               console.log("Logged in as:", authData);

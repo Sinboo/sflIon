@@ -17,6 +17,9 @@ angular.module('sflIon')
     $scope.reservations = [];
 
     var reservationList = JoinList('orderOfCustomer:'+UID(), 'order', 'orderId', 'updateAt');
+    reservationList.$watch(function (event) {
+      initData();
+    });
     var initData = function () {
       reservationList.$loaded().then(function (data) {
         $scope.reservations = data;

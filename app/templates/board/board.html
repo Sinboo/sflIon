@@ -1,0 +1,80 @@
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  .dr-board {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-height: 500px;
+    min-height: 100vmin;
+
+    width: 500px;
+    width: 100vmin;
+    height: 500px;
+    height: 100vmin;
+
+    background-color: whitesmoke;
+    border: 6px inset #eee;
+  }
+
+  .dr-tile-img.swappable:hover {
+    opacity: 0.8;
+    cursor: move;
+  }
+
+  .dr-tile-empty, .dr-tile-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .dr-tile-img {
+    border: 2px outset #eee;
+    background-clip: border-box;
+    background-size: contain;
+  }
+</style>
+<ion-view title="拼图游戏">
+  <!--<ion-content>-->
+    <div class="dr-board" style="height: 60%">
+      <div class="dr-tile"
+           ng-repeat="piece in board.pieces"
+           ng-style="
+            {
+              'width': 100/board.grid + '%',
+              'height': 100/board.grid + '%',
+            }
+          "
+           ng-switch="piece"
+      >
+        <div class="dr-tile-empty" ng-switch-when="0"
+             drop-container
+             on-drag-enter="move($index, board.pieces.indexOf($dragData))"
+        ></div>
+        <div class="dr-tile-img" ng-switch-default
+             ng-class="
+              {
+                'swappable': board.isAdjacent($index, board.pieces.indexOf(0))
+              }
+            "
+             ng-style="
+              {
+                'background-image': 'url(' + board.tiles[piece] + ')',
+              }
+            "
+             drag-container="piece > 0 && board.isAdjacent($index, board.pieces.indexOf(0))"
+             drag-data="piece"></div>
+      </div>
+    </div>
+
+    <p>原始图片:</p>
+    <div style="height: 40%">
+      <p class="text-center">
+        <img class="full-image" ng-src="{{defaultImgUrl}}"/>
+      </p>
+    </div>
+  <!--</ion-content>-->
+
+
+</ion-view>

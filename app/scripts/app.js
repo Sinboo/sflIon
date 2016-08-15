@@ -14,6 +14,7 @@ angular.module('sflIon', [
   'ion-sticky',
   'upyun',
   'uuid',
+  'angular-drag-drop',
   'ionic-fullscreen',
   'ion-floating-menu',
   'angularValidateWithToast',
@@ -209,6 +210,33 @@ angular.module('sflIon', [
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
+    .state('receptionist', {
+      url: '^/receptionist',
+      templateUrl: 'templates/common/receptionistSideMenu.html',
+      controller: 'ReceptionistSideMenuCtrl',
+      abstract: true
+    })
+    .state('receptionist.salonReservation', {
+      url: '/salonReservation',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/receptionist/salon/reservation.html',
+          controller: 'ReceptionistSalonReservationCtrl'
+        }
+      }
+    })
+    .state('receptionist.createEditReservation', {
+      url: '/createEditReservation',
+      params: { reservation: null, value: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/receptionist/salon/createEditReservation.html',
+          controller: 'ReceptionistCreateEditReservationCtrl'
+        }
+      }
+    })
+    
+    
     .state('hairstylist', {
       url: '^/hairstylist',
       templateUrl: 'templates/common/hairstylistSideMenu.html',
@@ -689,10 +717,14 @@ angular.module('sflIon', [
         }
       }
     })
-    
-    
-    
-    
+
+
+
+    .state('board', {
+      url: '/board',
+      templateUrl: 'templates/board/board.html',
+      controller: 'BoardCtrl'
+    })
     
     
     

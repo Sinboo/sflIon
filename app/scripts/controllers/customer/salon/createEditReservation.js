@@ -6,14 +6,13 @@
 angular.module('sflIon')
   .controller('CreateEditReservationCtrl', function ($scope, $state, noBackGoTo, appModalService, listService, UID, UserProfile, RESERVATION_TIME_LIST, $filter, ionicToast, $interval) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
-      setValid($scope.viewDate._d);
+      $scope.viewDate = new Date();
+      setValid($scope.viewDate);
     });
 
     $scope.reservation = {};
     $scope.goTo = noBackGoTo;
     console.log($state.params);
-    $scope.Date = Date;
-    $scope.moment = moment;
 
     var userProfile = UserProfile();
     $scope.reservation.customerName = userProfile.name;
@@ -56,7 +55,7 @@ angular.module('sflIon')
     $scope.saveReservation = function (reservation) {
       console.log(reservation);
       var postData = {};
-      postData.bookedStartAt = Date.parse($filter('date')(Date.parse(moment($scope.viewDate._d).endOf('day')._d), "yyyy-MM-dd  ") + reservation.bookedStartAt);
+      postData.bookedStartAt = moment($filter('date')(Date.parse(moment($scope.viewDate._d).endOf('day')._d), "yyyy-MM-dd ") + reservation.bookedStartAt).valueOf();
       postData.hairstylistUid = reservation.hairstylist ? reservation.hairstylist.uid : null;
       postData.hairstylistName = reservation.hairstylist ? reservation.hairstylist.name : null;
       postData.hairstylistAvatar = reservation.hairstylist ? reservation.hairstylist.avatar : null;
@@ -80,7 +79,6 @@ angular.module('sflIon')
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '预订成功!', 2000);
         $state.go('customer.salonReservation');
       });
-
     };
 
     $scope.reservationTimeList = RESERVATION_TIME_LIST;
@@ -95,15 +93,16 @@ angular.module('sflIon')
     };
 
 
-    $scope.viewDate = new Date();
-    $scope.now = new Date().getTime();
+
     $scope.decrementDate = function () {
+      $scope.reservation.bookedStartAt = undefined;
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').subtract(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').subtract(1, 'days');
       setValid($scope.viewDate._d);
     };
 
     $scope.incrementDate = function () {
+      $scope.reservation.bookedStartAt = undefined;
       if (angular.isUndefined($scope.viewDate._d)) $scope.viewDate = moment($scope.viewDate).startOf('day').add(1, 'days');
       else $scope.viewDate = moment($scope.viewDate._d).startOf('day').add(1, 'day');
       setValid($scope.viewDate._d);
@@ -112,21 +111,19 @@ angular.module('sflIon')
     function setValid(date) {
       angular.forEach($scope.reservationTimeList, function (timeList) {
         angular.forEach(timeList, function (timeLable) {
-          var future = Date.parse($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd  ") + timeLable.text);
+          var future = moment($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd ") + timeLable.text).valueOf();
           timeLable.valid = future - Date.now() > 0;
         })
       });
       $interval(function () {
         angular.forEach($scope.reservationTimeList, function (timeList) {
           angular.forEach(timeList, function (timeLable) {
-            var future = Date.parse($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd  ") + timeLable.text);
+            var future = moment($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd ") + timeLable.text).valueOf();
             timeLable.valid = future - Date.now() > 0;
           })
         });
       }, 600000);
     }
-
-
 
 
 

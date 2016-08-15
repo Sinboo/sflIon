@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('SignUpModalCtrl', function ($scope, $ionicActionSheet, appModalService, ionicToast, appService) {
+  .controller('SignUpModalCtrl', function ($scope, $ionicActionSheet, appModalService, ionicToast, appService, upyun, $cordovaCamera, $ionicLoading, rfc4122) {
     var vm = this;
     vm.user = {};
 
@@ -18,10 +18,8 @@ angular.module('sflIon')
     };
 
     vm.validate = function () {
-      if (!vm.user.userGroup) {
-        ionicToast.show('请选择角色!', 'middle', false, 2000);return false;
-        // appService.showAlert('提示', '请选择角色', '确定')
-      }
+      if (!vm.user.userGroup) {ionicToast.show('请选择角色!', 'middle', false, 2000);return false;}
+      if (!vm.user.avatar) {ionicToast.show('请上传头像!', 'middle', false, 2000);return false;}
       return true;
     };
     
@@ -63,40 +61,116 @@ angular.module('sflIon')
       );
     };
 
-    // need to implement upyun
-    vm.uploadUserPhoto = function () {
-      $ionicActionSheet.show({
-        buttons: [{
-          text: '拍照'
-        }, {
-          text: '从图库选择'
-        }],
-        buttonClicked: function (index) {
-          switch (index) {
-            case 0: // Take Picture
-              document.addEventListener("deviceready", function () {
-                $cordovaCamera.getPicture(appService.getCameraOptions()).then(function (imageData) {
-                  alert(imageData);
-                  $rootScope.user.photo = "data:image/jpeg;base64," + imageData;
-                }, function (err) {
-                  appService.showAlert('Error', err, 'Close', 'button-assertive', null);
-                });
-              }, false);
-
-              break;
-            case 1: // Select From Gallery
-              document.addEventListener("deviceready", function () {
-                $cordovaCamera.getPicture(appService.getLibraryOptions()).then(function (imageData) {
-                  $rootScope.user.photo = "data:image/jpeg;base64," + imageData;
-                }, function (err) {
-                  appService.showAlert('Error', err, 'Close', 'button-assertive', null);
-                });
-              }, false);
-              break;
+    // upload image
+    var isCordovaApp = !!window.cordova;
+    if ( isCordovaApp ) {
+      console.log('app');
+      $scope.openFileDialog = function () {
+        $ionicActionSheet.show({
+          buttons: [{
+            text: '<b>拍照</b> 上传'
+          }, {
+            text: '从 <b>相册</b> 中选'
+          }],
+          titleText: '图片上传',
+          cancelText: '取 消',
+          cancel: function () {
+            // add cancel code..
+          },
+          buttonClicked: function (index) {
+            if (index == 1) {
+              $scope.readalbum();
+            } else if (index == 0) {
+              $scope.taskPicture();
+            }
+            return true;
           }
-          return true;
-        }
+        });
+      };
+
+      $scope.readalbum = function() {
+        document.addEventListener("deviceready", function () {
+          $cordovaCamera.getPicture(appService.getLibraryOptions()).then(function (imageData) {
+            var imgBase64 = "data:image/jpeg;base64," + imageData ;
+            $timeout(function () {
+              var imgBlob = getFileObject(imgBase64);
+              $scope.appImgUpload(imgBlob);
+            }, 0);
+          });
+        })
+      };
+
+      $scope.taskPicture = function () {
+        document.addEventListener("deviceready", function () {
+          $cordovaCamera.getPicture(appService.getCameraOptions()).then(function (imageData) {
+            var imgBase64 = "data:image/jpeg;base64," + imageData ;
+            $timeout(function () {
+              var imgBlob = getFileObject(imgBase64);
+              $scope.appImgUpload(imgBlob);
+            }, 0);
+          });
+        });
+      };
+
+      $scope.appImgUpload = function (blob) {
+        var uuidString = rfc4122.v4();
+        var last = '{.suffix}';
+        var imgUrl = '/' + uuidString + last;
+        upyun.set('save-key', imgUrl);
+        upyun.upload(blob, function(err, response, image){
+          if (err) console.error(err);
+          console.log(image)
+          if (image.code === 200 && image.message === 'ok') {
+            vm.user.avatar = image.absUrl;
+            $scope.$apply();
+            console.log(vm.user.avatar);
+          }
+        });
+      }
+    }
+    else {
+      console.log('web');
+      //choose img
+      $scope.openFileDialog = function() {
+        ionic.trigger('click', {
+          target: document.getElementById('file')
+        });
+      };
+
+      $(document).on("change", ".uploadImage", function(e){
+        e.preventDefault();
+        $scope.upload();
       });
-    };
+
+      //upload image
+      $scope.upload = function() {
+        var uuidString = rfc4122.v4();
+        var last = '{.suffix}';
+        var imgUrl = '/' + uuidString + last;
+        upyun.set('save-key', imgUrl);
+        upyun.upload('uploadForm', function(err, response, image){
+          if (err) console.error(err);
+          if (image.code === 200 && image.message === 'ok') {
+            vm.user.avatar = image.absUrl;
+            $scope.$apply();
+            console.log(vm.user.avatar);
+          }
+        });
+      };
+    }
     
-  })
+    
+    upyun.on('uploading', function(progress) {
+      $ionicLoading.show({
+        template: '<ion-spinner></ion-spinner><br/>' + progress + "%",
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+      if (progress === 100) {
+        $ionicLoading.hide();
+      }
+    });
+    
+  });

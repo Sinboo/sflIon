@@ -49,7 +49,7 @@
     <div class="padding text-center" >
       <ion-list>
         <div class="item item-avatar">
-          <img ng-src="{{user.photo}}" ng-click="vm.uploadUserPhoto();">
+          <img ng-src="{{vm.user.avatar}}" ng-click="openFileDialog();">
 
           <label class="item item-input">
             <i class="icon ion-android-person placeholder-icon"></i>
@@ -86,4 +86,7 @@
 
     </form>
   </ion-content>
+  <form name="uploadForm" role="form" ng-show="false">
+    <input type="file" name="file" class="uploadImage" id="file" /> <br/>
+  </form>
 </ion-modal-view>
