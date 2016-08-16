@@ -15,6 +15,7 @@ angular.module('sflIon', [
   'upyun',
   'uuid',
   'angular-drag-drop',
+  'ionic-modal-select',
   'ionic-fullscreen',
   'ion-floating-menu',
   'angularValidateWithToast',
@@ -227,11 +228,31 @@ angular.module('sflIon', [
     })
     .state('receptionist.createEditReservation', {
       url: '/createEditReservation',
-      params: { reservation: null, value: null },
+      params: { reservation: null, value: null, editFlag: null },
       views: {
         'menuContent': {
           templateUrl: 'templates/receptionist/salon/createEditReservation.html',
           controller: 'ReceptionistCreateEditReservationCtrl'
+        }
+      }
+    })
+
+    .state('receptionist.conversation', {
+      url: '/conversation',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/chat/conversation.html',
+          controller: 'ConversationCtrl'
+        }
+      }
+    })
+    .state('receptionist.chat', {
+      url: '/chat',
+      params: {conversation: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/chat/chat.html',
+          controller: 'ChatCtrl'
         }
       }
     })
@@ -504,7 +525,7 @@ angular.module('sflIon', [
     })
     .state('customer.createEditReservation', {
       url: '/createEditReservation',
-      params: { reservation: null, value: null },
+      params: { reservation: null, value: null, editFlag: null },
       views: {
         'menuContent': {
           templateUrl: 'templates/customer/salon/createEditReservation.html',

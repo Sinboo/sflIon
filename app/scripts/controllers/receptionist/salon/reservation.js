@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('ReceptionistSalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+  .controller('ReceptionistSalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $ionicPopup, $location, listService, UserProfile, rfc4122, localStorageService, $wilddogArray, appModalService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.viewDate = new Date();
       $scope.now = new Date().getTime();
@@ -17,6 +17,7 @@ angular.module('sflIon')
     
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
+    $scope.userProfile = UserProfile();
 
     var reservationList = listService.list('order');
     reservationList.$watch(function (event) {
@@ -33,6 +34,7 @@ angular.module('sflIon')
       }
       else {
         $scope.reservations = reservationList;
+        getReservations(moment($scope.viewDate._d || $scope.viewDate).startOf('day')._d);
       }
     };
 
@@ -74,7 +76,100 @@ angular.module('sflIon')
           $scope.seletedReservations.push(value);
         }
       });
+      console.log($scope.seletedReservations)
     }
+
+    $scope.openConversation = function (reservation) {
+      var flag = false;
+      var conversationList = listService.list('conversation:'+UID());
+      var conversationList2 = listService.list('conversation:'+reservation.customerUid);
+      conversationList.$loaded().then(function (data) {
+        angular.forEach(data, function (item) {
+          if (item.recipientId == reservation.customerUid) {
+            $state.go('receptionist.chat', {conversation: item});
+            flag = true;
+          }
+        });
+        if (!flag) {
+          var conversation = {};
+          conversation.conversationId = rfc4122.v4();
+          conversation.recipientId = reservation.customerUid;
+          conversation.recipientName = reservation.customerName;
+          conversation.recipientAvatar = reservation.customerAvatar;
+          conversation.recipientMobile = reservation.customerMobile;
+          conversation = JSON.parse(JSON.stringify(conversation));
+          var conversation2 = {};
+          conversation2.conversationId = conversation.conversationId;
+          conversation2.recipientId = UID();
+          conversation2.recipientName = $scope.userProfile.name;
+          conversation2.recipientAvatar = $scope.userProfile.avatar;
+          conversation2.recipientMobile = $scope.userProfile.mobile;
+          conversation2.lastLeaveAt = 0;
+          conversation2 = JSON.parse(JSON.stringify(conversation2));
+          conversationList2.add(conversation2).then(function () {
+            conversationList.add(conversation).then(function () {
+              console.log(conversation);
+              $state.go('receptionist.chat', {conversation: conversation});
+            })
+          })
+        }
+      });
+    };
+
+    $scope.cancelReservation = function (reservation) {
+      console.log(reservation)
+      $ionicPopup.confirm({
+        title: '取消订单?',
+        template: '确定取消该订单?',
+        buttons: [{ text: '否' }, { text: '是', type: 'button-balanced', onTap: function(e) {return 'ok'}}]
+      }).then(function(res) {
+        console.log(res);
+        if(res == 'ok') {
+          appModalService.show(
+            'templates/receptionist/salon/modal/cancelReservationReasonModal.html',
+            'CancelReservationReasonModalCtrl as vm'
+          ).then(function (value) {
+            console.log(value);
+            if (value) {
+              var order = reservationList.$getRecord(reservation.$id);
+              order.type = 'canceled';
+              order.cancelReason = value.reason || value.otherReason;
+              reservationList.save(order).then(function (ref) {
+                console.log(ref.key());
+                Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '订单取消成功!', 2000);
+                $state.go('receptionist.salonReservation');
+              });
+            }
+          })
+        }
+      });
+    };
+
+    $scope.completeReservation = function (reservation) {
+      $ionicPopup.confirm({
+        title: '完成订单',
+        template: '请选择支付方式',
+        buttons: [{ text: '现金' }, { text: '手机支付', type: 'button-balanced', onTap: function(e) {return 'ok'}}]
+      }).then(function(res) {
+        console.log(res);
+        if(res == 'ok') {
+
+        }
+        else {
+          var order = reservationList.$getRecord(reservation.$id);
+          order.type = 'completed';
+          order.payment = '现金';
+          reservationList.save(order).then(function (ref) {
+            console.log(ref.key());
+            Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '订单完成!', 2000);
+            $state.go('receptionist.salonReservation');
+          });
+        }
+      });
+    };
+
+
+
 
     $ionicPopover.fromTemplateUrl('templates/customer/salon/pop/addReservationPop.html', {
       scope: $scope

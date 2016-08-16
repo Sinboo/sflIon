@@ -53,6 +53,9 @@ void function () {
       { text: "中端", value: "middle" },
       { text: "中低端", value: "middleLow" },
       { text: "低端", value: "low" }
+    ],
+    RESERVATION_CANCEL_REASON: [
+      '等待时间太长', '临时突然有事来不了', '换了其他服务', '重复订单'
     ]
     
     

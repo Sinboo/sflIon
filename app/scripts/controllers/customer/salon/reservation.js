@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, localStorageService, $wilddogArray, appModalService) {
+  .controller('SalonReservationCtrl', function ($rootScope, $scope, $state, WD_URL, UID, JoinList, noBackGoTo, appService, $ionicPopover, $location, listService, rfc4122, localStorageService, $wilddogArray, appModalService, $ionicPopup) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       initData();
       console.log($rootScope.previousState, $rootScope.previousState == 'customer.createEditReservation')
@@ -16,6 +16,7 @@ angular.module('sflIon')
     $scope.goTo = noBackGoTo;
     $scope.reservations = [];
 
+    var orderList = listService.list('order');
     var reservationList = JoinList('orderOfCustomer:'+UID(), 'order', 'orderId', 'updateAt');
     reservationList.$watch(function (event) {
       initData();
@@ -71,6 +72,77 @@ angular.module('sflIon')
       });
       console.log($scope.seletedReservations)
     }
+
+
+
+    $scope.openConversation = function (reservation) {
+      var flag = false;
+      var conversationList = listService.list('conversation:'+UID());
+      var conversationList2 = listService.list('conversation:'+reservation.hairstylistUid);
+      conversationList.$loaded().then(function (data) {
+        angular.forEach(data, function (item) {
+          if (item.recipientId == reservation.hairstylistUid) {
+            $state.go('customer.chat', {conversation: item});
+            flag = true;
+          }
+        });
+        if (!flag) {
+          var conversation = {};
+          conversation.conversationId = rfc4122.v4();
+          conversation.recipientId = reservation.hairstylistUid;
+          conversation.recipientName = reservation.hairstylistName;
+          conversation.recipientAvatar = reservation.hairstylistAvatar;
+          conversation.recipientMobile = reservation.hairstylistMobile;
+          conversation = JSON.parse(JSON.stringify(conversation));
+          var conversation2 = {};
+          conversation2.conversationId = conversation.conversationId;
+          conversation2.recipientId = UID();
+          conversation2.recipientName = $scope.userProfile.name;
+          conversation2.recipientAvatar = $scope.userProfile.avatar;
+          conversation2.recipientMobile = $scope.userProfile.mobile;
+          conversation2.lastLeaveAt = 0;
+          conversation2 = JSON.parse(JSON.stringify(conversation2));
+          conversationList2.add(conversation2).then(function () {
+            conversationList.add(conversation).then(function () {
+              console.log(conversation);
+              $state.go('customer.chat', {conversation: conversation});
+            })
+          })
+        }
+      });
+    };
+
+    $scope.cancelReservation = function (reservation) {
+      console.log(reservation)
+      $ionicPopup.confirm({
+        title: '取消订单?',
+        template: '确定取消该订单?',
+        buttons: [{ text: '否' }, { text: '是', type: 'button-balanced', onTap: function(e) {return 'ok'}}]
+      }).then(function(res) {
+        console.log(res);
+        if(res == 'ok') {
+          appModalService.show(
+            'templates/receptionist/salon/modal/cancelReservationReasonModal.html',
+            'CancelReservationReasonModalCtrl as vm'
+          ).then(function (value) {
+            console.log(value);
+            if (value) {
+              var order = orderList.$getRecord(reservation.orderId);
+              order.type = 'canceled';
+              order.cancelReason = value.reason || value.otherReason;
+              orderList.save(order).then(function (ref) {
+                console.log(ref.key());
+                Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '订单取消成功!', 2000);
+                $state.go('customer.salonReservation');
+              });
+            }
+          })
+        }
+      });
+    };
+
+
+
 
     $ionicPopover.fromTemplateUrl('templates/customer/salon/pop/addReservationPop.html', {
       scope: $scope

@@ -64,29 +64,63 @@
         <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
       </label>
 
-      <label class="item item-input" ng-if="reservation.priceId || reservation.workId">
-        <span class="input-label">选择的服务:</span>
-        <div class="item-text-wrap" ng-if="reservation.priceId">
-          <span class="tags"><span class="calm">{{reservation.priceName}}</span></span>
-          <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+        <div ng-if="!editFlag">
+          <label class="item item-input" ng-if="reservation.price || reservation.work">
+            <span class="input-label">选择的服务:</span>
+            <div class="item-text-wrap" ng-if="reservation.price">
+              <span class="tags"><span class="calm">{{reservation.price.name}}</span></span>
+              <span class="tags"><span class="positive">{{reservation.price.number}}元</span></span>
+              <br/>
+          <span class="tags">
+            <span class="balanced text-small">{{reservation.price.subName}}</span>
+          </span>
+            </div>
+            <div class="item-text-wrap" ng-if="reservation.work">
+              <span class="tags"><span class="calm">{{reservation.work.slave.name}}</span></span>
+              <span class="tags"><span class="positive">{{reservation.work.slave.price}}元</span></span>
+              <br/>
+          <span class="tags">
+            <span class="balanced text-small">{{reservation.work.slave.shortDesc}}</span>
+          </span>
+            </div>
+          </label>
+          <label class="item item-input" ng-if="reservation.hairstylist">
+            <span class="input-label">选择的发型师:</span>
+            <div class="item-text-wrap">
+              <span class="tags ">{{reservation.hairstylist.name}}</span>
+              <br/>
+          <span class="text-smaller pull-right">
+            <div star-rating ng-model="reservation.hairstylist.rating" max="5" readonly="true" on-rating-select="rating.rateFunction(rating)"></div>
+          </span>
+            </div>
+          </label>
         </div>
-        <div class="item-text-wrap" ng-if="reservation.workId">
-          <span class="tags"><span class="calm">{{reservation.workName}}</span></span>
-          <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+
+        <div ng-if="editFlag">
+          <label class="item item-input" ng-if="reservation.priceId || reservation.workId">
+            <span class="input-label">选择的服务:</span>
+            <div class="item-text-wrap" ng-if="reservation.priceId">
+              <span class="tags"><span class="calm">{{reservation.priceName}}</span></span>
+              <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+            </div>
+            <div class="item-text-wrap" ng-if="reservation.workId">
+              <span class="tags"><span class="calm">{{reservation.workName}}</span></span>
+              <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+            </div>
+          </label>
+          <label class="item item-input" >
+            <span class="input-label">选择的发型师:</span>
+            <div class="item-text-wrap">
+              <span class="tags ">{{reservation.hairstylistName}}</span>
+            </div>
+          </label>
+          <label class="item item-input" >
+            <span class="input-label">预订的时间:</span>
+            <div class="item-text-wrap">
+              <span class="tags ">{{viewDate._d ? (viewDate._d | amDateFormat:'YYYY-MM-DD ' + reservation.bookedStartAt) : (reservation.bookedStartAt | date: 'yyyy-MM-dd HH:mm')}}</span>
+            </div>
+          </label>
         </div>
-      </label>
-      <label class="item item-input" >
-        <span class="input-label">选择的发型师:</span>
-        <div class="item-text-wrap">
-          <span class="tags ">{{reservation.hairstylistName}}</span>
-        </div>
-      </label>
-      <label class="item item-input" >
-        <span class="input-label">预订的时间:</span>
-        <div class="item-text-wrap">
-          <span class="tags ">{{viewDate._d ? (viewDate._d | amDateFormat:'YYYY-MM-DD ' + reservation.bookedStartAt) : (reservation.bookedStartAt | date: 'yyyy-MM-dd HH:mm')}}</span>
-        </div>
-      </label>
 
       <!--<div class="row text-center date-time-buttons" style="margin-top: 30px">-->
         <!--<div class="col stable-bg margin" ui-sref="customer.workGroup()"><button class="button button-icon icon ion-ios-keypad-outline"></button>-->
@@ -148,7 +182,7 @@
         <!--</ion-list>-->
 
 
-      <button class="button button-block button-balanced" check-form ng-click="validate() && saveReservation(reservation)">确认提交</button>
+      <button class="button button-block button-balanced" check-form ng-click="validate() && saveReservation(reservation)">确认修改时间</button>
       </form>
     </ion-content>
 

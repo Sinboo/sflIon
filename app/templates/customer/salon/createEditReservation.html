@@ -63,38 +63,67 @@
         <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
       </label>
 
-      <label class="item item-input" ng-if="reservation.price || reservation.work">
-        <span class="input-label">选择的服务:</span>
-        <div class="item-text-wrap" ng-if="reservation.price">
-          <span class="tags"><span class="calm">{{reservation.price.name}}</span></span>
-          <span class="tags"><span class="positive">{{reservation.price.number}}元</span></span>
-          <br/>
+      <div ng-if="!editFlag">
+        <label class="item item-input" ng-if="reservation.price || reservation.work">
+          <span class="input-label">选择的服务:</span>
+          <div class="item-text-wrap" ng-if="reservation.price">
+            <span class="tags"><span class="calm">{{reservation.price.name}}</span></span>
+            <span class="tags"><span class="positive">{{reservation.price.number}}元</span></span>
+            <br/>
           <span class="tags">
             <span class="balanced text-small">{{reservation.price.subName}}</span>
           </span>
-        </div>
-        <div class="item-text-wrap" ng-if="reservation.work">
-          <span class="tags"><span class="calm">{{reservation.work.slave.name}}</span></span>
-          <span class="tags"><span class="positive">{{reservation.work.slave.price}}元</span></span>
-          <br/>
+          </div>
+          <div class="item-text-wrap" ng-if="reservation.work">
+            <span class="tags"><span class="calm">{{reservation.work.slave.name}}</span></span>
+            <span class="tags"><span class="positive">{{reservation.work.slave.price}}元</span></span>
+            <br/>
           <span class="tags">
             <span class="balanced text-small">{{reservation.work.slave.shortDesc}}</span>
           </span>
-        </div>
-      </label>
-      <label class="item item-input" ng-if="reservation.hairstylist">
-        <span class="input-label">选择的发型师:</span>
-        <div class="item-text-wrap">
-          <span class="tags ">{{reservation.hairstylist.name}}</span>
-          <br/>
+          </div>
+        </label>
+        <label class="item item-input" ng-if="reservation.hairstylist">
+          <span class="input-label">选择的发型师:</span>
+          <div class="item-text-wrap">
+            <span class="tags ">{{reservation.hairstylist.name}}</span>
+            <br/>
           <span class="text-smaller pull-right">
             <div star-rating ng-model="reservation.hairstylist.rating" max="5" readonly="true" on-rating-select="rating.rateFunction(rating)"></div>
           </span>
-        </div>
-      </label>
+          </div>
+        </label>
+      </div>
+
+      <div ng-if="editFlag">
+        <label class="item item-input" ng-if="reservation.priceId || reservation.workId">
+          <span class="input-label">选择的服务:</span>
+          <div class="item-text-wrap" ng-if="reservation.priceId">
+            <span class="tags"><span class="calm">{{reservation.priceName}}</span></span>
+            <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+          </div>
+          <div class="item-text-wrap" ng-if="reservation.workId">
+            <span class="tags"><span class="calm">{{reservation.workName}}</span></span>
+            <span class="tags"><span class="positive">{{reservation.orderPrice}}元</span></span>
+          </div>
+        </label>
+        <label class="item item-input" >
+          <span class="input-label">选择的发型师:</span>
+          <div class="item-text-wrap">
+            <span class="tags ">{{reservation.hairstylistName}}</span>
+          </div>
+        </label>
+        <label class="item item-input" >
+          <span class="input-label">预订的时间:</span>
+          <div class="item-text-wrap">
+            <span class="tags ">{{viewDate._d ? (viewDate._d | amDateFormat:'YYYY-MM-DD ' + reservation.bookedStartAt) : (reservation.bookedStartAt | date: 'yyyy-MM-dd HH:mm')}}</span>
+          </div>
+        </label>
+      </div>
 
 
-      <div class="row text-center date-time-buttons" style="margin-top: 30px">
+
+      <div ng-if="!editFlag" class="row text-center date-time-buttons" style="margin-top: 30px">
         <div class="col stable-bg margin" ui-sref="customer.workGroup()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
           <p>优先选发型</p>
         </div>
@@ -113,8 +142,8 @@
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->
-      <div ng-if="reservation.hairstylist">
-        <p class="bb text-smaller padding-horizontal uppercase">选取预订时间:</p>
+      <div ng-if="editFlag || reservation.hairstylist" ng-style="editFlag == true ? { 'margin-top':'30px' } : {}">
+        <p class="bb text-smaller padding-horizontal uppercase">{{editFlag ? '修改预订时间:' : '选取预订时间:'}}</p>
         <div class="item item-divider padding no-bg no-b bb-grey" >
           <div class="row no-padding">
             <div class="col text-grey" ng-click="decrementDate(dateFilter)"><i class="icon ion-ios-arrow-back"></i></div>
@@ -127,9 +156,14 @@
 
         <div class="list list-inline text-center" ng-repeat="timeList in reservationTimeList">
           <ion-radio ng-repeat="item in timeList" name="reservationTime"
-                     ng-value="item.text" ng-disabled="!item.valid"
-                     ng-model="reservation.bookedStartAt">
-            <span ng-if="item.valid">{{ item.text }}</span>
+                     ng-value="item.text" ng-disabled="!item.valid || item.booked"
+                     ng-model="reservation.bookedStartAt" class="no-padding">
+
+            <div class="chip no-padding" style="width: 90px" ng-if="item.booked">
+              <img ng-src="{{item.order.customerAvatar}}" alt="客户">
+              <span style="font-size: 10px!important;margin-left: -11px!important;">{{item.order.bookedStartAt | date: 'HH:mm'}}-{{item.order.expectEndAt | date: 'HH:mm'}}</span>
+            </div>
+            <span ng-if="!item.booked && item.valid">{{ item.text }}</span>
             <del ng-if="!item.valid" style="color: red">{{ item.text }}</del>
           </ion-radio>
         </div>

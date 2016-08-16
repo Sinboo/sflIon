@@ -1,0 +1,22 @@
+<ion-modal-view >
+  <ion-header-bar> 
+    <h1 class="title">订单取消原因</h1>
+    <button class="button button-icon icon ion-android-close" ng-click="vm.cancel()"></button>
+  </ion-header-bar>
+  <ion-content class="padding shop">
+    <a class="item item-input " href="" modal-select="" ng-model="formData.reason" options="reasons"
+       cancel-button="取消" reset-button="重置" load-list-message="加载中..." modal-title="请选择订单取消原因">
+      <div class="option">
+        {{option}}
+      </div>
+      <span class="input-label">选择取消原因:</span>
+      <p>{{formData.reason}}</p>
+
+    </a>
+    <label class="item item-input">
+      <span class="input-label">其他原因:</span>
+      <textarea rows="5" style="resize: vertical;" type="text" ng-model="formData.otherReason"> </textarea>
+    </label>
+    <button class="button waves-effect waves-teal button-balanced button-outline button-block" ng-click="vm.validate() && vm.confirm(formData);">确认取消订单</button>
+  </ion-content>
+</ion-modal-view>

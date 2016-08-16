@@ -27,9 +27,9 @@
           <span class="light">{{outOfDate == true ? '过期日不能添加预订' : '点击红色'+'添加一个预订吧!'}}</span>
         </div>
       </div>
-      <div class="card no-margin bb-grey no-br no-box" ng-if="reservations.length > 0" ng-repeat="reservation in seletedReservations | filter: searchFilter | orderBy: 'updateAtR':true track by $index">
+      <div class="card card-tag no-margin bb-grey no-br no-box" ng-if="reservations.length > 0" ng-repeat="reservation in seletedReservations | filter: searchFilter | orderBy: 'updateAtR':true track by $index">
         <div class="item item-text-wrap item-icon-left teal lighten-1" on-hold="showDetail(reservation.slave)"
-             ng-if="reservation.type == 'booked'" ui-sref="receptionist.createEditReservation({reservation: reservation})">
+             ng-if="reservation.type == 'booked'" ui-sref="receptionist.createEditReservation({reservation: reservation, editFlag: true})">
             <i class="icon light ion-ios-clock"></i>
             <span class="light text-medium">{{reservation.workName || reservation.priceName}}</span><br/>
             <span class="light text-smaller">发型师:{{reservation.hairstylistName}}</span>
@@ -39,35 +39,40 @@
             <span class="text-smaller light">预订时间: {{reservation.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
             <span class="text-smaller light" ng-if="now < reservation.bookedStartAt"><span >倒计时:</span><span countdown='' date="{{reservation.bookedStartAt | date: 'yyyy-MM-dd HH:mm:ss.sss'}}">&nbsp;</span></span>
             <span class="text-smaller light" ng-if="now > reservation.bookedStartAt"><span >已过期:<span  am-time-ago="reservation.bookedStartAt"></span></span></span>
-            <span class="light text-smaller justified pull-right">长按联系客户 </span>
+            <a class="text-small add-tag1" href="tel:{{reservation.customerMobile}}" ng-click="$event.stopPropagation()"><i class="icon light ion-ios-telephone-outline"></i></a>
+            <a class="text-small add-tag2" ng-click="$event.stopPropagation()" attr-click click="openConversation" arg="reservation"><i class="icon light ion-ios-chatboxes-outline "></i></a>
+            <a class="text-small add-tag3" ng-click="$event.stopPropagation()" attr-click click="cancelReservation" arg="reservation"><i class="icon light ion-ios-trash-outline"></i></a>
+            <a class="text-small add-tag4" ng-click="$event.stopPropagation()" attr-click click="completeReservation" arg="reservation"><i class="icon light ion-ios-checkmark-outline "></i></a>
         </div>
 
-        <div class="item item-text-wrap item-icon-left indigo lighten-1" ng-click="open[$index] = !open[$index]" on-hold="onCardHold($index, reservation);"
-             ng-if="reservation.orderGroup == 'underDoing'">
-          <i class="icon light ion-ios-calendar-outline"></i>
-          <span class="light text-medium">{{reservation.title}}</span><br/>
-          <span class="light text-small justified" ng-if="open[$index] && reservation.notes">{{reservation.notes}}<br/></span>
-          <span class="light text-small" ng-if="open[$index] && reservation.location"><i class="icon ion-ios-location"></i> {{reservation.location}}<br/></span>
-          <span class="text-smaller light">Start's at {{reservation.startsAt | date: 'HH:mm a'}}</span>
-          <span class="light text-smaller pull-right" ng-if="open[$index] && !reservation.allDay">End's at {{reservation.endsAt | date: 'HH:mm a'}}</span>
-          <span class="light text-smaller pull-right" ng-if="open[$index] && reservation.allDay">on going for entire day</span>
+        <div class="item item-text-wrap item-icon-left red lighten-1" on-hold="showDetail(reservation.slave)"
+             ng-if="reservation.type == 'canceled'" ui-sref="receptionist.createEditReservation({reservation: reservation, editFlag: true})">
+          <i class="icon light ion-ios-close-outline"></i>
+          <span class="light text-medium">{{reservation.workName || reservation.priceName}}(已取消订单)</span><br/>
+          <span class="light text-smaller">发型师:{{reservation.hairstylistName}}</span>
+          <span class="light text-smaller">价格:{{reservation.orderPrice}}</span><br/>
+          <span class="light text-smaller justified">客户名字:{{reservation.customerName}}<br/></span>
+          <span class="light text-smaller justified">具体要求:{{reservation.notes}}<br/></span>
+          <span class="text-smaller light">预订时间: {{reservation.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
+          <span class="text-smaller light"><span >取消原因:</span>{{reservation.cancelReason}}</span>
+          <a class="text-small add-tag1" href="tel:{{reservation.customerMobile}}" ng-click="$event.stopPropagation()"><i class="icon light ion-ios-telephone-outline"></i></a>
+          <a class="text-small add-tag2" ng-click="$event.stopPropagation()" attr-click click="openConversation" arg="reservation"><i class="icon light ion-ios-chatboxes-outline "></i></a>
         </div>
 
-        <a href="tel:{{reservation.phone}}" class="item item-text-wrap item-icon-left blue lighten-1" ng-if="reservation.orderGroup == 'completed'"
-           on-hold="goTo('customer.reminder')">
-          <i class="icon light ion-ios-checkmark-outline"></i>
-          <span class="light text-medium">{{reservation.title}}</span><br/>
-          <!--<span class="light text-small">{{reservation.phone}}<br/></span>-->
-          <span class="text-smaller light">Start's at {{reservation.startsAt | date: 'HH:mm a'}}</span>
-        </a>
+        <div class="item item-text-wrap item-icon-left blue lighten-1" on-hold="showDetail(reservation.slave)"
+             ng-if="reservation.type == 'completed'" ui-sref="receptionist.createEditReservation({reservation: reservation, editFlag: true})">
+          <i class="icon light ion-trophy"></i>
+          <span class="light text-medium">{{reservation.workName || reservation.priceName}}(已完成订单)</span><br/>
+          <span class="light text-smaller">发型师:{{reservation.hairstylistName}}</span>
+          <span class="light text-smaller">价格:{{reservation.orderPrice}}</span><br/>
+          <span class="light text-smaller justified">客户名字:{{reservation.customerName}}<br/></span>
+          <span class="light text-smaller justified">具体要求:{{reservation.notes}}<br/></span>
+          <span class="text-smaller light">预订时间: {{reservation.bookedStartAt | date: 'yyyy年MM月dd日HH点mm分'}}</span><br/>
+          <span class="text-smaller light"><span >付款方式:</span>{{reservation.payment}}</span>
+          <a class="text-small add-tag1" href="tel:{{reservation.customerMobile}}" ng-click="$event.stopPropagation()"><i class="icon light ion-ios-telephone-outline"></i></a>
+          <a class="text-small add-tag2" ng-click="$event.stopPropagation()" attr-click click="openConversation" arg="reservation"><i class="icon light ion-ios-chatboxes-outline "></i></a>
+        </div>
 
-        <a class="item item-text-wrap item-icon-left light red lighten-1" ng-if="reservation.orderGroup == 'canceled'"
-           on-hold="goTo('customer.reminder')">
-          <i class="icon light ion-ios-at-outline"></i>
-          <span class="light text-medium">{{reservation.title}}</span><br/>
-          <!--<span class="light text-small">{{reservation.email}}<br/></span>-->
-          <span class="text-smaller light">Start's at {{reservation.startsAt | date: 'HH:mm a'}}</span>
-        </a>
       </div>
 
   </ion-content>

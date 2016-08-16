@@ -414,7 +414,30 @@ font-weight: 300;
     opacity: .8;
     border: 1px solid #ccc;
 }
-
+.card.card-tag .add-tag1{
+    position: absolute;
+    top: 30px;
+    right: 55px;
+    background: inherit;
+}
+.card.card-tag .add-tag2{
+    position: absolute;
+    top: 30px;
+    right: 100px;
+    background: inherit;
+}
+.card.card-tag .add-tag3{
+    position: absolute;
+    bottom: 30px;
+    right: 55px;
+    background: inherit;
+}
+.card.card-tag .add-tag4{
+    position: absolute;
+    bottom: 30px;
+    right: 100px;
+    background: inherit;
+}
 .card.card-tag .interact{
     position: absolute;
     top: 25px;
