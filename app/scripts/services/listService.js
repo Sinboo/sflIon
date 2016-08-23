@@ -316,7 +316,7 @@ angular.module('sflIon')
           [ref1, 'master'],
           [ref2, 'slave', 'master.'+masterKey]
         )
-          .select('master.'+masterKey, 'master.'+field,
+          .select('master.'+masterKey, 'slave.'+field,
             {key: 'master.$value', alias: 'master'},
             {key: 'slave.$value', alias: 'slave'}
           )
@@ -331,7 +331,7 @@ angular.module('sflIon')
     };
   })
   .factory('JoinList', function (listService, WD_URL) {
-    function buildNorm(childName, childName2, masterKey, field) {
+    function buildNorm(childName, childName2, masterKey, field1, field2) {
       var ref1 = childName.indexOf(':') === -1 ? new Wilddog(WD_URL).child(childName) : new Wilddog(WD_URL).child(childName.split(':')[0]).child(childName.split(':')[1]);
       var ref2 = new Wilddog(WD_URL).child(childName2);
       var norm;
@@ -340,29 +340,42 @@ angular.module('sflIon')
           [ref1, 'master'],
           [ref2, 'slave']
         )
-          .select('master.'+field,
+          .select('master.'+field1,
             {key: 'master.$value', alias: 'master'},
             {key: 'slave.$value', alias: 'slave'}
           )
           .ref();
       }
       else {
-        norm = new Wilddog.util.NormalizedCollection(
-          [ref1, 'master'],
-          [ref2, 'slave', 'master.'+masterKey]
-        )
-          .select('master.'+masterKey, 'master.'+field,
-            {key: 'master.$value', alias: 'master'},
-            {key: 'slave.$value', alias: 'slave'}
+        if (!field2) {
+          norm = new Wilddog.util.NormalizedCollection(
+            [ref1, 'master'],
+            [ref2, 'slave', 'master.'+masterKey]
           )
-          .ref();
+            .select('master.'+masterKey, 'master.'+field1,
+              {key: 'master.$value', alias: 'master'},
+              {key: 'slave.$value', alias: 'slave'}
+            )
+            .ref();
+        }
+        else {
+          norm = new Wilddog.util.NormalizedCollection(
+            [ref1, 'master'],
+            [ref2, 'slave', 'master.'+masterKey]
+          )
+            .select('master.'+masterKey, 'master.'+field1, 'slave.'+field2,
+              {key: 'master.$value', alias: 'master'},
+              {key: 'slave.$value', alias: 'slave'}
+            )
+            .ref();
+        }
       }
       return norm;
     }
 
-    return function (childName, childName2, masterKey, field) {
-      var norm = buildNorm(childName, childName2, masterKey, field);
-      var query = norm.orderByChild(field);
+    return function (childName, childName2, masterKey, field1, field2) {
+      var norm = buildNorm(childName, childName2, masterKey, field1, field2);
+      var query = norm.orderByChild(field1);
       return listService.list('', query)
     };
   })

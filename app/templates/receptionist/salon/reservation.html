@@ -5,12 +5,12 @@
 
   <div class="my-2sub-header handle-padding">
       <div class="row padding bb-grey text-center " style="margin-top: 55px">
-        <div class="col font-thin text-large balanced bb" ng-click="goTo('customer.salonReservation')">预订</div>
-        <div class="col font-thin" ng-click="goTo('customer.salonContact')">发型师管理</div>
-        <div class="col font-thin" ng-click="goTo('customer.salonBusyStatus')">忙闲</div>
+        <div class="col font-thin text-large balanced bb" ng-click="goTo('receptionist.salonReservation')">预订</div>
+        <div class="col font-thin" ng-click="goTo('receptionist.salonHairstylistManage')">发型师管理</div>
+        <div class="col font-thin" ng-click="goTo('receptionist.salonFlowBoard')">轮牌</div>
       </div>
 
-    <div class="item item-divider no-padding no-bg no-b bb-grey" ng-style="{ 'margin-top' : (handleMargin == true) ? '10px' : '-10px' }">
+    <div class="item no-padding no-bg no-b bb-grey" style="min-height: 30px;" ng-style="{ 'margin-top' : (handleMargin == true) ? '10px' : '-10px' }">
       <div class="row no-padding">
         <div class="col text-grey" ng-click="decrementDate(dateFilter)"><i class="icon ion-ios-arrow-back"></i></div>
         <div class="col text-grey text-center text-small">{{viewDate| amCalendar:referenceTime:formats}}

@@ -64,7 +64,7 @@ angular.module('sflIon')
   .factory('SortList', function () {
     var myComparator = function (a, b) {
       return ((a.updateAtR == b.updateAtR) ? 0 : ((a.updateAtR > b.updateAtR) ? 1 : -1));
-    }
+    };
     return function (list) {
       function resort() {
         list.sort(myComparator);

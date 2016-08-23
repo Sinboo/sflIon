@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('SalonBusyStatusCtrl', function ($scope, $state, noBackGoTo, listService, JoinList, appModalService, $ionicPopover) {
+  .controller('ReceptionistSalonFlowBoardCtrl', function ($scope, $rootScope, $state, noBackGoTo, listService, JoinList, appModalService, $ionicPopover, $ionicPopup, UID, updateWidget) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.viewDate = new Date();
       $scope.start = moment($scope.viewDate).startOf('day').valueOf();
@@ -15,6 +15,7 @@ angular.module('sflIon')
       };
       initData();
     });
+
     $scope.goTo = noBackGoTo;
     $scope._ = _;
 
@@ -31,12 +32,34 @@ angular.module('sflIon')
         console.log($scope.hairstylists);
       });
     };
-    initData();
 
-    $scope.showDetail = function (hairstylist) {
-      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist], type: 3});
+    $scope.selectHairstylist = function (item) {
+      console.log(item);
+      $ionicPopup.confirm({
+        title: '安排发型师',
+        template: '指定此发型师进行服务?',
+        buttons: [{ text: '否' }, { text: '是', type: 'button-balanced', onTap: function(e) {return 'ok'}}]
+      }).then(function(res) {
+        if (res === 'ok') {
+          var list = listService.list('allHairstylist');
+          list.$loaded().then(function () {
+            var index = list.$indexFor(item.$id);
+            console.log(index);
+            list[index] = updateWidget(list[index]);
+            list.$save(index).then(function (ref) {
+              console.log('yes', ref.key());
+              Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '选定成功!', 2000);
+              $state.go('receptionist.priceList', {hairstylist: _.values(item.slave)[0]});
+            })
+          })
+        }
+      })
     };
 
+
+    $scope.showDetail = function (hairstylist) {
+      $state.go('receptionist.hairstylistDetail', {hairstylist: [hairstylist], type: 3});
+    };
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {
       scope: $scope
@@ -52,31 +75,12 @@ angular.module('sflIon')
       $scope.getSearch();
       $scope.searchItem = '';
     };
-
-
-
-    // var customer = {};
-    // customer.name = 'sinboo';
-    // customer.avatar = 'http://www.fzlkz.com/uploads/allimg/c150815/14395ITc05P-45Z5.jpg';
-    // customer.uid = '1468141332757735';
-    // listService.list('customer:'+"1468141332757735").add(customer)
-
-    // var orderList = listService.list('order');
-    // orderList.$loaded().then(function (data) {
-    //   console.log(data)
-    //   angular.forEach(data, function (order) {
-    //     listService.list('customer:'+order.customerUid).$loaded().then(function (customer) {
-    //       console.log(customer)
-    //       order.customerAvatar = customer[0].avatar;
-    //       listService.list('hairstylist:'+order.hairstylistUid).$loaded().then(function (hairstylist) {
-    //         order.hairstylistAvatar = hairstylist[0].avatar;
-    //         orderList.$save(order)
-    //       })
-    //     });
-    //
-    //   })
-    //
-    // })
+    
+    // $scope.moveItem = function(item, fromIndex, toIndex) {
+    //   $scope.hairstylists.splice(fromIndex, 1);
+    //   $scope.hairstylists.splice(toIndex, 0, item);
+    //   console.log($scope.hairstylists)
+    // };
 
 
   });

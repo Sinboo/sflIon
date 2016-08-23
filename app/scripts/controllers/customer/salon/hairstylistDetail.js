@@ -8,6 +8,7 @@ angular.module('sflIon')
     $scope.hairstylist = $state.params.hairstylist[0];
     $scope.price = $state.params.choosedPrice;
     $scope.isHairstylist = $state.params.isHairstylist;
+    $scope.isReceptionist = $state.params.isReceptionist;
     console.log($scope.hairstylist);
 
     $scope.likes = listService.list('like:'+$scope.hairstylist.uid);
@@ -16,11 +17,16 @@ angular.module('sflIon')
 
 
     $scope.confirm = function(hairstylist) {
-      if ($scope.price) {
-        $state.go('customer.createEditReservation', {value: {hairstylist: hairstylist, choosedPrice: $scope.price}});
+      if (!$scope.isReceptionist) {
+        if ($scope.price) {
+          $state.go('customer.createEditReservation', {value: {hairstylist: hairstylist, choosedPrice: $scope.price}});
+        }
+        else {
+          $state.go('customer.priceList', {hairstylist: hairstylist});
+        }
       }
       else {
-        $state.go('customer.priceList', {hairstylist: hairstylist});
+        $state.go('receptionist.priceList', {hairstylist: hairstylist});
       }
     };
     

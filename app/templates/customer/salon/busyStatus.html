@@ -12,21 +12,36 @@
   </div>
 
   <ion-content class="has-header has-subheader bg-lightgrey padding">
+    <!--<ul class="collection">-->
+      <!--<li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item)[0])" ng-repeat="item in hairstylists | filter: searchFilter">-->
+        <!--<img ng-src={{_.values(item)[0].avatar}} alt="" class="circle">-->
+        <!--<span class="title">{{_.values(item)[0].name}}</span>-->
+        <!--<p>{{item.orderList.length}}个预订: <br>-->
+          <!--<span class="chip" ng-repeat="order in item.orderList | limitTo:-5">-->
+            <!--<img ng-src="{{order.slave.customerAvatar}}" alt="Contact Person">-->
+            <!--{{order.slave.bookedStartAt | date: 'HH:mm'}}-->
+          <!--</span>-->
+        <!--<span class="chip" ng-if="item.orderList.length > 5">-->
+          <!--查看更多...-->
+        <!--</span>-->
+        <!--</p>-->
+        <!--<a href="" ng-if="item.orderList.length == 0" class="secondary-content"><i class="material-icons">闲</i></a>-->
+        <!--<a href="" ng-if="item.orderList.length > 0" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">忙</span></i></a>-->
+      <!--</li>-->
+    <!--</ul>-->
+
     <ul class="collection">
       <li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item)[0])" ng-repeat="item in hairstylists | filter: searchFilter">
-        <img ng-src={{_.values(item)[0].avatar}} alt="" class="circle">
-        <span class="title">{{_.values(item)[0].name}}</span>
-        <p>{{item.orderList.length}}个预订: <br>
-          <span class="chip" ng-repeat="order in item.orderList | limitTo:-5">
+        <img ng-src={{_.values(item.slave)[0].avatar}} alt="" class="circle">
+        <span class="title">{{_.values(item.slave)[0].name}}</span>
+        <p>{{(item.orderList | filter:filterBookedStartAt).length}}个预订: <br>
+          <span class="chip" ng-repeat="order in item.orderList | filter: filterBookedStartAt | orderBy: 'bookedStartAt'">
             <img ng-src="{{order.slave.customerAvatar}}" alt="Contact Person">
             {{order.slave.bookedStartAt | date: 'HH:mm'}}
           </span>
-        <span class="chip" ng-if="item.orderList.length > 5">
-          查看更多...
-        </span>
         </p>
-        <a href="" ng-if="item.orderList.length == 0" class="secondary-content"><i class="material-icons">闲</i></a>
-        <a href="" ng-if="item.orderList.length > 0" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">忙</span></i></a>
+        <a href="" ng-if="(item.orderList | filter:filterBookedStartAt).length == 0" class="secondary-content"><i class="material-icons">闲</i></a>
+        <a href="" ng-if="(item.orderList | filter:filterBookedStartAt).length > 0" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">忙</span></i></a>
       </li>
     </ul>
 

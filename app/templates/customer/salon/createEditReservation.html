@@ -58,11 +58,6 @@
         <input type="tel" placeholder="请输入您的手机号" ng-model="reservation.customerMobile" bsy-form-validate="mustInputErrorTips" required/>
       </label>
 
-      <label class="item item-input item-floating-label">
-        <span class="input-label">具体要求:</span>
-        <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求" ng-model="reservation.notes"></textarea>
-      </label>
-
       <div ng-if="!editFlag">
         <label class="item item-input" ng-if="reservation.price || reservation.work">
           <span class="input-label">选择的服务:</span>
@@ -121,7 +116,10 @@
         </label>
       </div>
 
-
+      <label class="item item-input item-floating-label" ng-if="editFlag || reservation.hairstylist">
+        <span class="input-label">具体要求:</span>
+        <textarea rows="3" style="resize:none;" placeholder="请输入您的具体要求(选填)" ng-model="reservation.notes"></textarea>
+      </label>
 
       <div ng-if="!editFlag" class="row text-center date-time-buttons" style="margin-top: 30px">
         <div class="col stable-bg margin" ui-sref="customer.workGroup()"><button class="button button-icon icon ion-ios-keypad-outline"></button>
@@ -167,7 +165,6 @@
             <del ng-if="!item.valid" style="color: red">{{ item.text }}</del>
           </ion-radio>
         </div>
-
       </div>
 
       <button class="button button-block button-balanced" check-form ng-click="validate() && saveReservation(reservation)">确认提交</button>

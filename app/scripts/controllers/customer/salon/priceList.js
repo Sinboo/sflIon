@@ -4,6 +4,7 @@
 'use strict';
 angular.module('sflIon')
   .controller('PriceListCtrl', function ($scope, $state, appModalService) {
+    $scope.isReceptionist = $state.params.isReceptionist;
 
     if($state.params.hairstylist) {
       $scope.choosePrice = function (group) {
@@ -14,8 +15,12 @@ angular.module('sflIon')
         ).then(function (value) {
           console.log(value);
           if (value) {
-            $state.go('customer.createEditReservation', {reservation: {hairstylist: $state.params.hairstylist, price: value}});
-            // $scope.closeModal(value);
+            if (!$scope.isReceptionist) {
+              $state.go('customer.createEditReservation', {reservation: {hairstylist: $state.params.hairstylist, price: value}});
+            }
+            else {
+              $state.go('receptionist.createEditReservation', {reservation: {hairstylist: $state.params.hairstylist, price: value}});
+            }
           }
         })
       }

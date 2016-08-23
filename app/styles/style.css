@@ -663,8 +663,7 @@ border-left: 2px solid #ccc;
 }
 
 #menu .list .c0{
-  background: #73C6B6;
-  color: #73C6B6;
+  background: #73C6B6!important;
 }
 #menu .list .c1{
   background: #73C6B6;

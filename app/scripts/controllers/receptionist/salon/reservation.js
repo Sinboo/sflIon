@@ -9,10 +9,10 @@ angular.module('sflIon')
       $scope.viewDate = new Date();
       $scope.now = new Date().getTime();
       initData();
-      console.log($rootScope.previousState, $rootScope.previousState == 'customer.createEditReservation')
-      if ($rootScope.previousState == 'customer.createEditReservation') {
-        $scope.handleMargin = true;
-      }
+      // console.log($rootScope.previousState, $rootScope.previousState == 'customer.createEditReservation')
+      // if ($rootScope.previousState == 'customer.createEditReservation') {
+      //   $scope.handleMargin = true;
+      // }
     });
     
     $scope.goTo = noBackGoTo;
@@ -24,7 +24,7 @@ angular.module('sflIon')
       initData();
     });
     var initData = function () {
-      console.log($rootScope.reservationListFlag);
+      // console.log($rootScope.reservationListFlag);
       if (!$rootScope.reservationListFlag) {
         reservationList.$loaded().then(function (data) {
           $rootScope.reservationListFlag = true;
@@ -76,7 +76,7 @@ angular.module('sflIon')
           $scope.seletedReservations.push(value);
         }
       });
-      console.log($scope.seletedReservations)
+      // console.log($scope.seletedReservations)
     }
 
     $scope.openConversation = function (reservation) {

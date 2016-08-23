@@ -228,6 +228,7 @@ angular.module('sflIon', [
     })
     .state('receptionist.createEditReservation', {
       url: '/createEditReservation',
+      cache: false,
       params: { reservation: null, value: null, editFlag: null },
       views: {
         'menuContent': {
@@ -236,6 +237,40 @@ angular.module('sflIon', [
         }
       }
     })
+    .state('receptionist.hairstylistDetail', {
+      url: '/hairstylistDetail',
+      cache: false,
+      params: { hairstylist: null, choosedPrice: null, type: null, isReceptionist: true },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/hairstylistDetail.html',
+          controller: 'HairstylistDetailCtrl'
+        }
+      }
+    })
+    .state('receptionist.priceList', {
+      url: '/priceList',
+      params: { hairstylist: null, isReceptionist: true},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/priceList.html',
+          controller: 'PriceListCtrl'
+        }
+      }
+    })
+
+
+    .state('receptionist.salonFlowBoard', {
+      url: '/salonFlowBoard',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/receptionist/salon/flowBoard.html',
+          controller: 'ReceptionistSalonFlowBoardCtrl'
+        }
+      }
+    })
+
+
 
     .state('receptionist.conversation', {
       url: '/conversation',
@@ -295,6 +330,7 @@ angular.module('sflIon', [
 
     .state('hairstylist.hairstylistDetail', {
       url: '/hairstylistDetail',
+      cache: false,
       params: { hairstylist: null, choosedPrice: null, type: null, isHairstylist: null },
       views: {
         'menuContent': {
@@ -315,6 +351,7 @@ angular.module('sflIon', [
     })
     .state('hairstylist.squareDetail', {
       url: '/squareDetail',
+      cache: false,
       params: { square: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -343,6 +380,7 @@ angular.module('sflIon', [
     })
     .state('hairstylist.fashionDetail', {
       url: '/fashionDetail',
+      cache: false,
       params: { fashion: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -400,6 +438,7 @@ angular.module('sflIon', [
     })
     .state('hairstylist.workDetail', {
       url: '/workDetail',
+      cache: false,
       params: { work: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -463,6 +502,7 @@ angular.module('sflIon', [
 
     .state('hairstylist.customerDetail', {
       url: '/customerDetail',
+      cache: false,
       params: { customer: null, type: null },
       views: {
         'menuContent': {
@@ -473,6 +513,7 @@ angular.module('sflIon', [
     })
     .state('hairstylist.maintainCustomer', {
       url: '/maintainCustomer',
+      cache: false,
       params: { customer: null},
       views: {
         'menuContent': {
@@ -525,6 +566,7 @@ angular.module('sflIon', [
     })
     .state('customer.createEditReservation', {
       url: '/createEditReservation',
+      cache: false,
       params: { reservation: null, value: null, editFlag: null },
       views: {
         'menuContent': {
@@ -564,6 +606,7 @@ angular.module('sflIon', [
     })
     .state('customer.hairstylistDetail', {
       url: '/hairstylistDetail',
+      cache: false,
       params: { hairstylist: null, choosedPrice: null, type: null },
       views: {
         'menuContent': {
@@ -574,6 +617,7 @@ angular.module('sflIon', [
     })
     .state('customer.customerDetail', {
       url: '/customerDetail',
+      cache: false,
       params: { customer: null, type: null },
       views: {
         'menuContent': {
@@ -594,6 +638,7 @@ angular.module('sflIon', [
     })
     .state('customer.workDetail', {
       url: '/workDetail',
+      cache: false,
       params: { work: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -661,6 +706,7 @@ angular.module('sflIon', [
     })
     .state('customer.squareDetail', {
       url: '/squareDetail',
+      cache: false,
       params: { square: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -689,6 +735,7 @@ angular.module('sflIon', [
     })
     .state('customer.fashionDetail', {
       url: '/fashionDetail',
+      cache: false,
       params: { fashion: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -711,6 +758,7 @@ angular.module('sflIon', [
 
     .state('customer.editProfile', {
       url: '/editProfile',
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: 'templates/account/editProfile.html',

@@ -1,0 +1,76 @@
+<ion-view title="我的沙龙" cache-view="true">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <div class="bar-subheader">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px">
+      <div class="col font-thin " ng-click="goTo('receptionist.salonReservation')">预订</div>
+      <div class="col font-thin" ng-click="goTo('receptionist.salonHairstylistManage')">发型师管理</div>
+      <div class="col font-thin text-large balanced bb" ng-click="goTo('receptionist.salonFlowBoard')">轮牌</div>
+    </div>
+  </div>
+
+  <ion-content class="has-header has-subheader bg-lightgrey padding">
+    <!--<ul class="collection">-->
+      <!--<li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item)[0])" ng-repeat="item in hairstylists | filter: searchFilter">-->
+        <!--<img ng-src={{_.values(item)[0].avatar}} alt="" class="circle">-->
+        <!--<span class="title">{{_.values(item)[0].name}}</span>-->
+        <!--<p>{{item.orderList.length}}个预订: <br>-->
+          <!--<span class="chip" ng-repeat="order in item.orderList | limitTo:-5">-->
+            <!--<img ng-src="{{order.slave.customerAvatar}}" alt="Contact Person">-->
+            <!--{{order.slave.bookedStartAt | date: 'HH:mm'}}-->
+          <!--</span>-->
+        <!--<span class="chip" ng-if="item.orderList.length > 5">-->
+          <!--查看更多...-->
+        <!--</span>-->
+        <!--</p>-->
+        <!--<a href="" ng-if="item.orderList.length == 0" class="secondary-content"><i class="material-icons">闲</i></a>-->
+        <!--<a href="" ng-if="item.orderList.length > 0" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">忙</span></i></a>-->
+      <!--</li>-->
+    <!--</ul>-->
+
+    <ul class="collection">
+      <li class="collection-item avatar" style="margin-bottom: 10px" ng-click="selectHairstylist(item)" ng-repeat="item in hairstylists | filter: searchFilter">
+        <img ng-src={{_.values(item.slave)[0].avatar}} alt="" class="circle">
+        <span class="title">{{_.values(item.slave)[0].name}}</span>
+        <p>{{(item.orderList | filter:filterBookedStartAt).length}}个预订: <br>
+          <span class="chip" ng-repeat="order in item.orderList | filter: filterBookedStartAt | orderBy: 'bookedStartAt'">
+            <img ng-src="{{order.slave.customerAvatar}}" alt="Contact Person">
+            {{order.slave.bookedStartAt | date: 'HH:mm'}}
+          </span>
+        </p>
+        <a href="" ng-if="(item.orderList | filter:filterBookedStartAt).length == 0" class="secondary-content"><i class="material-icons">闲</i></a>
+        <a href="" ng-if="(item.orderList | filter:filterBookedStartAt).length > 0" class="secondary-content"><i class="material-icons"><span style="color: #ff3d00">忙</span></i></a>
+      </li>
+    </ul>
+
+
+    <!--<ion-list show-reorder="true">-->
+      <!--<ion-item ng-repeat="item in hairstylists | filter: searchFilter" class="drag-item item-light item-avatar card item-complex ">-->
+        <!--<div class="item-content" style="margin-left: -80px!important;">-->
+          <!--<img ng-src="{{_.values(item)[0].avatar}}" />-->
+          <!--<div class="item-divider">发型师姓名:{{_.values(item)[0].name}}</div>-->
+          <!--<div class="item-text-wrap">-->
+            <!--<p>{{item.orderList.length}}个预订: <br>-->
+              <!--<span class="chip" ng-repeat="order in item.orderList | limitTo:-5">-->
+                <!--<img ng-src="{{order.slave.customerAvatar}}" alt="Contact Person">-->
+                <!--{{order.slave.bookedStartAt | date: 'HH:mm'}}-->
+              <!--</span>-->
+              <!--<span class="chip" ng-if="item.orderList.length > 5">-->
+                <!--查看更多...-->
+              <!--</span>-->
+            <!--</p>-->
+          <!--</div>-->
+          <!--<span class="badge badge-assertive"  ng-if="item.orderList.length > 0"><span >繁忙</span></span>-->
+          <!--<span class="badge badge-balanced"  ng-if="item.orderList.length == 0"><span >空闲</span></span>-->
+        <!--</div>-->
+        <!--<ion-reorder-button class="ion-navicon"-->
+                            <!--on-reorder="moveItem(item, $fromIndex, $toIndex)">-->
+        <!--</ion-reorder-button>-->
+      <!--</ion-item>-->
+    <!--</ion-list>-->
+
+
+  </ion-content>
+</ion-view>
