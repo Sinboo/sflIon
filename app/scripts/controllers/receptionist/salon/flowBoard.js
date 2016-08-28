@@ -13,7 +13,6 @@ angular.module('sflIon')
       $scope.filterBookedStartAt = function (val) {
         return (val.bookedStartAt > $scope.start && val.bookedStartAt < $scope.end);
       };
-      initData();
     });
 
     $scope.goTo = noBackGoTo;
@@ -32,6 +31,7 @@ angular.module('sflIon')
         console.log($scope.hairstylists);
       });
     };
+    initData();
 
     $scope.selectHairstylist = function (item) {
       console.log(item);

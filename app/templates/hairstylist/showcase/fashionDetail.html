@@ -25,7 +25,7 @@
 
         <div class="item comments">
           <p>
-            <span ng-click="like()"><img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}" class="likers" ng-repeat="item in likes | orderBy: 'updateAt':true | limitTo:5">
+            <span ng-click="like()"><img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}" class="likers" ng-repeat="item in likes | orderBy: 'updateAt':true | limitTo:5">
               <span class="pull-left interact"> +{{likes.length || 0}} 个喜欢</span>
             </span>
             <span ng-click="openComment(work.workId)" class="pull-right">{{comments.length || 0}} 条评论</span>
@@ -33,8 +33,8 @@
         </div>
         <div class="item comments no-b">
           <div class="item item-avatar" ng-if="comments.length > 0" ng-repeat="item in comments | orderBy: 'updateAt':true | limitTo: 5" >
-            <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}"/>
-            <h2 class="text-small">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name}}</h2>
+            <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}"/>
+            <h2 class="text-small">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name || _.values(item.slave3)[0].name}}</h2>
             <p class="text-smaller">{{item.master.content}}</p>
             <p><img width="100px" fullscreen ng-src="{{item.master.imgUrl}}" /></p>
             <p class="text-smaller pull-right" am-time-ago="item.master.createAt"></p>

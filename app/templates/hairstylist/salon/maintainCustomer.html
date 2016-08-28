@@ -42,7 +42,7 @@
 </style>
 <ion-view class="bg-lightgrey" title="客户信息维护"  >
   <ion-nav-buttons side="right">
-    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="noBackGoTo('hairstylist.customerMaintains')"></button>
+    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="noBackGoTo(userGroup + '.customerMaintains')"></button>
   </ion-nav-buttons>
 
     <ion-content class="profile has-header bt-grey">
@@ -102,7 +102,7 @@
         </label>
       </div>
 
-        <button class="button button-block button-balanced" check-form ng-click="validate() && save(customerMaintain[0])">保存</button>
+        <button class="button button-block button-balanced" check-form ng-click="validate(customerMaintain[0]) && save(customerMaintain[0])">保存</button>
 
       </form>
 

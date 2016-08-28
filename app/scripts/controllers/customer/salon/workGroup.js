@@ -9,6 +9,9 @@ angular.module('sflIon')
       if ($state.params.isHairstylist) {
         $state.go('hairstylist.works', {group: group})
       }
+      else if ($state.params.isReceptionist) {
+        $state.go('receptionist.works', {group: group})
+      }
       else {
         $state.go('customer.works', {group: group})
       }

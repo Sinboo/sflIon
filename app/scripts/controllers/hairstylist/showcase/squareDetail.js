@@ -3,9 +3,10 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('SquareDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join3List) {
+  .controller('SquareDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join4List) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.isHairstylist = $state.params.isHairstylist;
+      $scope.isReceptionist = $state.params.isReceptionist;
     });
     $scope._ = _;
     $scope.UID = UID();
@@ -14,9 +15,9 @@ angular.module('sflIon')
 
     $scope.userProfile = listService.list($scope.square.master.userGroup + ':' + $scope.square.master.uid);
 
-    $scope.comments = Join3List('comment:'+$scope.square.$id, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
+    $scope.comments = Join4List('comment:'+$scope.square.$id, 'customer', 'hairstylist', 'receptionist', 'commenerUid', 'updateAt');
 
-    $scope.likes = Join3List('like:'+$scope.square.$id, 'customer', 'hairstylist', 'likerUid', 'updateAt');
+    $scope.likes = Join4List('like:'+$scope.square.$id, 'customer', 'hairstylist', 'receptionist', 'likerUid', 'updateAt');
 
     $scope.like = function () {
       var likeList = listService.list('like:'+$scope.square.$id);
@@ -41,6 +42,9 @@ angular.module('sflIon')
       if ($scope.isHairstylist) {
         $state.go('hairstylist.comment', {workId: $scope.square.$id, choosedLike: choosedLike});
       }
+      else if ($scope.isReceptionist) {
+        $state.go('receptionist.comment', {workId: $scope.square.$id, choosedLike: choosedLike});
+      }
       else {
         $state.go('customer.comment', {workId: $scope.square.$id, choosedLike: choosedLike});
       }
@@ -51,6 +55,11 @@ angular.module('sflIon')
         params[$scope.square.master.userGroup] = [userProfile];
         params.isHairstylist = true;
         $state.go('hairstylist.' + $scope.square.master.userGroup + 'Detail', params);
+      }
+      else if ($scope.isReceptionist) {
+        params[$scope.square.master.userGroup] = [userProfile];
+        params.isReceptionist = true;
+        $state.go('receptionist.' + $scope.square.master.userGroup + 'Detail', params);
       }
       else {
         params[$scope.square.master.userGroup] = [userProfile];

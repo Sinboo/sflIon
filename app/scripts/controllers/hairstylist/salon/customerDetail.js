@@ -3,7 +3,11 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('CustomerDetailCtrl', function ($scope, $state, JoinList, Join3List, dataSetterGetter, listService, CUSTOMER_LEVEL) {
+  .controller('CustomerDetailCtrl', function ($scope, $state, JoinList, Join3List, dataSetterGetter, $location, listService, CUSTOMER_LEVEL) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     $scope.type = $state.params.type ? $state.params.type : 1;
     $scope.customer = $state.params.customer[0];
     $scope.price = $state.params.choosedPrice;
@@ -25,7 +29,12 @@ angular.module('sflIon')
 
 
     $scope.maintainCustomer = function(customer) {
-      $state.go('hairstylist.maintainCustomer', {customer: customer})
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.maintainCustomer', {customer: customer})
+      }
+      else if ($scope.isReceptionist) {
+        $state.go('receptionist.maintainCustomer', {customer: customer})
+      }
     };
     
   });

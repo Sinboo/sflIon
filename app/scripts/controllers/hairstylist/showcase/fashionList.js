@@ -3,11 +3,13 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $location, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList) {
+  .controller('FashionListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $location, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, SortList, userGroup) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
     });
     $scope.noBackGoTo = noBackGoTo;
+    $scope.userGroup = userGroup();
     $scope._ = _;
     $scope.UID = UID();
 
@@ -45,13 +47,21 @@ angular.module('sflIon')
       if ($scope.isHairstylist) {
         $state.go('hairstylist.fashionDetail', {fashion: fashion, isHairstylist: true});
       }
+      else if ($scope.isReceptionist) {
+        $state.go('receptionist.fashionDetail', {fashion: fashion, isReceptionist: true});
+      }
       else {
         $state.go('customer.fashionDetail', {fashion: fashion});
       }
     };
 
     $scope.addFashion = function () {
-      $state.go('hairstylist.createEditFashion');
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.createEditFashion');
+      }
+      else {
+        $state.go('receptionist.createEditFashion');
+      }
     };
     
 

@@ -23,6 +23,11 @@ angular.module('sflIon')
       // number: 'This field should be a number'
     };
 
+    $scope.goBackTo = function () {
+      console.log(userGroup() + '.account');
+      noBackGoTo(userGroup() + '.account')
+    };
+
     $scope.validate = function () {
       if (!$scope.userProfile.avatar) {ionicToast.show('请上传头像!', 'top', false, 2000);return false;}
       if (!$scope.userProfile.gender) {ionicToast.show('请选择性别!', 'middle', false, 2000);return false;}

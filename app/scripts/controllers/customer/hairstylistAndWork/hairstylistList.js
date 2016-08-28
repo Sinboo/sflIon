@@ -3,7 +3,10 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistListCtrl', function ($scope, $state, WD_URL, UID, dataSetterGetter, $wilddogArray, allHairstylist, noBackGoTo, appModalService, listService, $ionicPopover, PAGE_SIZE) {
+  .controller('HairstylistListCtrl', function ($scope, $rootScope, $state, WD_URL, UID, dataSetterGetter, $location, $wilddogArray, allHairstylist, noBackGoTo, appModalService, listService, $ionicPopover, PAGE_SIZE) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     $scope.noBackGoTo = noBackGoTo;
     $scope.rating = 4;
     $scope._ = _;
@@ -39,11 +42,15 @@ angular.module('sflIon')
     };
 
     $scope.showDetail = function (hairstylist) {
-      $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist]});
+      if (!$scope.isReceptionist) {
+        $state.go('customer.hairstylistDetail', {hairstylist: [hairstylist]});
+      }
     };
 
     $scope.chooseHairstylist = function (hairstylist) {
-      $state.go('customer.priceList', {hairstylist: hairstylist});
+      if (!$scope.isReceptionist) {
+        $state.go('customer.priceList', {hairstylist: hairstylist});
+      }
     };
 
     $ionicPopover.fromTemplateUrl('templates/common/pop/searchTemplate.html', {

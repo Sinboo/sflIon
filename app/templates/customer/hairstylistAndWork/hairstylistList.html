@@ -3,7 +3,7 @@
     <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
   </ion-nav-buttons>
 
-  <div class="bar-subheader">
+  <div class="bar-subheader" ng-if="!isReceptionist">
     <div class="row padding bb-grey text-center " style="margin-top: 55px" >
       <div class="col font-thin text-large balanced bl-grey" >发型师</div>
       <div class="col font-thin" ng-click="noBackGoTo('customer.workList')">作品</div>
@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <ion-content class="has-header has-subheader bg-lightgrey">
+  <ion-content ng-class="isReceptionist ? ['has-header', 'bg-lightgrey'] : ['has-header', 'bg-lightgrey', 'has-subheader']">
     <!--<ion-refresher-->
       <!--pulling-text="下拉更新..."-->
       <!--on-refresh="doRefresh()">-->

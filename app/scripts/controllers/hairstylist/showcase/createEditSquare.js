@@ -4,12 +4,14 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditSquareCtrl', function ($scope, $state, noBackGoTo, WORK_GROUP, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup, UserProfile) {
+  .controller('CreateEditSquareCtrl', function ($scope, $state, noBackGoTo, $location, WORK_GROUP, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup, UserProfile) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
     });
     $scope.carouselImgs = {};
     $scope.goTo = noBackGoTo;
+    $scope.userGroup = userGroup();
     $scope.WORK_GROUP = WORK_GROUP;
     console.log($state.params);
     $scope.square = {};
@@ -27,6 +29,9 @@ angular.module('sflIon')
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '帖子提交成功!', 2000);
         if ($scope.isHairstylist) {
           $scope.goTo('hairstylist.squareList')
+        }
+        else if ($scope.isReceptionist) {
+          $scope.goTo('receptionist.squareList')
         }
         else {
           $scope.goTo('customer.squareList')

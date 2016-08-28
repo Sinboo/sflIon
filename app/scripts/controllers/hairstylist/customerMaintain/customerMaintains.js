@@ -4,11 +4,15 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CustomerMaintainsCtrl', function ($scope, $state, noBackGoTo, listService, JoinList, Join3List, appModalService, $ionicPopover, CUSTOMER_LEVEL) {
+  .controller('CustomerMaintainsCtrl', function ($scope, $state, noBackGoTo, $location, listService, JoinList, Join3List, appModalService, $ionicPopover, CUSTOMER_LEVEL, userGroup) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     $scope.goTo = noBackGoTo;
     $scope._ = _;
     $scope.customerLevels = CUSTOMER_LEVEL;
-
+    $scope.userGroup = userGroup();
 
     $scope.customerMaintains = JoinList('customerMaintain', 'customer', 'theKey', 'updateAt');
 
@@ -21,21 +25,13 @@ angular.module('sflIon')
       console.log($scope.customerMaintains)
     });
 
-    // var initData = function () {
-    //   list.$loaded().then(function (data) {
-    //     $scope.customerMaintains = data;
-    //     angular.forEach($scope.customerMaintains, function (item) {
-    //       var id = _.allKeys(item)[0];
-    //       console.log(id);
-    //       item.customerMaintainDetails = listService.list('customerMaintainDetail:'+id);
-    //     });
-    //     console.log($scope.customerMaintains);
-    //   });
-    // };
-    // initData();
-
     $scope.showDetail = function (customer) {
-      $state.go('hairstylist.customerDetail', {customer: [customer], type: 2});
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.customerDetail', {customer: [customer], type: 2});
+      }
+      else if ($scope.isReceptionist) {
+        $state.go('receptionist.customerDetail', {customer: [customer], type: 2});
+      }
     };
 
 

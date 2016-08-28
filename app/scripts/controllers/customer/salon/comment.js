@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('CommentCtrl', function ($scope, $state, UID, userGroup, $ionicPopover, listService, Join3List, upyun, appModalService, appService, $ionicScrollDelegate, $timeout) {
+  .controller('CommentCtrl', function ($scope, $state, UID, userGroup, $ionicPopover, listService, Join4List, upyun, appModalService, appService, $ionicScrollDelegate, $timeout) {
     $scope._ = _;
     $scope.UID = UID();
     $scope.work = {};
@@ -25,13 +25,13 @@ angular.module('sflIon')
         scroller = document.body.querySelector('#comment .scroll-content');
       }, 0)};
 
-    $scope.comments = Join3List('comment:'+$scope.work.$id, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
+    $scope.comments = Join4List('comment:'+$scope.work.$id, 'customer', 'hairstylist', 'receptionist', 'commenerUid', 'updateAt');
     console.log($scope.comments);
     $scope.comments.$watch(function () {
       scrollToBottom();
     });
 
-    $scope.likes = Join3List('like:'+$scope.work.$id, 'customer', 'hairstylist', 'likerUid', 'updateAt');
+    $scope.likes = Join4List('like:'+$scope.work.$id, 'customer', 'hairstylist', 'receptionist', 'likerUid', 'updateAt');
     console.log($scope.likes);
     $scope.likes.$watch(function () {
       scrollToBottom();
@@ -95,7 +95,7 @@ angular.module('sflIon')
           var list = listService.list('comment:'+$scope.work.$id);
           list.$loaded().then(function () {
             var comment = {};
-            comment.content = value.content;
+            comment.content = value.content ? value.content : null;
             comment.imgUrl = value.imgUrl ? value.imgUrl : null;
             comment.commenerUid = $scope.UID;
             list.add(comment).then(function () {

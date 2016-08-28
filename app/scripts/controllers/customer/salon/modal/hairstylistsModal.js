@@ -8,10 +8,11 @@ angular.module('sflIon')
     $scope._ = _;
     $scope.UID = UID();
     vm.price = parameters ? parameters.price : null;
+    vm.isReceptionist = parameters ? parameters.isReceptionist : null;
     $scope.rating = 4;
     var scrollList;
 
-    if (vm.price !== null) {
+    if (vm.price && vm.price !== null) {
       scrollList = listService.join3ScrollList('hairstylistUnderPrice:'+vm.price.id, 'hairstylist', 'like', 'hairstylistUid', 'updateAt');
     }
     else {
@@ -46,15 +47,17 @@ angular.module('sflIon')
     };
 
     vm.showDetail = function (hairstylist) {
-      appModalService.show(
-        'templates/customer/salon/modal/hairstylistDetailModal.html',
-        'HairstylistDetailModalCtrl as vm',
-        {hairstylist: [hairstylist]}
-      ).then(function (val) {
-        if (val) {
-          $scope.closeModal({hairstylist: hairstylist, choosedPrice: vm.price});
-        }
-      })
+      if (!vm.isReceptionist) {
+        appModalService.show(
+          'templates/customer/salon/modal/hairstylistDetailModal.html',
+          'HairstylistDetailModalCtrl as vm',
+          {hairstylist: [hairstylist]}
+        ).then(function (val) {
+          if (val) {
+            $scope.closeModal({hairstylist: hairstylist, choosedPrice: vm.price});
+          }
+        })
+      }
     };
 
 

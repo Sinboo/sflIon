@@ -4,9 +4,14 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditFashionCtrl', function ($scope, $state, noBackGoTo, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup) {
+  .controller('CreateEditFashionCtrl', function ($scope, $state, noBackGoTo, $location, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     $scope.carouselImgs = {};
     $scope.goTo = noBackGoTo;
+    $scope.userGroup = userGroup();
     console.log($state.params);
     $scope.fashion = {};
 
@@ -21,7 +26,12 @@ angular.module('sflIon')
       console.log(fashion);
       listService.list('fashion').add(fashion).then(function (ref) {
         Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '潮流提交成功!', 2000);
-        $scope.goTo('hairstylist.fashionList')
+        if ($scope.isHairstylist) {
+          $scope.goTo('hairstylist.fashionList')
+        }
+        else {
+          $scope.goTo('receptionist.fashionList')
+        }
       })
     };
     

@@ -12,8 +12,8 @@
 
     <div class="list" ng-if="!choosedLike">
       <div class="item item-avatar item-text-wrap" ng-repeat="item in comments | filter: searchFilter ">
-        <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}">
-        <h2 class="lead">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name}}</h2>
+        <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}">
+        <h2 class="lead">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name || _.values(item.slave3)[0].name}}</h2>
         <p>{{item.master.content}}</p>
         <p><img width="100px" fullscreen ng-src="{{item.master.imgUrl}}" /></p>
         <p class="text-smaller pull-right" am-time-ago="item.master.createAt"></p>
@@ -22,8 +22,8 @@
 
     <div class="list" ng-if="choosedLike">
       <div class="item item-avatar" ng-repeat="item in likes | filter: searchFilter ">
-        <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}">
-        <h2 class="lead">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name}}</h2>
+        <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}">
+        <h2 class="lead">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name || _.values(item.slave3)[0].name}}</h2>
         <p class="text-smaller pull-right" am-time-ago="item.master.createAt"></p>
       </div>
     </div>

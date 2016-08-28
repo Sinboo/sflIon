@@ -56,6 +56,12 @@ void function () {
     ],
     RESERVATION_CANCEL_REASON: [
       '等待时间太长', '临时突然有事来不了', '换了其他服务', '重复订单'
+    ],
+    HAIRSTYLIST_RANK: [
+      '资深设计师', '创意总监', '艺术总监', '艺术导师'
+    ],
+    HAIRSTYLIST_STAR: [
+      '1星', '2星', '3星', '4星', '5星'
     ]
     
     

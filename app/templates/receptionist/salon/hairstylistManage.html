@@ -1,0 +1,36 @@
+<ion-view title="我的沙龙" cache-view="true">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon dark icon ion-ios-search" ng-click="searchPopover.show($event)"></button>
+  </ion-nav-buttons>
+
+  <div class="bar-subheader">
+    <div class="row padding bb-grey text-center " style="margin-top: 55px">
+      <div class="col font-thin " ng-click="goTo('receptionist.salonReservation')">预订</div>
+      <div class="col font-thin text-large balanced bb" ng-click="goTo('receptionist.salonHairstylistManage')">发型师管理</div>
+      <div class="col font-thin " ng-click="goTo('receptionist.salonFlowBoard')">轮牌</div>
+    </div>
+  </div>
+
+  <ion-content class="has-header has-subheader bg-lightgrey padding">
+
+    <ion-list>
+      <ion-item ng-repeat="item in hairstylists | filter: searchFilter" ng-click="manageHairstylist(_.values(item)[0])" class="drag-item item-light item-avatar card item-complex card-tag">
+        <div class="item-content">
+          <img ng-src="{{_.values(item)[0].avatar}}" />
+          <div class="item-divider">发型师:<span class="balanced">{{_.values(item)[0].name}}</span></div>
+          <div class="item-text-wrap">
+            <ul>
+              <li><span class="positive">头衔:</span> {{_.values(item)[0].rank || '还未指定'}}</li>
+              <li><span class="energized">星级:</span> {{_.values(item)[0].rating || '还未指定'}}</li>
+              <!--<li><span class="royal">价格安排:</span> {{_.values(item)[0].price || '还未指定'}}</li>-->
+            </ul>
+          </div>
+          <span class="badge badge-balanced "  ng-if="_.findWhere(allHairstylist, {hairstylistUid: item.$id})"  ng-click="$event.stopPropagation()" attr-click click="removeHairstylist" arg="item.$id"><span >启用中</span></span>
+          <span class="badge badge-assertive"  ng-if="!_.findWhere(allHairstylist, {hairstylistUid: item.$id})" ng-click="$event.stopPropagation()" attr-click click="addHairstylist" arg="item.$id"><span >未启用</span></span>
+        </div>
+      </ion-item>
+    </ion-list>
+
+
+  </ion-content>
+</ion-view>

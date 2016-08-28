@@ -4,9 +4,9 @@
   </ion-nav-buttons>
 
   <div class="bar-subheader">
-    <div class="row padding bb-grey text-center " style="margin-top: 55px" ng-if="isHairstylist">
-      <div class="col font-thin " ng-click="noBackGoTo('hairstylist.squareList')">社区广场</div>
-      <div class="col font-thin " ng-click="noBackGoTo('hairstylist.workList')">作品展示</div>
+    <div class="row padding bb-grey text-center " style="margin-top: 55px" ng-if="isHairstylist || isReceptionist">
+      <div class="col font-thin " ng-click="noBackGoTo(userGroup + '.squareList')">社区广场</div>
+      <div class="col font-thin " ng-click="noBackGoTo(userGroup + '.workList')">作品展示</div>
       <div class="col font-thin text-large balanced bl-grey">潮流前线</div>
     </div>
     <div class="row padding bb-grey text-center " style="margin-top: 55px" ng-if="!isHairstylist">
@@ -48,7 +48,7 @@
       </ion-infinite-scroll>
     </ion-content>
 
-  <a  ng-if="isHairstylist" class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="addFashion()"><i class="icons ion-plus-round"></i></a>
+  <a  ng-if="isHairstylist || isReceptionist" class="btn-floating btn-large waves-effect waves-light blue lighten-1" style="position:fixed; bottom:3%;right:5%;z-index:999" ng-click="addFashion()"><i class="icons ion-plus-round"></i></a>
 
 
 </ion-view>

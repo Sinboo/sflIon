@@ -3,18 +3,19 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('WorkDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join3List) {
+  .controller('WorkDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join4List) {
     $scope._ = _;
     $scope.UID = UID();
     $scope.work = $state.params.work;
     $scope.isHairstylist = $state.params.isHairstylist;
+    $scope.isReceptionist = $state.params.isReceptionist;
     console.log($scope.work, userGroup());
 
     $scope.hairstylist = listService.list('hairstylist:'+$scope.work.slave1.hairstylistUid);
 
-    $scope.comments = Join3List('comment:'+$scope.work.workId, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
+    $scope.comments = Join4List('comment:'+$scope.work.workId, 'customer', 'hairstylist', 'receptionist', 'commenerUid', 'updateAt');
 
-    $scope.likes = Join3List('like:'+$scope.work.workId, 'customer', 'hairstylist', 'likerUid', 'updateAt');
+    $scope.likes = Join4List('like:'+$scope.work.workId, 'customer', 'hairstylist', 'receptionist', 'likerUid', 'updateAt');
 
     $scope.like = function () {
       var likeList = listService.list('like:'+$scope.work.workId);
@@ -41,6 +42,14 @@ angular.module('sflIon')
       };
       $scope.showHairstylistDetail = function (hairstylist) {
         $state.go('hairstylist.hairstylistDetail', {hairstylist: [hairstylist], isHairstylist: true});
+      };
+    }
+    else if ($scope.isReceptionist) {
+      $scope.openComment = function (workId, choosedLike) {
+        $state.go('receptionist.comment', {workId: workId, choosedLike: choosedLike});
+      };
+      $scope.showHairstylistDetail = function (hairstylist) {
+        $state.go('receptionist.hairstylistDetail', {hairstylist: [hairstylist], isHairstylist: true});
       };
     }
     else {

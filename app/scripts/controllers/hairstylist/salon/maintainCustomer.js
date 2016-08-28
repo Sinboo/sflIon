@@ -3,9 +3,14 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('MaintainCustomerCtrl', function ($scope, $state, UserProfile, noBackGoTo, upyun, rfc4122, $ionicLoading, ionicToast, listService, userGroup, UID, updateWidget, localStorageService, $ionicActionSheet, $cordovaCamera, $timeout, appService, getFileObject, CUSTOMER_LEVEL) {
+  .controller('MaintainCustomerCtrl', function ($scope, $state, UserProfile, noBackGoTo, $location, upyun, rfc4122, $ionicLoading, ionicToast, listService, userGroup, UID, updateWidget, localStorageService, $ionicActionSheet, $cordovaCamera, $timeout, appService, getFileObject, CUSTOMER_LEVEL) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     var o1 = {}; var o2 = {};
     $scope.noBackGoTo = noBackGoTo;
+    $scope.userGroup = userGroup();
     $scope.customerUid = $state.params.customer.uid;
     var customerProfile = $state.params.customer;
     console.log($scope.customerUid);
@@ -45,9 +50,9 @@ angular.module('sflIon')
       // number: 'This field should be a number'
     };
 
-    $scope.validate = function () {
-      if (!$scope.userProfile.avatar) {ionicToast.show('请上传头像!', 'top', false, 2000);return false;}
-      if (!$scope.userProfile.gender) {ionicToast.show('请选择性别!', 'middle', false, 2000);return false;}
+    $scope.validate = function (userProfile) {
+      if (!userProfile.avatar) {ionicToast.show('请上传头像!', 'top', false, 2000);return false;}
+      if (!userProfile.gender) {ionicToast.show('请选择性别!', 'middle', false, 2000);return false;}
       return true;
     };
 
@@ -57,7 +62,12 @@ angular.module('sflIon')
       console.log(changeParts);
       listService.list('customerMaintainDetail:'+customerMaintain.$id).add(changeParts);
       $scope.customerMaintain.save(customerMaintain).then(function () {
-        $state.go('hairstylist.customerDetail', {customer: [customerProfile], type: 2})
+        if ($scope.isHairstylist) {
+          $state.go('hairstylist.customerDetail', {customer: [customerProfile], type: 2})
+        }
+        else if ($scope.isReceptionist) {
+          $state.go('receptionist.customerDetail', {customer: [customerProfile], type: 2})
+        }
       });
     };
 

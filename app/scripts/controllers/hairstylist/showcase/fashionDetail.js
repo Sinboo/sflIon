@@ -3,9 +3,10 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('FashionDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join3List) {
+  .controller('FashionDetailCtrl', function ($scope, $state, UID, userGroup, createWidget, $wilddogArray, listService, Join4List) {
     $scope.$on("$ionicView.beforeEnter", function(event, data){
       $scope.isHairstylist = $state.params.isHairstylist;
+      $scope.isReceptionist = $state.params.isReceptionist;
     });
     $scope._ = _;
     $scope.UID = UID();
@@ -14,9 +15,9 @@ angular.module('sflIon')
 
     $scope.userProfile = listService.list($scope.fashion.master.userGroup + ':' + $scope.fashion.master.uid);
 
-    $scope.comments = Join3List('comment:'+$scope.fashion.$id, 'customer', 'hairstylist', 'commenerUid', 'updateAt');
+    $scope.comments = Join4List('comment:'+$scope.fashion.$id, 'customer', 'hairstylist', 'receptionist', 'commenerUid', 'updateAt');
 
-    $scope.likes = Join3List('like:'+$scope.fashion.$id, 'customer', 'hairstylist', 'likerUid', 'updateAt');
+    $scope.likes = Join4List('like:'+$scope.fashion.$id, 'customer', 'hairstylist', 'receptionist', 'likerUid', 'updateAt');
 
     $scope.like = function () {
       var likeList = listService.list('like:'+$scope.fashion.$id);
@@ -42,6 +43,9 @@ angular.module('sflIon')
       if ($scope.isHairstylist) {
         $state.go('hairstylist.comment', {workId: $scope.fashion.$id, choosedLike: choosedLike});
       }
+      else if ($scope.isReceptionist) {
+        $state.go('receptionist.comment', {workId: $scope.fashion.$id, choosedLike: choosedLike});
+      }
       else {
         $state.go('customer.comment', {workId: $scope.fashion.$id, choosedLike: choosedLike});
       }
@@ -53,12 +57,16 @@ angular.module('sflIon')
         params.isHairstylist = true;
         $state.go('hairstylist.' + $scope.fashion.master.userGroup + 'Detail', params);
       }
+      else if ($scope.isReceptionist) {
+        params[$scope.fashion.master.userGroup] = [userProfile];
+        params.isReceptionist = true;
+        $state.go('receptionist.' + $scope.fashion.master.userGroup + 'Detail', params);
+      }
       else {
         params[$scope.fashion.master.userGroup] = [userProfile];
         $state.go('customer.' + $scope.fashion.master.userGroup + 'Detail', params);
       }
     };
-
 
     
   });

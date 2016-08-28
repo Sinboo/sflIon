@@ -26,7 +26,7 @@
 
         <div class="item comments">
           <p>
-            <span ng-click="like()"><img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}" class="likers" ng-repeat="item in likes | orderBy: 'updateAt':true | limitTo:5">
+            <span ng-click="like()"><img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}" class="likers" ng-repeat="item in likes | orderBy: 'updateAt':true | limitTo:5">
               <span class="pull-left interact"> +{{likes.length || 0}} 个喜欢</span>
             </span>
             <span ng-click="openComment(work.workId)" class="pull-right">{{comments.length || 0}} 条评论</span>
@@ -34,8 +34,8 @@
         </div>
         <div class="item comments no-b">
           <div class="item item-avatar" ng-if="comments.length > 0" ng-repeat="item in comments | orderBy: 'updateAt':true | limitTo: 5" >
-            <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar}}"/>
-            <h2 class="text-small">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name}}</h2>
+            <img ng-src="{{_.values(item.slave1)[0].avatar || _.values(item.slave2)[0].avatar || _.values(item.slave3)[0].avatar}}"/>
+            <h2 class="text-small">{{_.values(item.slave1)[0].name || _.values(item.slave2)[0].name || _.values(item.slave3)[0].name}}</h2>
             <p class="text-smaller">{{item.master.content}}</p>
             <p><img width="100px" fullscreen ng-src="{{item.master.imgUrl}}" /></p>
             <p class="text-smaller pull-right" am-time-ago="item.master.createAt"></p>
@@ -51,7 +51,7 @@
   <ion-footer-bar class="no-bg bt-grey ">
     <div class="row">
       <div class="col text-left no-padding" ng-click="openComment(work.workId, true)"><i class="icon text-small" ng-class="_.findWhere(likes, {likerUid: UID}) ? 'ion-ios-heart': 'ion-ios-heart-outline'"> {{_.findWhere(likes, {likerUid: UID}) ? '已喜欢' : '未喜欢'}}</i></div>
-      <div class="col text-center no-padding" ng-show="!isHairstylist"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="confirm(work)"> 立即预订</i></div>
+      <div class="col text-center no-padding" ng-show="!isHairstylist && !isReceptionist"><i class="icon ion-android-checkmark-circle " style="font-weight:bold" ng-click="confirm(work)"> 立即预订</i></div>
       <div class="col text-right no-padding" ng-click="openComment(work.workId)"><i class="icon ion-ios-chatboxes-outline text-small"> {{comments.length || 0}} 评论</i></div>
     </div>
   </ion-footer-bar>

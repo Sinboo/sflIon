@@ -4,10 +4,16 @@
 
 'use strict';
 angular.module('sflIon')
-  .controller('CreateEditWorkCtrl', function ($scope, $state, noBackGoTo, WORK_GROUP, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, UserProfile) {
+  .controller('CreateEditWorkCtrl', function ($scope, $state, noBackGoTo, $location, WORK_GROUP, $ionicActionSheet, upyun, $ionicLoading, rfc4122, $timeout, $ionicPopup, $cordovaCamera, appService, getFileObject, appModalService, listService, ionicToast, UID, userGroup) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     $scope.carouselImgs = {};
     $scope.goTo = noBackGoTo;
+    $scope.userGroup = userGroup();
     $scope.WORK_GROUP = WORK_GROUP;
+    // $scope.hairstylist = $state.params.hairstylist;
     console.log($state.params);
     $scope.work = {};
 
@@ -16,19 +22,39 @@ angular.module('sflIon')
       angular.copy($scope.work, work);
       work.coverImg = $scope.coverImg;
       work.carouselImgs = $scope.carouselImgs;
-      work.hairstylistUid = UID();
+      work.hairstylistUid = $scope.isReceptionist ? $scope.hairstylist.uid : UID();
       work = JSON.parse(JSON.stringify(work));
       console.log(work);
       listService.list('work').add(work).then(function (ref) {
         listService.list('workOfGroup:'+work.type).add({workId: ref.key()}).then(function () {
           Materialize.toast('<i class="icon ion-checkmark-round"></i>' + '作品提交成功!', 2000);
-          $scope.goTo('hairstylist.workList')
+          if ($scope.isHairstylist) {
+            $scope.goTo('hairstylist.workList')
+          }
+          else if ($scope.isReceptionist) {
+            $scope.goTo('receptionist.workList')
+          }
         })
+      })
+    };
+    
+    $scope.showHairstylists = function () {
+      // $state.go('receptionist.hairstylistList')
+      appModalService.show(
+        'templates/customer/salon/modal/hairstylistsModal.html',
+        'HairstylistsModalCtrl as vm',
+        {isReceptionist: $scope.isReceptionist}
+      ).then(function (value) {
+        if (value) {
+          console.log(value);
+          $scope.hairstylist = value.hairstylist;
+        }
       })
     };
 
 
     $scope.validate = function () {
+      if ($scope.isReceptionist && !$scope.hairstylist) {ionicToast.show('请选择作品所属发型师!', 'top', false, 2000);return false;}
       if (!$scope.work.type) {ionicToast.show('请选择作品所属分组!', 'top', false, 2000);return false;}
       if (!$scope.carouselImgs) {ionicToast.show('请上传作品封面图!', 'top', false, 2000);return false;}
       if (_.size(JSON.parse(JSON.stringify($scope.carouselImgs))) == 0) {ionicToast.show('请至少上传一张轮播图!', 'middle', false, 2000);return false;}

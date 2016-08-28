@@ -260,6 +260,27 @@ angular.module('sflIon', [
     })
 
 
+    .state('receptionist.salonHairstylistManage', {
+      url: '/salonHairstylistManage',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/receptionist/salon/hairstylistManage.html',
+          controller: 'HairstylistManageCtrl'
+        }
+      }
+    })
+    .state('receptionist.manageHairstylist', {
+      url: '/manageHairstylist',
+      params: { hairstylist: null},
+      cache: false,
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/receptionist/salon/manageHairstylist.html',
+          controller: 'ManageHairstylistCtrl'
+        }
+      }
+    })
+    
     .state('receptionist.salonFlowBoard', {
       url: '/salonFlowBoard',
       views: {
@@ -270,6 +291,152 @@ angular.module('sflIon', [
       }
     })
 
+    .state('receptionist.squareList', {
+      url: '/squareList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/squareList.html',
+          controller: 'SquareListCtrl'
+        }
+      }
+    })
+    .state('receptionist.squareDetail', {
+      url: '/squareDetail',
+      params: { square: null, isReceptionist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/squareDetail.html',
+          controller: 'SquareDetailCtrl'
+        }
+      }
+    })
+    .state('receptionist.createEditSquare', {
+      url: '/createEditSquare',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditSquare.html',
+          controller: 'CreateEditSquareCtrl'
+        }
+      }
+    })
+    .state('receptionist.fashionList', {
+      url: '/fashionList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/fashionList.html',
+          controller: 'FashionListCtrl'
+        }
+      }
+    })
+    .state('receptionist.fashionDetail', {
+      url: '/fashionDetail',
+      params: { fashion: null, isReceptionist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/fashionDetail.html',
+          controller: 'FashionDetailCtrl'
+        }
+      }
+    })
+    .state('receptionist.createEditFashion', {
+      url: '/createEditFashion',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditFashion.html',
+          controller: 'CreateEditFashionCtrl'
+        }
+      }
+    })
+    .state('receptionist.createEditWork', {
+      url: '/createEditWork',
+      params: { hairstylist: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/createEditWork.html',
+          controller: 'CreateEditWorkCtrl'
+        }
+      }
+    })
+    .state('receptionist.workList', {
+      url: '/workList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/workList.html',
+          controller: 'HairstylistWorkListCtrl'
+        }
+      }
+    })
+    .state('receptionist.workGroup', {
+      url: '/workGroup',
+      params: {isReceptionist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/workGroup.html',
+          controller: 'WorkGroupCtrl'
+        }
+      }
+    })
+    .state('receptionist.works', {
+      url: '/works',
+      params: { group: null, hairstylist: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/showcase/works.html',
+          controller: 'HairstylistWorksCtrl'
+        }
+      }
+    })
+    .state('receptionist.workDetail', {
+      url: '/workDetail',
+      params: { work: null, isReceptionist: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/workDetail.html',
+          controller: 'WorkDetailCtrl'
+        }
+      }
+    })
+    .state('receptionist.comment', {
+      url: '/comment',
+      params: { workId: null, choosedLike: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/salon/comment.html',
+          controller: 'CommentCtrl'
+        }
+      }
+    })
+    .state('receptionist.hairstylistList', {
+      url: '/hairstylistList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/customer/hairstylistAndWork/hairstylistList.html',
+          controller: 'HairstylistListCtrl'
+        }
+      }
+    })
+
+
+
+
+    .state('receptionist.account', {
+      url: '/account',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/account/account.html',
+          controller: 'AccountCtrl'
+        }
+      }
+    })
+    .state('receptionist.editProfile', {
+      url: '/editProfile',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/account/editProfile.html',
+          controller: 'EditProfileCtrl'
+        }
+      }
+    })
 
 
     .state('receptionist.conversation', {
@@ -291,7 +458,50 @@ angular.module('sflIon', [
         }
       }
     })
-    
+
+    .state('receptionist.customerDetail', {
+      url: '/customerDetail',
+      cache: false,
+      params: { customer: null, type: null },
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/salon/customerDetail.html',
+          controller: 'CustomerDetailCtrl'
+        }
+      }
+    })
+    .state('receptionist.maintainCustomer', {
+      url: '/maintainCustomer',
+      cache: false,
+      params: { customer: null},
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/salon/maintainCustomer.html',
+          controller: 'MaintainCustomerCtrl'
+        }
+      }
+    })
+
+    .state('receptionist.customerMaintains', {
+      url: '/customerMaintains',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/customerMaintain/customerMaintains.html',
+          controller: 'CustomerMaintainsCtrl'
+        }
+      }
+    })
+    .state('receptionist.addCustomerMaintain', {
+      url: '/addCustomerMaintain',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/hairstylist/customerMaintain/addCustomerMaintain.html',
+          controller: 'AddCustomerMaintainCtrl'
+        }
+      }
+    })
+
+
     
     .state('hairstylist', {
       url: '^/hairstylist',
@@ -351,7 +561,6 @@ angular.module('sflIon', [
     })
     .state('hairstylist.squareDetail', {
       url: '/squareDetail',
-      cache: false,
       params: { square: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -380,7 +589,6 @@ angular.module('sflIon', [
     })
     .state('hairstylist.fashionDetail', {
       url: '/fashionDetail',
-      cache: false,
       params: { fashion: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -438,7 +646,6 @@ angular.module('sflIon', [
     })
     .state('hairstylist.workDetail', {
       url: '/workDetail',
-      cache: false,
       params: { work: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -638,7 +845,6 @@ angular.module('sflIon', [
     })
     .state('customer.workDetail', {
       url: '/workDetail',
-      cache: false,
       params: { work: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -706,7 +912,6 @@ angular.module('sflIon', [
     })
     .state('customer.squareDetail', {
       url: '/squareDetail',
-      cache: false,
       params: { square: null, isHairstylist: null},
       views: {
         'menuContent': {
@@ -735,7 +940,6 @@ angular.module('sflIon', [
     })
     .state('customer.fashionDetail', {
       url: '/fashionDetail',
-      cache: false,
       params: { fashion: null, isHairstylist: null},
       views: {
         'menuContent': {

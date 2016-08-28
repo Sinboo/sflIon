@@ -47,7 +47,7 @@
             <!-- cd-timeline-img -->
             <div class="cd-timeline-content dark">
               <h5 class="marginBottom0 marginTop0" ng-if="item.slave1">维护人:发型师-{{_.values(item.slave1)[0].realName}}</h5>
-              <h5 class="marginBottom0 marginTop0" ng-if="item.slave2">维护人:前台-{{_.values(item.slave2)[0].receptionistName}}</h5>
+              <h5 class="marginBottom0 marginTop0" ng-if="item.slave2">维护人:前台-{{_.values(item.slave2)[0].realName}}</h5>
               <p class="marginTop5 cd-author">时间: {{item.master.createAt | date: "MM月dd日 HH:mm"}}</p>
               <p class="marginTop5 cd-author" ng-if="item.master.realName">维护内容-真实姓名: {{item.master.realName}} </p>
               <p class="marginTop5 cd-author" ng-if="item.master.realImage">维护内容-真实照片: <img width="150px" ng-src="{{item.master.realImage}}"/></p>

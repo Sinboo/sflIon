@@ -42,7 +42,7 @@
 </style>
 <ion-view cache-view="false" title="编辑作品">
   <ion-nav-buttons side="right">
-    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="goTo('hairstylist.workList')"></button>
+    <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="goTo(userGroup + '.workList')"></button>
   </ion-nav-buttons>
 
     <ion-content class="has-header">
@@ -72,6 +72,22 @@
           <input id="last_name" type="number" class="validate" ng-model="work.discount" >
           <label for="last_name" class="text-small">折扣(无则不填)</label>
         </div>
+      </div>
+
+      <div ng-if="isReceptionist">
+        <p class="bb text-smaller padding-horizontal uppercase">作品完成人:</p>
+        <label class="item item-input " style="margin-bottom: 20px" ng-click="showHairstylists()">
+          <span class="input-label">发型师:</span>
+          <div class="item-text-wrap" ng-if="hairstylist">
+            <div class="chip">
+              <img ng-src="{{hairstylist.avatar}}" alt="Contact Person">
+              {{hairstylist.name}}
+            </div>
+          </div>
+          <div class="item-text-wrap" ng-if="!hairstylist">
+            <span style="font-size: small;color: grey">(点击选取完成该作品的发型师)</span>
+          </div>
+        </label>
       </div>
 
       <p class="bb text-smaller padding-horizontal uppercase">作品所属分组:</p>

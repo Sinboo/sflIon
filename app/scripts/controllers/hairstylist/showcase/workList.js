@@ -3,13 +3,18 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('HairstylistWorkListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, WORK_GROUP2, SortList) {
+  .controller('HairstylistWorkListCtrl', function ($scope, WD_URL, UID, noBackGoTo, $location, $state, $wilddogArray, ListLoadMore, appModalService, listService, $ionicPopover, PAGE_SIZE, WORK_GROUP2, SortList, userGroup) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.isHairstylist = $location.path().indexOf('hairstylist') !== -1;
+      $scope.isReceptionist = $location.path().indexOf('receptionist') !== -1;
+    });
     $scope.noBackGoTo = noBackGoTo;
+    $scope.userGroup = userGroup();
     $scope._ = _;
     $scope.UID = UID();
     $scope.WORK_GROUP = WORK_GROUP2;
 
-    var scrollList = listService.join4by2keyScrollList('work', 'hairstylist', 'like', 'comment', 'hairstylistUid', 'updateAtR');
+    var scrollList = listService.join5by3keyScrollList('work', 'hairstylist', 'like', 'comment', 'receptionist', 'hairstylistUid', 'createById', 'updateAtR');
     $scope.works = SortList(scrollList.list);
     scrollList.scrollRef.scroll.next(PAGE_SIZE);
     console.log($scope.works);
@@ -43,20 +48,39 @@ angular.module('sflIon')
       var detailWork = {};
       detailWork.workId = work.$id;
       detailWork.slave1 = work.master;
-      $state.go('hairstylist.workDetail', {work: detailWork, isHairstylist: true});
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.workDetail', {work: detailWork, isHairstylist: true});
+      }
+      else {
+        $state.go('receptionist.workDetail', {work: detailWork, isReceptionist: true});
+      }
     };
 
     $scope.openWorkGroup = function () {
-      $state.go('hairstylist.workGroup', {isHairstylist: true});
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.workGroup', {isHairstylist: true});
+      }
+      else {
+        $state.go('receptionist.workGroup', {isReceptionist: true});
+      }
     };
 
     $scope.addWork = function () {
-      $state.go('hairstylist.createEditWork');
-      console.log('yes')
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.createEditWork');
+      }
+      else {
+        $state.go('receptionist.createEditWork');
+      }
     };
 
     $scope.chooseWorkGroup = function (group) {
-      $state.go('hairstylist.works', {group: group})
+      if ($scope.isHairstylist) {
+        $state.go('hairstylist.works', {group: group})
+      }
+      else {
+        $state.go('receptionist.works', {group: group})
+      }
     };
     
 
