@@ -144,9 +144,10 @@ angular.module('sflIon')
       console.log('web');
       //choose img
       $scope.openFileDialog = function(customerMaintain) {
-        ionic.trigger('click', {
-          target: document.getElementById('file')
-        });
+        // ionic.trigger('click', {
+        //   target: document.getElementById('file')
+        // });
+        angular.element('#file').trigger('click');
 
         $(document).on("change", ".uploadImage", function(e){
           e.preventDefault();

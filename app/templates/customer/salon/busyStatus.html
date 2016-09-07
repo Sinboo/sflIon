@@ -31,7 +31,7 @@
     <!--</ul>-->
 
     <ul class="collection">
-      <li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item)[0])" ng-repeat="item in hairstylists | filter: searchFilter">
+      <li class="collection-item avatar" style="margin-bottom: 10px" ng-click="showDetail(_.values(item.slave)[0])" ng-repeat="item in hairstylists | filter: searchFilter">
         <img ng-src={{_.values(item.slave)[0].avatar}} alt="" class="circle">
         <span class="title">{{_.values(item.slave)[0].name}}</span>
         <p>{{(item.orderList | filter:filterBookedStartAt).length}}个预订: <br>

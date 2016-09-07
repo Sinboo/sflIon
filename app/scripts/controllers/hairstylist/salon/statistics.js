@@ -42,9 +42,9 @@ angular.module('sflIon')
         $stateParams.type !== null ? $scope.reminder.type = angular.copy($stateParams.type) : null;
       }
 
-      $scope.reminderPopover = $ionicPopover.fromTemplate(reminderTemplate, {
-        scope: $scope
-      });
+      // $scope.reminderPopover = $ionicPopover.fromTemplate(reminderTemplate, {
+      //   scope: $scope
+      // });
 
       $ionicModal.fromTemplateUrl('templates/dashboard/remind-at-modal.html', {
         scope: $scope,

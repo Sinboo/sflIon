@@ -32,7 +32,7 @@
     <button class="button button-clear button-icon ion-camera" ng-click="openFileDialog()">
     </button>
     <label class="item-input-wrapper no-bg">
-      <textarea id="textChat" ng-model="input" ng-keyup="keyup($event, input)" ng-keydown="keydown($event, input)" required minlength="1" maxlength="1500" style="width:100%;resize: none;" msd-elastic></textarea>
+      <textarea id="textChat" ng-model="input" ng-keyup="keyup($event, input)" placeholder="对{{conversation.recipientName || conversation.master.recipientName}}说点什么..." ng-keydown="keydown($event, input)" required minlength="1" maxlength="1500" style="width:100%;resize: none;" msd-class="msd-elastic"></textarea>
     </label>
     <button class="button button-clear button-icon ion-android-send button-calm" ng-class="chatForm.$invalid == false ? 'button-calm' : 'button-outline'" ng-click="sendChat(input)"  ng-disabled="chatForm.$invalid">
     </button>

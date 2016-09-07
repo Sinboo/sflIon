@@ -5,7 +5,7 @@
 'use strict';
 angular.module('sflIon')
   .controller('ReceptionistSalonFlowBoardCtrl', function ($scope, $rootScope, $state, noBackGoTo, listService, JoinList, appModalService, $ionicPopover, $ionicPopup, UID, updateWidget) {
-    $scope.$on("$ionicView.beforeEnter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data){
       $scope.viewDate = new Date();
       $scope.start = moment($scope.viewDate).startOf('day').valueOf();
       $scope.end = moment($scope.viewDate).endOf('day').valueOf();
@@ -13,15 +13,17 @@ angular.module('sflIon')
       $scope.filterBookedStartAt = function (val) {
         return (val.bookedStartAt > $scope.start && val.bookedStartAt < $scope.end);
       };
+      initData();
     });
 
     $scope.goTo = noBackGoTo;
     $scope._ = _;
 
     var list = JoinList('allHairstylist', 'hairstylist', 'hairstylistUid', 'updateAt');
-    list.$watch(function () {
-      initData();
-    });
+    $scope.hairstylists = list;
+    // list.$watch(function () {
+    //   initData();
+    // });
     var initData = function () {
       list.$loaded().then(function (data) {
         $scope.hairstylists = data;
@@ -30,6 +32,10 @@ angular.module('sflIon')
         });
         console.log($scope.hairstylists);
       });
+      angular.forEach($scope.hairstylists, function (item) {
+        item.orderList = JoinList('orderOfHairstylist:' + item.hairstylistUid, 'order', 'orderId', 'updateAt', 'bookedStartAt');
+      });
+      console.log($scope.hairstylists);
     };
     initData();
 

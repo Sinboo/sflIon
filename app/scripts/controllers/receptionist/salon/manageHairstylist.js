@@ -61,7 +61,7 @@ angular.module('sflIon')
     $scope.save = function (hairstylist) {
       console.log(hairstylist.priceIds, 'cutDeleteFlag:', cutDeleteFlag, 'washDeleteFlag:', washDeleteFlag)
       $.each(hairstylist.priceIds, function (k, v) {
-        console.log(k, v)
+        console.log(k, v);
         var list = listService.list('hairstylistUnderPrice:'+k);
         list.$loaded().then(function (data) {
           console.log(data);
@@ -83,13 +83,13 @@ angular.module('sflIon')
           }
           else {
             var index = list.$indexFor(HUP.$id);
-            console.log(index, _.has($scope.priceObj.cut, k), cutDeleteFlag, washDeleteFlag);
-            if ( _.has($scope.priceObj.cut, k) && (cutDeleteFlag && cutDeleteFlag != HUP.$id) ) {
+            console.log(index, _.has($scope.priceObj.cut, k), cutDeleteFlag, washDeleteFlag, k);
+            if ( _.has($scope.priceObj.cut, k) && (cutDeleteFlag && cutDeleteFlag != k) ) {
               list.$remove(index).then(function () {
                 console.log('delete', k);
               });
             }
-            if ( _.has($scope.priceObj.wash, k) && (washDeleteFlag && washDeleteFlag != HUP.$id) ) {
+            if ( _.has($scope.priceObj.wash, k) && (washDeleteFlag && washDeleteFlag != k) ) {
               list.$remove(index).then(function () {
                 console.log('delete', k);
               });

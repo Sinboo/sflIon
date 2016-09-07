@@ -23,7 +23,7 @@ angular.module('sflIon')
     resetResTime();
 
     $scope.checkOrder = function (date, data) {
-      console.log($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd "), data);
+      // console.log($filter('date')(Date.parse(moment(date).endOf('day')._d), "yyyy-MM-dd "), data);
       angular.forEach(data, function (item) {
         if (item.slave && item.slave.bookedStartAt) {
           item.slave.expectEndAt = parseInt(item.slave.bookedStartAt) + 3600000;
@@ -49,7 +49,7 @@ angular.module('sflIon')
     };
 
     var initData = function () {
-      console.log($rootScope['orderOfHairstylistLoadedFlagReceptionist-' + ($scope.reservation.hairstylistUid || $scope.reservation.hairstylist.uid)]);
+      // console.log($rootScope['orderOfHairstylistLoadedFlagReceptionist-' + ($scope.reservation.hairstylistUid || $scope.reservation.hairstylist.uid)]);
       if (!$rootScope['orderOfHairstylistLoadedFlagReceptionist-' + ($scope.reservation.hairstylistUid || $scope.reservation.hairstylist.uid)]) {
         $scope.orderList.$loaded().then(function (data) {
           $scope.checkOrder($scope.viewDate, data);

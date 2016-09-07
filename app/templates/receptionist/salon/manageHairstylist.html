@@ -40,7 +40,7 @@
   .list.list-inline .item-checkbox .checkbox {
     padding-left: 0; }
 </style>
-<ion-view class="bg-lightgrey" title="客户信息维护"  >
+<ion-view class="bg-lightgrey" title="发型师管理"  >
   <ion-nav-buttons side="right">
     <button class="button button-icon dark icon ion-close-round" style="font-size: 10px" ng-click="noBackGoTo('receptionist.salonHairstylistManage')"></button>
   </ion-nav-buttons>
@@ -77,7 +77,7 @@
         </div>
         <div class="list list-inline text-center" ng-if="price.$id == 'cut' || price.$id == 'wash' ">
           <ion-radio ng-repeat="(k, v) in price" name="{{price.$id}}" ng-if="v.price"
-                     ng-value="price.$id" ng-change="setDeleteFlag(k)"
+                     ng-value="price.$id" ng-click="setDeleteFlag(k)"
                      ng-model="hairstylist.priceIds[k]">
             {{ v.name }}
           </ion-radio>

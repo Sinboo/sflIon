@@ -47,6 +47,6 @@
   <a ng-if="choosedLike == true" class="btn-floating btn-large waves-effect waves-light" ng-class="{'red':_.findWhere(likes, {likerUid: UID}), 'stable': !_.findWhere(likes, {likerUid: UID})}" style="position:fixed; bottom:5%;right:5%;" ng-click="like();"><i class="icons ion-ios-heart"></i></a>
 
   <form name="uploadForm" role="form" ng-show="false">
-    <input type="file" name="file" class="uploadImage" id="file" /> <br/>
+    <input type="file" name="file" class="uploadImage" id="file" />
   </form>
 </ion-view>

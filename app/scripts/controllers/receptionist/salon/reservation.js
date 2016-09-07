@@ -9,10 +9,10 @@ angular.module('sflIon')
       $scope.viewDate = new Date();
       $scope.now = new Date().getTime();
       initData();
-      // console.log($rootScope.previousState, $rootScope.previousState == 'customer.createEditReservation')
-      // if ($rootScope.previousState == 'customer.createEditReservation') {
-      //   $scope.handleMargin = true;
-      // }
+      console.log($rootScope.previousState, $rootScope.previousState == 'receptionist.createEditReservation');
+      if ($rootScope.previousState == 'receptionist.createEditReservation') {
+        $scope.handleMargin = true;
+      }
     });
     
     $scope.goTo = noBackGoTo;
@@ -80,6 +80,7 @@ angular.module('sflIon')
     }
 
     $scope.openConversation = function (reservation) {
+      console.log(reservation);
       var flag = false;
       var conversationList = listService.list('conversation:'+UID());
       var conversationList2 = listService.list('conversation:'+reservation.customerUid);
@@ -192,8 +193,6 @@ angular.module('sflIon')
       $scope.getSearch();
       $scope.searchItem = '';
     }
-
-
 
     
     

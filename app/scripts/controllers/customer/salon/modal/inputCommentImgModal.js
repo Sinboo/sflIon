@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('sflIon')
-  .controller('InputCommentImgModalCtrl', function ($scope, ionicToast, parameters, $timeout, $cordovaCamera, appService, getFileObject, upyun, rfc4122, $ionicLoading, $ionicPopup, $ionicActionSheet, Camera, $cordovaImagePicker) {
+  .controller('InputCommentImgModalCtrl', function ($scope, ionicToast, parameters, $timeout, $cordovaCamera, appService, getFileObject, upyun, rfc4122, $ionicLoading, $ionicPopup, $ionicActionSheet) {
     var vm = this;
     $scope.comment = {};
     $scope.comment.content = parameters;
@@ -81,9 +81,7 @@ angular.module('sflIon')
       console.log('web');
       //choose img
       $scope.openFileDialog = function() {
-        ionic.trigger('click', {
-          target: document.getElementById('file')
-        });
+        angular.element('#file').trigger('click');
       };
 
       $(document).on("change", ".uploadImage", function(e){
